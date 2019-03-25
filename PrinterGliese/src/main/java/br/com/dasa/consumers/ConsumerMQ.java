@@ -48,7 +48,7 @@ public class ConsumerMQ {
 		        byte[] body) throws IOException {
 		  
 		            String message = new String(body, "UTF-8");
-		            System.out.println(message);
+		            log.info(message);
 		     }
 		};
 		
