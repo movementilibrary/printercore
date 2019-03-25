@@ -2,11 +2,15 @@ package br.com.dasa.print.core.service;
 
 import br.com.dasa.print.core.model.Impressao;
 import br.com.dasa.print.core.exception.ResourceNotFoundException;
+import br.com.dasa.print.core.model.Impressora;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ImpressaoService {
@@ -24,9 +28,11 @@ public class ImpressaoService {
      *
      * @param impressao
      */
-    public void enviarMensagemImpressao(Impressao impressao) {
+    public void solicitaImpressao(Impressao impressao) {
         try {
-            impressoraService.listaImpressoraPelaIdentificacao(impressao.getIdentificacao());
+            Optional<Impressora> impressora = Optional.ofNullable(impressoraService.listaImpressoraPelaIdentificacao(impressao.getIdentificacao()));
+            if(impressora.isPresent())
+                impressora.get().setUltimaAtualizacao(new Date());
             LOGGER.info("Enviando Mensagem {} impressao ", impressao);
             rabbitTemplate.convertAndSend(impressao.getIdentificacao(), impressao.getConteudoImpressao());
         } catch (Exception e) {
