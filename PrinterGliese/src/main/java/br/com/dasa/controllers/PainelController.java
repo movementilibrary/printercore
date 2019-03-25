@@ -25,9 +25,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 @Component
-public class PanelController {
+public class PainelController {
 
-	private static final Logger log = LoggerFactory.getLogger(PanelController.class);
+	private static final Logger log = LoggerFactory.getLogger(PainelController.class);
 
 
 	
@@ -70,6 +70,7 @@ public class PanelController {
 		HBox panel = new HBox();
 		try {
 			panel.getChildren().add(getComponenteImpressoras()); 
+			panel.getChildren().add(getComponenteEmpresas());
 			
 			panel.setPadding(new Insets(60, 10, 20, 10));
 		} catch (Exception e) {
@@ -77,6 +78,26 @@ public class PanelController {
 		}
 		return panel;
 	}
+
+	private VBox getComponenteEmpresas() {
+		VBox box = new VBox(); 
+		box.getChildren().add(getLabelEmpresa());
+		box.getChildren().add(getSelectEmpresas());
+		box.setPadding(new Insets(0, 0, 0, 50));
+		return box;
+	}
+
+
+
+	private Label getLabelEmpresa() {
+		Label label = new Label("Empresa");
+		label.setFont(Font.font("Comic Sans", 20));
+		
+		label.setPadding(new Insets(0, 5, 10, 0));
+		return label;
+	}
+
+
 
 	private VBox getComponenteImpressoras() {
 		VBox box = new VBox(); 
@@ -98,9 +119,11 @@ public class PanelController {
 
 
 	private ChoiceBox getSelectEmpresas() {
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(new ArrayList<>()));
+		ArrayList<String> lista = new ArrayList<>(); 
+		lista.add("Delboni"); 
+		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(lista));
 		cb.setPrefSize(150, 20);
-		return null;
+		return cb;
 	}
 
 

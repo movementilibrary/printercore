@@ -9,7 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import br.com.dasa.controllers.PanelController;
+import br.com.dasa.controllers.PainelController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -33,7 +33,7 @@ public class PrinterGlieseApplication extends Application {
 	@Override
 	public void init() throws Exception {
 		springContext = SpringApplication.run(PrinterGlieseApplication.class);
-		PanelController controller = springContext.getBean(PanelController.class);
+		PainelController controller = springContext.getBean(PainelController.class);
 		scene = new Scene(controller.getPanel());
 
 	}

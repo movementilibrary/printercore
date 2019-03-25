@@ -16,7 +16,7 @@ import com.rabbitmq.client.ConnectionFactory;
 
 @Configuration
 public class RabbitMQConfig {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(RabbitMQConfig.class);
 
 	@Value("${spring.rabbitmq.host}")
@@ -57,8 +57,10 @@ public class RabbitMQConfig {
 
 		try {
 			log.info("Finalizando conexão");
-			channel.close();
-			connection.close();
+			if (connection != null && channel != null) {
+				channel.close();
+				connection.close();
+			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
