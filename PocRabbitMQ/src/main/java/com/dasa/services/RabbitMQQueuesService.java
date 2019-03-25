@@ -27,6 +27,7 @@ public class RabbitMQQueuesService {
     public void criarFila(String nome){
         rabbitAdmin.declareQueue(new Queue(nome));
     }
+    
 
     public void apagarFila(String nome){
         rabbitAdmin.deleteQueue(nome);
