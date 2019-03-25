@@ -62,8 +62,9 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public Impressora criaImpressora(@RequestBody Impressora impressora) {
-        return impressoraService.criaImpressora(impressora);
+    public ResponseEntity criaImpressora(@RequestBody Impressora impressora) {
+        impressoraService.criaImpressora(impressora);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 
