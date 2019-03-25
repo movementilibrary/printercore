@@ -40,6 +40,6 @@ public class PrinterCoreService {
 	}
 	
 	public void criarDadosParaImpressao(ImpressoraJson json) {
-		
+		requestService.post(printerCoreUrl.concat("/api/queue"), json, ImpressoraJson.class); 
 	}
 }
