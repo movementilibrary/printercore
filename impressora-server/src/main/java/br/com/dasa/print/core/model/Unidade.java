@@ -8,23 +8,23 @@ import java.io.Serializable;
 public class Unidade implements Serializable {
 
     @Id
-    private Integer id;
+    private Integer identificacao;
     private String nome;
     private String mnemocico;
 
 
-    public Unidade(Integer id, String nome, String mnemocico) {
-        this.id = id;
+    public Unidade(Integer identificacao, String nome, String mnemocico) {
+        this.identificacao = identificacao;
         this.nome = nome;
         this.mnemocico = mnemocico;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdentificacao() {
+        return identificacao;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.identificacao = identificacao;
     }
 
     public String getNome() {

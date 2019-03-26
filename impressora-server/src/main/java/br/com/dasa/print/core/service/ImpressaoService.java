@@ -30,8 +30,9 @@ public class ImpressaoService {
 
     /**
      * Metodo responsável por enviar mensagem para fila
-     *
+     * @author Michel Marciano
      * @param impressao
+     * @throws ResourceNotFoundException
      */
     public void solicitaImpressao(Impressao impressao) {
         try {
@@ -48,7 +49,6 @@ public class ImpressaoService {
 
         } catch (Exception e) {
             LOGGER.error("Erro ao enviar mensagem fila {} ", impressao.getIdentificacao());
-            throw new ResourceNotFoundException(e.getMessage());
         }
     }
 }

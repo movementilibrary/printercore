@@ -36,99 +36,106 @@ public class ImpressoraService {
 
     /**
      * Responsável por criar mensagem Impressora
-     *
+     * @author Michel Marciano
      * @param impressora
-     * @return
+     * @throws InternalServerException
      */
     public Impressora criaImpressora(Impressora impressora) {
-        Impressora retornoImpressoraCriada = null;
-        String retornoCriacaoFila = null;
+        Impressora impressoraCriada = null;
         try {
             LOGGER.info("Criando fila {}  no RabbbitMq", impressora.getIdentificacao());
-            rabbitAdmin.declareQueue(new Queue(impressora.getIdentificacao()));
+            this.rabbitAdmin.declareQueue(new Queue(impressora.getIdentificacao()));
 
             LOGGER.info("Atualizando Horario Impressora {} ", impressora);
             Impressora impressoraAtualizada = Utils.atualizaHoraImpressora(impressora);
 
             LOGGER.info("Salvando impressora  {}  no Banco de Dados", impressora.getIdentificacao());
-            retornoImpressoraCriada = impressoraRepository.save(impressoraAtualizada);
+            impressoraCriada = this.impressoraRepository.save(impressoraAtualizada);
 
         } catch (Exception e) {
             LOGGER.error("Erro ao salvar impressora {}", impressora.getIdentificacao() + e.getMessage());
             throw new InternalServerException(e.getMessage());
 
         }
-        return retornoImpressoraCriada;
+        return impressoraCriada;
     }
 
     /**
      * Responsável por apagar fila Rabbit
-     *
+     * @author Michel Marciano
      * @param identificacao
+     * @throws ResourceNotFoundException
      */
     public void apagaImpressora(String identificacao) {
         try {
             Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPelaIdentificacao(identificacao));
             LOGGER.info("Deletando impressora pela identificacao ", impressora.get().getIdentificacao());
-            rabbitAdmin.deleteQueue(identificacao);
-            impressoraRepository.delete(impressora.get());
+            this.rabbitAdmin.deleteQueue(identificacao);
+            this.impressoraRepository.delete(impressora.get());
 
         } catch (Exception e) {
             LOGGER.error("Erro ao deletar impressora", e.getMessage());
-            throw new InternalServerException(e.getMessage());
         }
 
     }
 
     /**
      * Responsável por listar Impressoras por unidade
-     *
+     * @author Michel Marciano
      * @param unidade
+     * @throws ResourceNotFoundException
+     * @return impressoraPelaUnidade
+     *
      */
     public List<Impressora> listaImpressorasPorUnidade(String unidade) {
-        List<Impressora> retornoListaImpressoraPelaUnidade = null;
+        List<Impressora> impressoraPelaUnidade = null;
         try {
             LOGGER.info("Listando Impressora pela unidade {} ", unidade);
-            retornoListaImpressoraPelaUnidade = impressoraRepository.findByUnidade(unidade);
+            impressoraPelaUnidade = this.impressoraRepository.findByUnidade(unidade);
         } catch (Exception e) {
             LOGGER.error("Erro ao listar impressoras", e.getMessage());
+            throw new InternalServerException(e.getMessage());
         }
-        return retornoListaImpressoraPelaUnidade;
+        return impressoraPelaUnidade;
     }
 
     /**
      * Responsável por listar impressora pela Identificacao
-     *
-     * @return
+     * @author Michel Marciano
+     * @return impressoraPelaIdentificacao
+     * @param identificacao
+     * @throws ResourceNotFoundException
      */
     public Impressora listaImpressoraPelaIdentificacao(String identificacao) {
-        Optional<Impressora> retornoListaImpressoraPelaIdentificacao = null;
+        Optional<Impressora> impressoraPelaIdentificacao = null;
         try {
             LOGGER.info("Buscando impressora pela identificacao {} ", identificacao);
-            retornoListaImpressoraPelaIdentificacao = impressoraRepository.findByIdentificacao(identificacao);
+            impressoraPelaIdentificacao = this.impressoraRepository.findByIdentificacao(identificacao);
         } catch (Exception e) {
             LOGGER.error("Erro ao realizar busca da impressora", e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
-        return retornoListaImpressoraPelaIdentificacao.orElseThrow(() -> new ResourceNotFoundException("Não foi possivel encontrar impressora"));
+        return impressoraPelaIdentificacao.orElseThrow(() -> new ResourceNotFoundException("Não foi possivel encontrar impressora"));
     }
 
     /**
      * Responsável por retornar todas as impressoras
+     * @author Michel Marciano
+     * @return listaImpressoras
+     * @throws InternalServerException
      *
-     * @return
      */
     public List<Impressora> listaTodasImpressoras() {
-        List<Impressora> retornaTodasImpressoras = null;
+        List<Impressora> listaImpressoras = null;
         try {
             LOGGER.info("Buscando impressoras...");
-            retornaTodasImpressoras = impressoraRepository.findAll();
+            listaImpressoras = this.impressoraRepository.findAll();
 
         } catch (Exception e) {
             LOGGER.error("Erro ao Buscar impressoras ", e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
-        return retornaTodasImpressoras;
+        return listaImpressoras;
     }
 
 
