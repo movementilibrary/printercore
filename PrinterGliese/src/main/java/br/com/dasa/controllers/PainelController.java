@@ -1,7 +1,5 @@
 package br.com.dasa.controllers;
 
-import java.util.ArrayList;
-
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
@@ -12,14 +10,7 @@ import org.springframework.stereotype.Component;
 import br.com.dasa.consumers.ConsumerMQ;
 import br.com.dasa.controllers.components.BodyComponent;
 import br.com.dasa.helpers.DadosImpressaoHelper;
-import br.com.dasa.helpers.ImpressoraHelper;
-import br.com.dasa.services.PrinterCoreService;
-import javafx.collections.FXCollections;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;

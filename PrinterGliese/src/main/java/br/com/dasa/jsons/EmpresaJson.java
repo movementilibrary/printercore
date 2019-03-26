@@ -34,4 +34,9 @@ public class EmpresaJson implements Serializable{
 		this.cod = cod;
 	} 
 	
+	@Override
+	public String toString() {
+		return this.nome; 
+	}
+	
 }
