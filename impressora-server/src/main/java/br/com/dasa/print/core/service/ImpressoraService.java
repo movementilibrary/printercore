@@ -4,6 +4,7 @@ import br.com.dasa.print.core.repository.ImpressoraRepository;
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.exception.ResourceNotFoundException;
 import br.com.dasa.print.core.model.Impressora;
+import br.com.dasa.print.core.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -46,9 +47,11 @@ public class ImpressoraService {
             LOGGER.info("Criando fila {}  no RabbbitMq", impressora.getIdentificacao());
             rabbitAdmin.declareQueue(new Queue(impressora.getIdentificacao()));
 
-            impressora.setUltimaAtualizacao(new Date());
+            LOGGER.info("Atualizando Horario Impressora {} ", impressora);
+            Impressora impressoraAtualizada = Utils.atualizaHoraImpressora(impressora);
+
             LOGGER.info("Salvando impressora  {}  no Banco de Dados", impressora.getIdentificacao());
-            retornoImpressoraCriada = impressoraRepository.save(impressora);
+            retornoImpressoraCriada = impressoraRepository.save(impressoraAtualizada);
 
         } catch (Exception e) {
             LOGGER.error("Erro ao salvar impressora {}", impressora.getIdentificacao() + e.getMessage());
@@ -67,7 +70,7 @@ public class ImpressoraService {
         try {
             Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPelaIdentificacao(identificacao));
             LOGGER.info("Deletando impressora pela identificacao ", impressora.get().getIdentificacao());
-            boolean retornoDeleteFila = rabbitAdmin.deleteQueue(identificacao);
+            rabbitAdmin.deleteQueue(identificacao);
             impressoraRepository.delete(impressora.get());
 
         } catch (Exception e) {

@@ -1,8 +1,11 @@
 package br.com.dasa.print.core.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,17 +13,25 @@ import java.util.Date;
 public class Impressora implements Serializable {
 
     @Id
+    @NotNull
     private String identificacao;
     private Date ultimaAtualizacao;
+    @NotNull
     private String unidade;
+    @NotNull
+    private String nome;
+    @NotNull
+    private String empresa;
 
-    public Impressora(){}
+    public Impressora() { }
 
-    public Impressora(String identificacao, Date ultimaAtualizacao, String unidade) {
+
+    public Impressora(@NotNull String identificacao, Date ultimaAtualizacao, @NotNull String unidade, @NotNull String nome, @NotNull String empresa) {
         this.identificacao = identificacao;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;
-
+        this.nome = nome;
+        this.empresa = empresa;
     }
 
     public String getIdentificacao() {
@@ -47,4 +58,19 @@ public class Impressora implements Serializable {
         this.unidade = unidade;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
 }
