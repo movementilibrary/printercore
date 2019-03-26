@@ -5,6 +5,7 @@ import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.exception.ResourceNotFoundException;
 import br.com.dasa.print.core.model.Impressora;
 import br.com.dasa.print.core.utils.Utils;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Queue;
@@ -75,6 +76,7 @@ public class ImpressoraService {
 
         } catch (Exception e) {
             LOGGER.error("Erro ao deletar impressora", e.getMessage());
+            throw new ResourceNotFoundException(e.getMessage());
         }
 
     }

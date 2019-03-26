@@ -49,6 +49,7 @@ public class ImpressaoService {
 
         } catch (Exception e) {
             LOGGER.error("Erro ao enviar mensagem fila {} ", impressao.getIdentificacao());
+            throw new ResourceNotFoundException(e.getMessage());
         }
     }
 }
