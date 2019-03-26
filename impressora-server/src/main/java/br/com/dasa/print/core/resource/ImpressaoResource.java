@@ -25,8 +25,8 @@ public class ImpressaoResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public ResponseEntity enviaMensagemImpressao(@RequestBody Impressao impressao) {
-        impressaoService.enviarMensagemImpressao(impressao);
+    public ResponseEntity solicitaImpressao(@RequestBody Impressao impressao) {
+        impressaoService.solicitaImpressao(impressao);
         return new ResponseEntity(HttpStatus.OK);
     }
 
