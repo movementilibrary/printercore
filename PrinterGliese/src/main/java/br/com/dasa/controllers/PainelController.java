@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.com.dasa.consumers.ConsumerMQ;
+import br.com.dasa.controllers.components.BodyComponent;
 import br.com.dasa.helpers.DadosImpressaoHelper;
 import br.com.dasa.helpers.ImpressoraHelper;
 import br.com.dasa.services.PrinterCoreService;
@@ -30,18 +31,16 @@ public class PainelController {
 	private static final Logger log = LoggerFactory.getLogger(PainelController.class);
 
 
-	
-	@Autowired
-	private ImpressoraHelper impressoraHelper;
-	@Autowired
-	private PrinterCoreService printerCoreService;
+
 	@Autowired
 	private DadosImpressaoHelper dadosImpressaoHelper; 
 	@Autowired
 	private ConsumerMQ consumerMQ;
+	@Autowired
+	private BodyComponent bodyComponent; 
 	
 	private boolean dadosImpressaoPreenchidos;  
-
+	
 
 	@PostConstruct
 	public void iniciar() {
@@ -60,86 +59,10 @@ public class PainelController {
 	public VBox getPanel() {
 		VBox box = new VBox();
 		box.getChildren().add(getHeader());
-		box.getChildren().add(getBody());
+		box.getChildren().add(bodyComponent.getBody());
 		box.setPrefSize(680, 750);
 
 		return box;
-	}
-
-	private HBox getBody() {
-		HBox panel = new HBox();
-		try {
-			panel.getChildren().add(getComponenteImpressoras()); 
-			panel.getChildren().add(getComponenteEmpresas());
-			
-			panel.setPadding(new Insets(60, 10, 20, 10));
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-		return panel;
-	}
-
-	private VBox getComponenteEmpresas() {
-		VBox box = new VBox(); 
-		box.getChildren().add(getLabelEmpresa());
-		box.getChildren().add(getSelectEmpresas());
-		box.setPadding(new Insets(0, 0, 0, 50));
-		return box;
-	}
-
-
-
-	private Label getLabelEmpresa() {
-		Label label = new Label("Empresa");
-		label.setFont(Font.font("Comic Sans", 20));
-		
-		label.setPadding(new Insets(0, 5, 10, 0));
-		return label;
-	}
-
-
-
-	private VBox getComponenteImpressoras() {
-		VBox box = new VBox(); 
-		
-		box.getChildren().add(getLabelImpressora());
-		box.getChildren().add(getSelectImpressoras());
-		
-		return box;
-	}
-
-
-
-	private ChoiceBox getSelectUnidades() {
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(new ArrayList<>()));
-		cb.setPrefSize(150, 20);
-		return cb;
-	}
-
-
-
-	private ChoiceBox getSelectEmpresas() {
-		ArrayList<String> lista = new ArrayList<>(); 
-		lista.add("Delboni"); 
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(lista));
-		cb.setPrefSize(150, 20);
-		return cb;
-	}
-
-
-
-	private ChoiceBox getSelectImpressoras() {
-		ChoiceBox cb = new ChoiceBox(FXCollections.observableArrayList(impressoraHelper.getImpressoras()));
-		cb.setPrefSize(150, 20);
-		return cb;
-	}
-
-	private Label getLabelImpressora() {
-		Label label = new Label("Impressora");
-		label.setFont(Font.font("Comic Sans", 20));
-		
-		label.setPadding(new Insets(0, 5, 10, 0));
-		return label;
 	}
 
 	private StackPane getHeader() {

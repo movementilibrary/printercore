@@ -11,10 +11,12 @@ public class ImpressoraJson implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String fila;
-	@JsonProperty("cod_unidade")
+	@JsonProperty("mnemonico")
 	private String codUnidade;
 	@JsonProperty("cod_empresa")
 	private String codEmpresa;
+	@JsonProperty("nome_impressora")
+	private String nomeImpressora; 
 
 	public String getFila() {
 		return fila;
@@ -38,6 +40,14 @@ public class ImpressoraJson implements Serializable {
 
 	public void setCodEmpresa(String codEmpresa) {
 		this.codEmpresa = codEmpresa;
+	}
+
+	public String getNomeImpressora() {
+		return nomeImpressora;
+	}
+
+	public void setNomeImpressora(String nomeImpressora) {
+		this.nomeImpressora = nomeImpressora;
 	}
 
 }
