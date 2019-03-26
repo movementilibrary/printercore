@@ -33,5 +33,10 @@ public class UnidadeJson implements Serializable {
 	public void setMnemonico(String mnemonico) {
 		this.mnemonico = mnemonico;
 	} 
+	
+	@Override
+	public String toString() {
+		return this.nome; 
+	}
 
 }
