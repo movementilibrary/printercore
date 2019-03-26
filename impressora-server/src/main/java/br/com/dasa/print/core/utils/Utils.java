@@ -6,6 +6,11 @@ import java.util.Date;
 
 public class Utils {
 
+    /**
+     * Metodo Responsável por executar ultima atualizacao
+     * @param impressora
+     * @return
+     */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
 
         impressora.setUltimaAtualizacao(new Date());
