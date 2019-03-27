@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ImpressoraJson implements Serializable {
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 99dee9c8fae28b89d35ac48b9065ef2f2918c2d4
 	private static final long serialVersionUID = 1L;
 	@JsonProperty("identificacao")
 	private String fila;

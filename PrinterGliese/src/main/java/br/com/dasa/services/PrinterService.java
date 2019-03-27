@@ -1,5 +1,6 @@
 package br.com.dasa.services;
 
+<<<<<<< HEAD
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -15,6 +16,8 @@ import javax.print.attribute.AttributeSet;
 import javax.print.attribute.DocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 
+=======
+>>>>>>> 99dee9c8fae28b89d35ac48b9065ef2f2918c2d4
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -25,6 +28,7 @@ public class PrinterService {
 
 	private static final Logger log = LoggerFactory.getLogger(PrinterService.class);
 	
+<<<<<<< HEAD
 	 private PrintService printService;
 
 	    @PostConstruct
@@ -43,10 +47,13 @@ public class PrinterService {
 	        }
 	    }
 	
+=======
+>>>>>>> 99dee9c8fae28b89d35ac48b9065ef2f2918c2d4
 	@Async
 	public void imprimir(String texto) {
 		log.info("Imprimindo");
 		log.info(texto);
+<<<<<<< HEAD
 		
 		int etqCont = texto.replaceAll("[^¨]", "").length();
         String[] risk = texto.split("¨");
@@ -147,4 +154,7 @@ public class PrinterService {
 	        String aChar = (new Character((char)intValor)).toString();
 	        return aChar;
 	    }
+=======
+	}
+>>>>>>> 99dee9c8fae28b89d35ac48b9065ef2f2918c2d4
 }

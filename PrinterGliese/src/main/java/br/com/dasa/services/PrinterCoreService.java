@@ -61,7 +61,11 @@ public class PrinterCoreService {
 	}
 
 	public void criarDadosParaImpressao(ImpressoraJson json) {
+<<<<<<< HEAD
 		requestService.post(printerCoreUrl.concat("/impressora"), json, ImpressoraJson.class);
+=======
+		requestService.post(printerCoreUrl.concat("/api/queue"), json, ImpressoraJson.class);
+>>>>>>> 99dee9c8fae28b89d35ac48b9065ef2f2918c2d4
 	}
 
 	public List<UnidadeJson> getUnidades(String codEmpresa) {
