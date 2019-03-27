@@ -30,13 +30,12 @@ public class PainelController {
 	@Autowired
 	private BodyComponent bodyComponent; 
 	
-	private boolean dadosImpressaoPreenchidos;  
 	
 
 	@PostConstruct
 	public void iniciar() {
 		try {
-			this.dadosImpressaoPreenchidos = dadosImpressaoHelper.validarDadosImpressoraPreenchidos(); 
+			boolean dadosImpressaoPreenchidos = dadosImpressaoHelper.validarDadosImpressoraPreenchidos(); 
 			if(dadosImpressaoPreenchidos) {
 				consumerMQ.consome();
 			}
