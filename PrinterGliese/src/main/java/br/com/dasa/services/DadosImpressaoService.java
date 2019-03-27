@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.dasa.dtos.ImpressoraDTO;
 import br.com.dasa.helpers.FileHelper;
+import br.com.dasa.helpers.SOHelper;
 import br.com.dasa.jsons.EmpresaJson;
+import br.com.dasa.jsons.ImpressoraJson;
 import br.com.dasa.jsons.UnidadeJson;
 
 @Service
@@ -23,14 +25,25 @@ public class DadosImpressaoService {
 	private String urlPropertiesImpressao;
 	@Autowired
 	private FileHelper fileHelper;
-
+	@Autowired
+	private SOHelper soHelper; 
+	@Autowired
+	private PrinterCoreService printerCoreService; 
+	
 	public void salvarDadosImpressao(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
 		try {
 			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
 			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(empresaJson, unidadeJson));
+			salvarAlteracoesNoPrinterCore(impressoraDTO, empresaJson, unidadeJson);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
+	}
+
+	private void salvarAlteracoesNoPrinterCore(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson,
+			UnidadeJson unidadeJson) throws Exception {
+		ImpressoraJson json = new ImpressoraJson(soHelper.getMacAddress(), impressoraDTO.getNome(), empresaJson.getCod(), unidadeJson.getMnemonico());
+		printerCoreService.criarDadosParaImpressao(json);
 	}
 
 	private HashMap<String, String> getMapaProperties(EmpresaJson empresaJson, UnidadeJson unidadeJson) {

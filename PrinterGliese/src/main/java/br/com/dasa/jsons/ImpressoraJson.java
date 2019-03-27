@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ImpressoraJson implements Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private String fila;
 	@JsonProperty("mnemonico")
@@ -17,6 +15,13 @@ public class ImpressoraJson implements Serializable {
 	private String codEmpresa;
 	@JsonProperty("nome_impressora")
 	private String nomeImpressora; 
+
+	public ImpressoraJson(String macAddress, String nomeImpressora, String codEmpresa, String codUnidade) {
+		this.fila = macAddress; 
+		this.nomeImpressora = nomeImpressora;
+		this.codEmpresa = codEmpresa; 
+		this.codUnidade = codUnidade; 
+	}
 
 	public String getFila() {
 		return fila;
