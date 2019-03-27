@@ -1,6 +1,7 @@
 package br.com.dasa.controllers.components;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,9 +17,12 @@ import br.com.dasa.dtos.ImpressoraDTO;
 import br.com.dasa.helpers.ImpressoraHelper;
 import br.com.dasa.jsons.EmpresaJson;
 import br.com.dasa.jsons.UnidadeJson;
+import br.com.dasa.services.DadosImpressaoService;
 import br.com.dasa.services.PrinterCoreService;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -35,17 +39,24 @@ public class BodyComponent {
 
 	private static final Logger log = LoggerFactory.getLogger(BodyComponent.class);
 
-	@Autowired
-	private ImpressoraHelper impressoraHelper;
-	@Autowired
-	private PrinterCoreService printerCoreService;
+	
+	private final ImpressoraHelper impressoraHelper;
+	private final PrinterCoreService printerCoreService;
+	private final DadosImpressaoService dadosImpressaoService; 
 
-	private ImpressoraDTO impressoraSelecionada;
-	private EmpresaJson empresaSelecionada;
-	private UnidadeJson unidadeSelecionada;
+	private final ImpressoraDTO impressoraSelecionada = new ImpressoraDTO();
+	private final EmpresaJson empresaSelecionada = new EmpresaJson();
+	private final UnidadeJson unidadeSelecionada = new UnidadeJson();
 	private List<ImpressoraDTO> listaImpressora = new ArrayList<>();
 	private List<EmpresaJson> listaEmpresas = new ArrayList<>();
 	private List<UnidadeJson> listaUnidade = new ArrayList<>();
+	
+	@Autowired
+	public BodyComponent(ImpressoraHelper impressoraHelper, PrinterCoreService printerCoreService, DadosImpressaoService dadosImpressaoService) {
+		this.impressoraHelper = impressoraHelper; 
+		this.printerCoreService = printerCoreService; 
+		this.dadosImpressaoService = dadosImpressaoService; 
+	}
 
 	public VBox getBody() {
 
@@ -75,7 +86,7 @@ public class BodyComponent {
 			ChoiceBox selectUnidades = getSelect(listaUnidade, new UnidadeListener(unidadeSelecionada, listaUnidade), unidadeSelecionada);
 			
 			panel.getChildren().add(getComponenteSelect(getLabelSelect("Empresas"),
-					getSelect(listaEmpresas, new EmpresaListener(empresaSelecionada, listaEmpresas, selectUnidades, printerCoreService), empresaSelecionada),
+					getSelect(listaEmpresas, new EmpresaListener(empresaSelecionada, listaEmpresas, listaUnidade, selectUnidades, printerCoreService), empresaSelecionada),
 					new Insets(0, 0, 0, 50)));
 			panel.getChildren()
 					.add(getComponenteSelect(getLabelSelect("Unidades"),
@@ -109,6 +120,12 @@ public class BodyComponent {
 		StackPane pane = new StackPane();
 
 		Button button = new Button("Salvar");
+		button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				dadosImpressaoService.salvarDadosImpressao(impressoraSelecionada, empresaSelecionada, unidadeSelecionada); 
+			}
+		});
 		pane.setPadding(new Insets(39, 0, 0, 30));
 		pane.getChildren().add(button);
 		return pane;
