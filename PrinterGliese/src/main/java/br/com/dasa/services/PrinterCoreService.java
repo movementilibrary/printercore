@@ -1,8 +1,9 @@
 package br.com.dasa.services;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
@@ -10,10 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import br.com.dasa.helpers.FileHelper;
 import br.com.dasa.helpers.SOHelper;
 import br.com.dasa.jsons.EmpresaJson;
 import br.com.dasa.jsons.ImpressoraJson;
@@ -28,7 +29,11 @@ public class PrinterCoreService {
 	private RequestService requestService;
 	@Autowired
 	private SOHelper soHelper;
+	@Autowired
+	private FileHelper fileHelper; 
 
+	@Value("${properties.impressao}")
+	private String urlPropertiesImpressao;
 	@Value("${printer.core.url}")
 	private String printerCoreUrl;
 
@@ -44,11 +49,19 @@ public class PrinterCoreService {
 	}
 
 	public void mostrarClientComoAtivo() {
-		requestService.get(printerCoreUrl.concat("/api/queue/").concat(this.macAddress), String.class);
+		try {
+			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
+			ImpressoraJson json = new ImpressoraJson(macAddress, "teste", props.getProperty("cod.empresa"), props.getProperty("cod.unidade"));
+			criarDadosParaImpressao(json);
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+		//requestService.get(printerCoreUrl.concat("/api/queue/").concat(this.macAddress), String.class);
+		
 	}
 
 	public void criarDadosParaImpressao(ImpressoraJson json) {
-		requestService.post(printerCoreUrl.concat("/api/queue"), json, ImpressoraJson.class);
+		requestService.post(printerCoreUrl.concat("/impressora"), json, ImpressoraJson.class);
 	}
 
 	public List<UnidadeJson> getUnidades(String codEmpresa) {

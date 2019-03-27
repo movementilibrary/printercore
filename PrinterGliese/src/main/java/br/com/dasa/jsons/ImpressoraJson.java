@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ImpressoraJson implements Serializable {
 
-
 	private static final long serialVersionUID = 1L;
+	@JsonProperty("identificacao")
 	private String fila;
-	@JsonProperty("mnemonico")
+	@JsonProperty("unidade")
 	private String codUnidade;
-	@JsonProperty("cod_empresa")
+	@JsonProperty("empresa")
 	private String codEmpresa;
-	@JsonProperty("nome_impressora")
+	@JsonProperty("nome")
 	private String nomeImpressora; 
 
 	public ImpressoraJson(String macAddress, String nomeImpressora, String codEmpresa, String codUnidade) {

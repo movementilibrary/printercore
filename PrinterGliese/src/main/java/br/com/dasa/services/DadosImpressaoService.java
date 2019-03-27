@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import br.com.dasa.consumers.ConsumerMQ;
 import br.com.dasa.dtos.ImpressoraDTO;
 import br.com.dasa.helpers.FileHelper;
 import br.com.dasa.helpers.SOHelper;
@@ -28,13 +30,16 @@ public class DadosImpressaoService {
 	@Autowired
 	private SOHelper soHelper; 
 	@Autowired
-	private PrinterCoreService printerCoreService; 
+	private PrinterCoreService printerCoreService;
+	@Autowired
+	private ConsumerMQ consumerMQ; 
 	
 	public void salvarDadosImpressao(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
 		try {
 			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
 			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(empresaJson, unidadeJson));
 			salvarAlteracoesNoPrinterCore(impressoraDTO, empresaJson, unidadeJson);
+			consumerMQ.consome();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -42,7 +47,7 @@ public class DadosImpressaoService {
 
 	private void salvarAlteracoesNoPrinterCore(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson,
 			UnidadeJson unidadeJson) throws Exception {
-		ImpressoraJson json = new ImpressoraJson(soHelper.getMacAddress(), impressoraDTO.getNome(), empresaJson.getCod(), unidadeJson.getMnemonico());
+		ImpressoraJson json = new ImpressoraJson(soHelper.getMacAddress(), StringUtils.isEmpty(impressoraDTO.getNome()) ? impressoraDTO.getNomeRede() : impressoraDTO.getNome() , empresaJson.getCod(), unidadeJson.getMnemonico());
 		printerCoreService.criarDadosParaImpressao(json);
 	}
 
