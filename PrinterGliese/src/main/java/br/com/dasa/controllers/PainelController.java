@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.dasa.consumers.ConsumerMQ;
 import br.com.dasa.controllers.components.BodyComponent;
+import br.com.dasa.controllers.components.LogComponent;
 import br.com.dasa.helpers.DadosImpressaoHelper;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -28,7 +29,9 @@ public class PainelController {
 	@Autowired
 	private ConsumerMQ consumerMQ;
 	@Autowired
-	private BodyComponent bodyComponent; 
+	private BodyComponent bodyComponent;
+	@Autowired
+	private LogComponent logComponent; 
 	
 	
 
@@ -50,6 +53,7 @@ public class PainelController {
 		VBox box = new VBox();
 		box.getChildren().add(getHeader());
 		box.getChildren().add(bodyComponent.getBody());
+		box.getChildren().add(logComponent.getLogComponent());
 		box.setPrefSize(680, 750);
 
 		return box;

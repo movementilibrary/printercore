@@ -38,7 +38,7 @@ public class DadosImpressaoService {
 	public void salvarDadosImpressao(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
 		try {
 			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
-			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(empresaJson, unidadeJson));
+			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(impressoraDTO, empresaJson, unidadeJson));
 			salvarAlteracoesNoPrinterCore(impressoraDTO, empresaJson, unidadeJson);
 
 			consumerMQ.consome();
@@ -56,10 +56,11 @@ public class DadosImpressaoService {
 		printerCoreService.criarDadosParaImpressao(json);
 	}
 
-	private HashMap<String, String> getMapaProperties(EmpresaJson empresaJson, UnidadeJson unidadeJson) {
+	private HashMap<String, String> getMapaProperties(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
 		HashMap<String, String> mapaProperties = new HashMap<>();
 		mapaProperties.put("cod.unidade", unidadeJson.getMnemonico());
 		mapaProperties.put("cod.empresa", empresaJson.getCod());
+		mapaProperties.put("nome.impressora", impressoraDTO.getNomeRede());
 		return mapaProperties;
 	}
 }

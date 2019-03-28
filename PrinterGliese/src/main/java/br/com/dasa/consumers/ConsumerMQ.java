@@ -15,8 +15,11 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+import br.com.dasa.controllers.components.LogComponent;
+import br.com.dasa.enums.LogEnum;
 import br.com.dasa.helpers.SOHelper;
 import br.com.dasa.services.PrinterService;
+import javafx.application.Platform;
 
 @Component
 public class ConsumerMQ {
@@ -29,6 +32,8 @@ public class ConsumerMQ {
 	private Channel channel; 
 	@Autowired
 	private PrinterService printerService; 
+	@Autowired
+	private LogComponent logComponent; 
 	
 	private String macAddress; 
 	
@@ -50,7 +55,15 @@ public class ConsumerMQ {
 		        AMQP.BasicProperties properties, 
 		        byte[] body) throws IOException {
 		            String message = new String(body, "UTF-8");
-		            printerService.imprimir(message);
+		            
+		            Platform.runLater(
+		            		  () -> {
+		            			  logComponent.addLog(message, LogEnum.INFO);
+		            		  }
+		            		);
+		            
+		            
+		         //   printerService.imprimir(message);
 		     }
 		};
 		
