@@ -1,19 +1,21 @@
 package br.com.dasa.controllers.components;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import br.com.dasa.controllers.listeners.EmpresaListener;
 import br.com.dasa.controllers.listeners.ImpressoraListener;
 import br.com.dasa.controllers.listeners.UnidadeListener;
 import br.com.dasa.dtos.ImpressoraDTO;
+import br.com.dasa.helpers.DadosImpressaoHelper;
 import br.com.dasa.helpers.ImpressoraHelper;
 import br.com.dasa.jsons.EmpresaJson;
 import br.com.dasa.jsons.UnidadeJson;
@@ -39,10 +41,9 @@ public class BodyComponent {
 
 	private static final Logger log = LoggerFactory.getLogger(BodyComponent.class);
 
-	
 	private final ImpressoraHelper impressoraHelper;
 	private final PrinterCoreService printerCoreService;
-	private final DadosImpressaoService dadosImpressaoService; 
+	private final DadosImpressaoService dadosImpressaoService;
 
 	private final ImpressoraDTO impressoraSelecionada = new ImpressoraDTO();
 	private final EmpresaJson empresaSelecionada = new EmpresaJson();
@@ -50,12 +51,15 @@ public class BodyComponent {
 	private List<ImpressoraDTO> listaImpressora = new ArrayList<>();
 	private List<EmpresaJson> listaEmpresas = new ArrayList<>();
 	private List<UnidadeJson> listaUnidade = new ArrayList<>();
-	
+	private DadosImpressaoHelper dadosImpressaoHelper;
+
 	@Autowired
-	public BodyComponent(ImpressoraHelper impressoraHelper, PrinterCoreService printerCoreService, DadosImpressaoService dadosImpressaoService) {
-		this.impressoraHelper = impressoraHelper; 
-		this.printerCoreService = printerCoreService; 
-		this.dadosImpressaoService = dadosImpressaoService; 
+	public BodyComponent(ImpressoraHelper impressoraHelper, PrinterCoreService printerCoreService,
+			DadosImpressaoService dadosImpressaoService, DadosImpressaoHelper dadosImpressaoHelper) {
+		this.impressoraHelper = impressoraHelper;
+		this.printerCoreService = printerCoreService;
+		this.dadosImpressaoService = dadosImpressaoService;
+		this.dadosImpressaoHelper = dadosImpressaoHelper;
 	}
 
 	public VBox getBody() {
@@ -77,22 +81,8 @@ public class BodyComponent {
 	private HBox getSelects() {
 		HBox panel = new HBox();
 		try {
-			iniciarListas();
-			panel.getChildren()
-					.add(getComponenteSelect(getLabelSelect("Impressora"), getSelect(listaImpressora,
-							new ImpressoraListener(impressoraSelecionada, listaImpressora), impressoraSelecionada),
-							new Insets(0, 0, 0, 0)));
-
-			ChoiceBox selectUnidades = getSelect(listaUnidade, new UnidadeListener(unidadeSelecionada, listaUnidade), unidadeSelecionada);
-			
-			panel.getChildren().add(getComponenteSelect(getLabelSelect("Empresas"),
-					getSelect(listaEmpresas, new EmpresaListener(empresaSelecionada, listaEmpresas, listaUnidade, selectUnidades, printerCoreService), empresaSelecionada),
-					new Insets(0, 0, 0, 50)));
-			panel.getChildren()
-					.add(getComponenteSelect(getLabelSelect("Unidades"),
-							selectUnidades,
-							new Insets(0, 0, 0, 50)));
-
+			setarDadosPreenchidos();
+			criarSelects(panel);
 			panel.getChildren().add(getButtonSelect());
 			panel.setPadding(new Insets(60, 10, 20, 10));
 
@@ -102,17 +92,64 @@ public class BodyComponent {
 		return panel;
 	}
 
+	private void criarSelects(HBox panel) {
+		panel.getChildren()
+				.add(getComponenteSelect(
+						getLabelSelect("Impressora"), getSelect(listaImpressora,
+								new ImpressoraListener(impressoraSelecionada, listaImpressora), impressoraSelecionada),
+						new Insets(0, 0, 0, 0)));
+
+		ChoiceBox selectUnidades = getSelect(listaUnidade, new UnidadeListener(unidadeSelecionada, listaUnidade),
+				unidadeSelecionada);
+
+		panel.getChildren()
+				.add(getComponenteSelect(
+						getLabelSelect("Empresas"), getSelect(listaEmpresas, new EmpresaListener(empresaSelecionada,
+								listaEmpresas, listaUnidade, selectUnidades, printerCoreService), empresaSelecionada),
+						new Insets(0, 0, 0, 50)));
+
+		setarUnidadeSelecionada(empresaSelecionada);
+
+		if (!StringUtils.isEmpty(unidadeSelecionada.getMnemonico())) {
+			selectUnidades.getSelectionModel().select(listaUnidade.indexOf(unidadeSelecionada));
+		}
+
+		panel.getChildren()
+				.add(getComponenteSelect(getLabelSelect("Unidades"), selectUnidades, new Insets(0, 0, 0, 50)));
+	}
+
+	private void setarDadosPreenchidos() {
+		iniciarListas();
+		setarDadosImpressao();
+	}
+
+	private void setarDadosImpressao() {
+		boolean dadosValidos = dadosImpressaoHelper.validarDadosImpressoraPreenchidos();
+		if (dadosValidos) {
+			listaImpressora.stream().filter(i -> i.getNomeRede().equals(dadosImpressaoHelper.getNomeImpressora()))
+					.findFirst().ifPresent(i -> BeanUtils.copyProperties(i, impressoraSelecionada));
+			listaEmpresas.stream().filter(e -> e.getCod().equals(dadosImpressaoHelper.codEmpresa())).findFirst()
+					.ifPresent(e -> {
+						BeanUtils.copyProperties(e, empresaSelecionada);
+						setarUnidadeSelecionada(e);
+					});
+		}
+	}
 
 	private void iniciarListas() {
-
 		this.listaImpressora.clear();
 		this.listaImpressora.addAll(impressoraHelper.getImpressoras().stream().map(s -> new ImpressoraDTO(s, null))
 				.collect(Collectors.toList()));
-
 		this.listaEmpresas.clear();
 		this.listaEmpresas.addAll(printerCoreService.getEmpresas());
-
 		this.listaUnidade.clear();
+	}
+
+	private void setarUnidadeSelecionada(EmpresaJson e) {
+		this.listaUnidade.addAll(printerCoreService.getUnidades(e.getCod()));
+		this.listaUnidade.stream().filter(u -> u.getMnemonico().equals(dadosImpressaoHelper.codUnidade())).findFirst()
+				.ifPresent(u -> BeanUtils.copyProperties(u, unidadeSelecionada));
+
 	}
 
 	private StackPane getButtonSelect() {
@@ -123,7 +160,8 @@ public class BodyComponent {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				dadosImpressaoService.salvarDadosImpressao(impressoraSelecionada, empresaSelecionada, unidadeSelecionada); 
+				dadosImpressaoService.salvarDadosImpressao(impressoraSelecionada, empresaSelecionada,
+						unidadeSelecionada);
 			}
 		});
 		pane.setPadding(new Insets(39, 0, 0, 30));
@@ -153,7 +191,7 @@ public class BodyComponent {
 		cb.setPrefSize(150, 20);
 		cb.getSelectionModel().selectedIndexProperty().addListener(changeListener);
 		if (obj != null) {
-			cb.getSelectionModel().select(obj);
+			cb.getSelectionModel().select(lista.indexOf(obj));
 		}
 		return cb;
 	}

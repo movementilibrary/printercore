@@ -34,6 +34,33 @@ public class UnidadeJson implements Serializable {
 		this.mnemonico = mnemonico;
 	} 
 	
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mnemonico == null) ? 0 : mnemonico.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		UnidadeJson other = (UnidadeJson) obj;
+		if (mnemonico == null) {
+			if (other.mnemonico != null)
+				return false;
+		} else if (!mnemonico.equals(other.mnemonico))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return this.nome; 
