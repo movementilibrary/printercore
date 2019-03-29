@@ -21,6 +21,10 @@ public class DadosImpressaoHelper {
 	@Autowired
 	private FileHelper fileHelper;
 
+	private String codUnidade;
+
+	private String codEmpresa;
+
 	public DadosImpressaoHelper() {
 
 	}
@@ -33,10 +37,10 @@ public class DadosImpressaoHelper {
 	public boolean validarDadosImpressoraPreenchidos() {
 		try {
 			Properties prop = fileHelper.getProperties(urlPropertiesImpressao);
-			String codUnidade = prop != null && prop.containsKey("cod.unidade")
+			codUnidade = prop != null && prop.containsKey("cod.unidade")
 					? String.valueOf(prop.get("cod.unidade"))
 					: "";
-			String codEmpresa = prop != null && prop.containsKey("cod.empresa")
+			codEmpresa = prop != null && prop.containsKey("cod.empresa")
 					? String.valueOf(prop.get("cod.empresa"))
 					: "";
 			return !(codEmpresa.isEmpty() || codUnidade.isEmpty());
@@ -45,6 +49,14 @@ public class DadosImpressaoHelper {
 				throw new ConfigurationNotFoundException("Arquivo de configuração não encontrado para o aplicativo, o arquivo deve existir na pasta c: gliese/impressao.properties", e);  
 		}
 
+	}
+	
+	public String codUnidade() {
+		return codUnidade; 
+	}
+	
+	public String codEmpresa() {
+		return codEmpresa; 
 	}
 
 }

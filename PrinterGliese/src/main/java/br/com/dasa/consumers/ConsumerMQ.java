@@ -16,6 +16,7 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 import br.com.dasa.helpers.SOHelper;
+import br.com.dasa.services.PrinterService;
 
 @Component
 public class ConsumerMQ {
@@ -26,6 +27,8 @@ public class ConsumerMQ {
 	private SOHelper sohelper; 
 	@Autowired
 	private Channel channel; 
+	@Autowired
+	private PrinterService printerService; 
 	
 	private String macAddress; 
 	
@@ -46,9 +49,8 @@ public class ConsumerMQ {
 		        Envelope envelope, 
 		        AMQP.BasicProperties properties, 
 		        byte[] body) throws IOException {
-		  
 		            String message = new String(body, "UTF-8");
-		            log.info(message);
+		            printerService.imprimir(message);
 		     }
 		};
 		
