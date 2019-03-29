@@ -1,10 +1,11 @@
-package br.com.dasa.print.core.model;
+package br.com.dasa.print.core.h2.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;

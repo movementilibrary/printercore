@@ -1,24 +1,21 @@
 package br.com.dasa.print.core.resource.ImpressoraRepositoryTest;
 
-import br.com.dasa.print.core.model.Empresa;
-import br.com.dasa.print.core.model.Impressora;
-import br.com.dasa.print.core.model.Unidade;
-import br.com.dasa.print.core.repository.ImpressoraRepository;
-import org.assertj.core.api.Assertions;
+import br.com.dasa.print.core.oracle.model.EmpImg;
+import br.com.dasa.print.core.h2.model.Impressora;
+import br.com.dasa.print.core.oracle.model.Pc;
+import br.com.dasa.print.core.h2.repository.ImpressoraRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,8 +35,8 @@ public class ImpressoraRepositoryTest {
     private Impressora impressora;
     private Impressora impressora1;
     private Impressora impressora2;
-    private Unidade unidade;
-    private Empresa empresa;
+    private Pc pc;
+    private EmpImg empImg;
 
     @Before
     public void setUp() {

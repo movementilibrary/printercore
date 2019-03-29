@@ -1,8 +1,8 @@
-package br.com.dasa.print.core.service;
+package br.com.dasa.print.core.oracle.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
-import br.com.dasa.print.core.model.Empresa;
-import br.com.dasa.print.core.repository.EmpresaRepository;
+import br.com.dasa.print.core.oracle.model.EmpImg;
+import br.com.dasa.print.core.oracle.repository.EmpImgRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmpresaService {
+public class EmpImgService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmpImgService.class);
 
     @Autowired
-    private EmpresaRepository empresaRepository;
+    private EmpImgRepository empImgRepository;
 
     /**
      * Metodo Responsável por Lista todas as Empresas
@@ -24,17 +24,17 @@ public class EmpresaService {
      * @return retornaTodasEmpresas
      * @exception InternalServerException
      */
-    public List<Empresa> listaTodasEmpresas() {
-        List<Empresa> listaTodasEmpresas = null;
+    public List<EmpImg> listaTodasEmpresas() {
+        List<EmpImg> listaTodasEmpImgs = null;
         try {
             LOGGER.info("Buscando Empresas...");
-            listaTodasEmpresas = this.empresaRepository.findAll();
+            listaTodasEmpImgs = empImgRepository.listaEmpresas();
 
         } catch (Exception e) {
             LOGGER.error("Erro ao Buscar empresas ", e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
-        return listaTodasEmpresas;
+        return listaTodasEmpImgs;
 
     }
 }

@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.model;
+package br.com.dasa.print.core.h2.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

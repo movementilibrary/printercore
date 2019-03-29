@@ -2,21 +2,34 @@ server:
   port: 9090
 
 spring:
-  application:
-    name: printerserver
-    jpa:
-      show-sql: true
-    datasource:
-      url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    oracle:
+      url: jdbc:oracle:thin:@brlspldgdb01.dasa.net:10010:glidev01
+      username: gliese
+      password: gliese
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+    h2:
+      url: jdbc:h2:mem:print;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password: sa
-  cache:
-    type: redis
-  redis:
-    host: localhost
-    port: 6379
+      driver-class-name: org.h2.Driver
   main:
-    allow-bean-definition-overriding: true
+     allow-bean-definition-overriding: true
+  application:
+    name: printerserver
+
+
+#  cache:
+#    type: redis
+#  redis:
+#    host: localhost
+#    port: 6379
+#  main:
+#    allow-bean-definition-overriding: true
   rabbitmq:
     host: localhost
     port: 5672

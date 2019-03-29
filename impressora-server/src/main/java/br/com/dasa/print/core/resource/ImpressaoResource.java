@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource;
 
-import br.com.dasa.print.core.model.Impressao;
-import br.com.dasa.print.core.service.ImpressaoService;
+import br.com.dasa.print.core.h2.model.Impressao;
+import br.com.dasa.print.core.h2.service.ImpressaoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

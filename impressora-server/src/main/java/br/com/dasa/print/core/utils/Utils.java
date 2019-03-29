@@ -1,6 +1,6 @@
 package br.com.dasa.print.core.utils;
 
-import br.com.dasa.print.core.model.Impressora;
+import br.com.dasa.print.core.h2.model.Impressora;
 
 import java.util.Date;
 

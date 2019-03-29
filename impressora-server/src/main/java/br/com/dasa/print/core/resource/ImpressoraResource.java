@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource;
 
-import br.com.dasa.print.core.service.ImpressoraService;
-import br.com.dasa.print.core.model.Impressora;
+import br.com.dasa.print.core.h2.service.ImpressoraService;
+import br.com.dasa.print.core.h2.model.Impressora;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,7 +20,7 @@ public class ImpressoraResource {
     private ImpressoraService impressoraService;
 
     @GetMapping(value = "/unidade/{unidade}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora por Unidade")
+    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora por Pc")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),

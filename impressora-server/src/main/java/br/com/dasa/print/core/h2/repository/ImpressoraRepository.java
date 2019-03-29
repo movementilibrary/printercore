@@ -1,6 +1,6 @@
-package br.com.dasa.print.core.repository;
+package br.com.dasa.print.core.h2.repository;
 
-import br.com.dasa.print.core.model.Impressora;
+import br.com.dasa.print.core.h2.model.Impressora;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
