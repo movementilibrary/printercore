@@ -27,16 +27,16 @@ public class ValidarStatusService {
 	public void validarStatus() {
 		try {
 			if (dadosImpressaoHelper.validarDadosImpressoraPreenchidos()) {
-				Platform.runLater(() -> {
-					logComponent.addLog("Validando status no Printer Core", LogEnum.INFO);
-				});
+				Platform.runLater(() -> 
+					logComponent.addLog("Validando status no Printer Core", LogEnum.INFO)
+				);
 				printerCoreService.mostrarClientComoAtivo();
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			Platform.runLater(() -> {
-				logComponent.addLog("Erro ao validar status no Printer Core: ".concat(e.getMessage()), LogEnum.ERROR);
-			});
+			Platform.runLater(() -> 
+				logComponent.addLog("Erro ao validar status no Printer Core: ".concat(e.getMessage()), LogEnum.ERROR)
+			);
 		}
 	}
 }

@@ -56,7 +56,6 @@ public class PrinterCoreService {
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 		}
-		//requestService.get(printerCoreUrl.concat("/api/queue/").concat(this.macAddress), String.class);
 		
 	}
 
