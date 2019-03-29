@@ -1,6 +1,7 @@
 package br.com.dasa.consumers;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.PostConstruct;
 
@@ -56,16 +57,16 @@ public class ConsumerMQ {
 		        Envelope envelope, 
 		        AMQP.BasicProperties properties, 
 		        byte[] body) throws IOException {
-		            String message = new String(body, "UTF-8");
+		            String message = new String(body, StandardCharsets.UTF_8);
 		            
 		            Platform.runLater(
-		            		  () -> {
-		            			  logComponent.addLog(message, LogEnum.INFO);
-		            		  }
+		            		  () -> 
+		            			  logComponent.addLog(message, LogEnum.INFO)
+		            		  
 		            		);
 		            
 		            
-		         //   printerService.imprimir(message);
+		            printerService.imprimir(message);
 		     }
 		};
 		

@@ -55,7 +55,7 @@ public class PrinterGlieseApplication extends Application {
 	}
 
 	private void startApplication(final Stage primaryStage) {
-		log.info("Starting Printer Gliese Client!", "Printer Client");
+		log.info("Iniciando aplicação");
 		primaryStage.setTitle("Gliese");
 		primaryStage.setHeight(750);
 		primaryStage.setWidth(680);

@@ -23,8 +23,6 @@ import br.com.dasa.services.DadosImpressaoService;
 import br.com.dasa.services.PrinterCoreService;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -157,13 +155,7 @@ public class BodyComponent {
 		StackPane pane = new StackPane();
 
 		Button button = new Button("Salvar");
-		button.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				dadosImpressaoService.salvarDadosImpressao(impressoraSelecionada, empresaSelecionada,
-						unidadeSelecionada);
-			}
-		});
+		button.setOnAction(e -> dadosImpressaoService.salvarDadosImpressao(impressoraSelecionada, empresaSelecionada, unidadeSelecionada));
 		pane.setPadding(new Insets(39, 0, 0, 30));
 		pane.getChildren().add(button);
 		return pane;

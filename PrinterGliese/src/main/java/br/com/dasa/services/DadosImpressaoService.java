@@ -37,14 +37,15 @@ public class DadosImpressaoService {
 	private ConsumerMQ consumerMQ; 
 	@Autowired
 	private LogComponent logComponent; 
-
+	@Autowired
+	private PrinterService printerService; 
 	
 	public void salvarDadosImpressao(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
 		try {
 			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
 			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(impressoraDTO, empresaJson, unidadeJson));
 			salvarAlteracoesNoPrinterCore(impressoraDTO, empresaJson, unidadeJson);
-			
+			printerService.setup(); 
 			consumerMQ.consome();
 			logComponent.addLog("Salvando Impressão", LogEnum.INFO);
 		} catch (Exception e) {
@@ -54,7 +55,7 @@ public class DadosImpressaoService {
 	}
 
 	private void salvarAlteracoesNoPrinterCore(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson,
-			UnidadeJson unidadeJson) throws Exception {
+			UnidadeJson unidadeJson) {
 
 		ImpressoraJson json = new ImpressoraJson(soHelper.getMacAddress(), StringUtils.isEmpty(impressoraDTO.getNome()) ? impressoraDTO.getNomeRede() : impressoraDTO.getNome() , empresaJson.getCod(), unidadeJson.getMnemonico());
 

@@ -3,8 +3,6 @@ package br.com.dasa.helpers;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +12,6 @@ import br.com.dasa.exceptions.ConfigurationNotFoundException;
 @Component
 public class DadosImpressaoHelper {
 
-	private static final Logger log = LoggerFactory.getLogger(DadosImpressaoHelper.class);
 
 	@Value("${properties.impressao}")
 	private String urlPropertiesImpressao;
@@ -50,7 +47,6 @@ public class DadosImpressaoHelper {
 					: "";		
 			return !(codEmpresa.isEmpty() || codUnidade.isEmpty() || nomeImpressora.isEmpty());
 		} catch (IOException e) {
-				log.error(e.getMessage(), e);
 				throw new ConfigurationNotFoundException("Arquivo de configuração não encontrado para o aplicativo, o arquivo deve existir na pasta c: gliese/impressao.properties", e);  
 		}
 	}

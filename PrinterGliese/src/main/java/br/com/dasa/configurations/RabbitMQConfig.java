@@ -53,7 +53,7 @@ public class RabbitMQConfig {
 	}
 
 	@PreDestroy
-	public void onDestroy() throws Exception {
+	public void onDestroy()  {
 
 		try {
 			log.info("Finalizando conexão");
