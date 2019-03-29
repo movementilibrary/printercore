@@ -31,7 +31,7 @@ public class PrinterCoreService {
 	private SOHelper soHelper;
 	@Autowired
 	private FileHelper fileHelper; 
-
+	
 	@Value("${properties.impressao}")
 	private String urlPropertiesImpressao;
 	@Value("${printer.core.url}")

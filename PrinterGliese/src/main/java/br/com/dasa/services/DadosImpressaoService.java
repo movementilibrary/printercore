@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import br.com.dasa.consumers.ConsumerMQ;
+import br.com.dasa.controllers.components.LogComponent;
 import br.com.dasa.dtos.ImpressoraDTO;
+import br.com.dasa.enums.LogEnum;
 import br.com.dasa.helpers.FileHelper;
 import br.com.dasa.helpers.SOHelper;
 import br.com.dasa.jsons.EmpresaJson;
@@ -33,6 +35,8 @@ public class DadosImpressaoService {
 	private PrinterCoreService printerCoreService;
 	@Autowired
 	private ConsumerMQ consumerMQ; 
+	@Autowired
+	private LogComponent logComponent; 
 
 	
 	public void salvarDadosImpressao(ImpressoraDTO impressoraDTO, EmpresaJson empresaJson, UnidadeJson unidadeJson) {
@@ -40,10 +44,11 @@ public class DadosImpressaoService {
 			Properties props = fileHelper.getProperties(urlPropertiesImpressao);
 			fileHelper.salvarProperties(urlPropertiesImpressao, props, getMapaProperties(impressoraDTO, empresaJson, unidadeJson));
 			salvarAlteracoesNoPrinterCore(impressoraDTO, empresaJson, unidadeJson);
-
+			
 			consumerMQ.consome();
-
+			logComponent.addLog("Salvando Impressão", LogEnum.INFO);
 		} catch (Exception e) {
+			logComponent.addLog("Erro ao salvar dados de impressão: ".concat(e.getMessage()), LogEnum.ERROR);
 			log.error(e.getMessage(), e);
 		}
 	}
