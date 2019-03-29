@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import br.com.dasa.consumers.ConsumerMQ;
 import br.com.dasa.controllers.components.BodyComponent;
 import br.com.dasa.controllers.components.LogComponent;
+import br.com.dasa.enums.LogEnum;
 import br.com.dasa.helpers.DadosImpressaoHelper;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -22,32 +23,29 @@ public class PainelController {
 
 	private static final Logger log = LoggerFactory.getLogger(PainelController.class);
 
-
-
 	@Autowired
-	private DadosImpressaoHelper dadosImpressaoHelper; 
+	private DadosImpressaoHelper dadosImpressaoHelper;
 	@Autowired
 	private ConsumerMQ consumerMQ;
 	@Autowired
 	private BodyComponent bodyComponent;
 	@Autowired
-	private LogComponent logComponent; 
-	
-	
+	private LogComponent logComponent;
 
 	@PostConstruct
 	public void iniciar() {
 		try {
-			boolean dadosImpressaoPreenchidos = dadosImpressaoHelper.validarDadosImpressoraPreenchidos(); 
-			if(dadosImpressaoPreenchidos) {
+			boolean dadosImpressaoPreenchidos = dadosImpressaoHelper.validarDadosImpressoraPreenchidos();
+			if (dadosImpressaoPreenchidos) {
 				consumerMQ.consome();
+			} else {
+				logComponent.addLog("Os dados de impressão não foram preenchidos", LogEnum.WARN);
 			}
 		} catch (Exception e) {
+			logComponent.addLog("Erro ao recuperar dados de impressão", LogEnum.ERROR);
 			log.error(e.getMessage(), e);
 		}
 	}
-
-	
 
 	public VBox getPanel() {
 		VBox box = new VBox();

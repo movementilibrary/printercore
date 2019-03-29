@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import br.com.dasa.controllers.components.LogComponent;
+import br.com.dasa.enums.LogEnum;
 import br.com.dasa.helpers.DadosImpressaoHelper;
 
 @Service
@@ -29,25 +31,32 @@ public class PrinterService {
 	private static final Logger log = LoggerFactory.getLogger(PrinterService.class);
 
 	@Autowired
+	private LogComponent logComponent;
+	@Autowired
 	private DadosImpressaoHelper dadosImpressaoHelper;
 	private PrintService printService;
-
+	 
+	
 	@PostConstruct
 	public void setup() {
 		try {
 
+			logComponent.addLog("Procurando Impressora", LogEnum.INFO);
+			
 			if (dadosImpressaoHelper.validarDadosImpressoraPreenchidos()) {
-
+					
 				DocFlavor df = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
 				PrintService[] ps = PrintServiceLookup.lookupPrintServices(df, (AttributeSet) null);
 				for (PrintService p : ps) {
 					if (p.getName().equals(dadosImpressaoHelper.getNomeImpressora())) {
 						printService = p;
+						logComponent.addLog("Impressora ".concat(dadosImpressaoHelper.getNomeImpressora()).concat(" encontrada"), LogEnum.INFO); 
 						break;
 					}
 				}
 			}
 		} catch (Exception e) {
+			logComponent.addLog("Erro ao Localizar impressora", LogEnum.ERROR);
 			log.error("Erro ao obter servico de impressora", e);
 		}
 	}

@@ -41,7 +41,9 @@ public class ConsumerMQ {
 	public void iniciar() {
 		try {
 			macAddress = sohelper.getMacAddress();
+			logComponent.addLog("Recuperando o MACADDRESS", LogEnum.INFO);
 		} catch (Exception e) {
+			logComponent.addLog("Erro ao recuperar MAC ADDRESS", LogEnum.ERROR);
 			log.error(e.getMessage(), e);
 		} 
 	}
@@ -68,9 +70,11 @@ public class ConsumerMQ {
 		};
 		
 		try {
+			logComponent.addLog("Iniciando consumer de Impressão", LogEnum.INFO);
 			channel.basicConsume(macAddress, true, consumer);
-		} catch (IOException e) {
 			
+		} catch (IOException e) {
+			logComponent.addLog("Erro ao iniciar Consumer de impressão", LogEnum.ERROR);
 			log.error(e.getMessage(), e);
 		}
 	}
