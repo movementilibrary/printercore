@@ -67,6 +67,24 @@ public class PrinterService {
 		log.info("Imprimindo");
 		log.info(texto);
 
+		//StringBuilder strHexa = prepararStringParaImpressao(texto);
+		StringBuilder strHexa = new StringBuilder(texto);
+		gerarImpressao(strHexa);
+	}
+
+	private void gerarImpressao(StringBuilder strHexa) {
+		DocPrintJob dpj = printService.createPrintJob();
+		InputStream stream = new ByteArrayInputStream(strHexa.toString().getBytes());
+		DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+		Doc doc = new SimpleDoc(stream, flavor, (DocAttributeSet) null);
+		try {
+			dpj.print(doc, new HashPrintRequestAttributeSet());
+		} catch (PrintException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	private StringBuilder prepararStringParaImpressao(String texto) {
 		int etqCont = texto.replaceAll("[^¨]", "").length();
 		String[] risk = texto.split("¨");
 		StringBuilder strHexa = new StringBuilder();
@@ -77,16 +95,7 @@ public class PrinterService {
 			strHexa.append(formataZebra(risk[i]));
 
 		}
-
-		DocPrintJob dpj = printService.createPrintJob();
-		InputStream stream = new ByteArrayInputStream(strHexa.toString().getBytes());
-		DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-		Doc doc = new SimpleDoc(stream, flavor, (DocAttributeSet) null);
-		try {
-			dpj.print(doc, new HashPrintRequestAttributeSet());
-		} catch (PrintException e) {
-			log.error(e.getMessage(), e);
-		}
+		return strHexa;
 	}
 
 	public String formataAscII(String texto) {
