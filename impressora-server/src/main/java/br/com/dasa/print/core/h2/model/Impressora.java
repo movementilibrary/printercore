@@ -8,15 +8,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-public class Impressora implements Serializable {
+public class Impressora implements Serializable{
 
     @Id
     @NotNull
     private String identificacao;
-    private Date ultimaAtualizacao;
+    private LocalDateTime ultimaAtualizacao;
     @NotNull
     private String unidade;
     @NotNull
@@ -27,7 +28,7 @@ public class Impressora implements Serializable {
     public Impressora() { }
 
 
-    public Impressora(@NotNull String identificacao, Date ultimaAtualizacao, @NotNull String unidade, @NotNull String nome, @NotNull String empresa) {
+    public Impressora(@NotNull String identificacao, LocalDateTime ultimaAtualizacao, @NotNull String unidade, @NotNull String nome, @NotNull String empresa) {
         this.identificacao = identificacao;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;
@@ -43,11 +44,11 @@ public class Impressora implements Serializable {
         this.identificacao = identificacao;
     }
 
-    public Date getUltimaAtualizacao() {
+    public LocalDateTime getUltimaAtualizacao() {
         return ultimaAtualizacao;
     }
 
-    public void setUltimaAtualizacao(Date ultimaAtualizacao) {
+    public void setUltimaAtualizacao(LocalDateTime ultimaAtualizacao) {
         this.ultimaAtualizacao = ultimaAtualizacao;
     }
 

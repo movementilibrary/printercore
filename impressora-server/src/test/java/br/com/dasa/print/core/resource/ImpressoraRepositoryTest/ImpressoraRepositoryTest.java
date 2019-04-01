@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -40,9 +41,9 @@ public class ImpressoraRepositoryTest {
 
     @Before
     public void setUp() {
-        impressora = new Impressora("SHA01",new Date(), "Paulista", "Impress01", "Delboni");
-        impressora1 = new Impressora("SHA02",new Date(), "Paulista", "Impress02", "Alta");
-        impressora2 = new Impressora("SHA02",new Date(), null, null, null);
+        impressora = new Impressora("SHA01", LocalDateTime.now(), "Paulista", "Impress01", "Delboni");
+        impressora1 = new Impressora("SHA02",LocalDateTime.now(), "Paulista", "Impress02", "Alta");
+        impressora2 = new Impressora("SHA02",LocalDateTime.now(), null, null, null);
     }
 
     @Test

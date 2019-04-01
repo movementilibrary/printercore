@@ -2,6 +2,7 @@ package br.com.dasa.print.core.utils;
 
 import br.com.dasa.print.core.h2.model.Impressora;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Utils {
@@ -13,7 +14,7 @@ public class Utils {
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
 
-        impressora.setUltimaAtualizacao(new Date());
+        impressora.setUltimaAtualizacao(LocalDateTime.now());
         return impressora;
     }
 
