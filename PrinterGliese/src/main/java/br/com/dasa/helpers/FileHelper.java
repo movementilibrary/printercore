@@ -23,7 +23,7 @@ public class FileHelper {
 	}
 
 	public void salvarProperties(String url, Properties props, Map<String, String> mapaProperties) throws IOException {
-		mapaProperties.keySet().forEach(k -> props.setProperty(k, mapaProperties.get(k)));
+		mapaProperties.keySet().forEach(k -> props.setProperty(k, mapaProperties.get(k) != null?  mapaProperties.get(k) : ""));
 		salvarProperties(url, props);
 	}
 

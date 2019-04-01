@@ -38,6 +38,13 @@ public class PrinterCoreService {
 	private String printerCoreUrl;
 
 	private String macAddress;
+	
+	@Autowired
+	public PrinterCoreService(RequestService requestService, SOHelper soHelper, FileHelper fileHelper) {
+		this.requestService = requestService; 
+		this.soHelper = soHelper; 
+		this.fileHelper = fileHelper;
+	}
 
 	@PostConstruct
 	public void iniciar() {

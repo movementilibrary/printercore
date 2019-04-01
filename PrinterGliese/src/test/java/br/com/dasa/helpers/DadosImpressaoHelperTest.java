@@ -5,6 +5,8 @@ import static org.junit.Assert.fail;
 import org.junit.Assert;
 import org.junit.Test;
 
+import br.com.dasa.exceptions.ConfigurationNotFoundException;
+
 public class DadosImpressaoHelperTest {
 
 	@Test
@@ -39,6 +41,8 @@ public class DadosImpressaoHelperTest {
 			DadosImpressaoHelper impressaoHelper = new DadosImpressaoHelper("C://gliese_teste//impressora.properties",
 					new FileHelper());
 			Assert.assertFalse(impressaoHelper.validarDadosImpressoraPreenchidos());
+		}catch(ConfigurationNotFoundException e) {
+			Assert.assertTrue(true);
 		}catch(Exception e) {
 			e.printStackTrace();
 			fail();
