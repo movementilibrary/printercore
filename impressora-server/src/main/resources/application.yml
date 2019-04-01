@@ -5,7 +5,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   datasource:
     oracle:
       url: jdbc:oracle:thin:@brlspldgdb01.dasa.net:10010:glidev01

@@ -1,7 +1,6 @@
 package br.com.dasa.print.core.oracle.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
-import br.com.dasa.print.core.exception.ResourceNotFoundException;
 import br.com.dasa.print.core.oracle.model.Pc;
 import br.com.dasa.print.core.oracle.repository.PcRepository;
 import org.slf4j.Logger;
