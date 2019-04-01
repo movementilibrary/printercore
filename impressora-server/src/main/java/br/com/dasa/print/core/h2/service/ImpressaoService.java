@@ -16,6 +16,9 @@ import java.util.Optional;
 @Service
 public class ImpressaoService {
 
+    @Autowired
+    private PrinterService printerService;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ImpressaoService.class);
 
     @Autowired
@@ -43,12 +46,17 @@ public class ImpressaoService {
             LOGGER.info("Salvando impressora  {}  no Banco de Dados", impressora.get().getIdentificacao());
             impressoraRepository.save(impressora.get());
 
+            String layoutImpressao = printerService.imprimir(impressao.getConteudoImpressao());
+
             LOGGER.info("Enviando Mensagem {} impressao ", impressao);
-            rabbitTemplate.convertAndSend(impressao.getIdentificacao(), impressao.getConteudoImpressao());
+            rabbitTemplate.convertAndSend(impressao.getIdentificacao(), layoutImpressao);
 
         } catch (Exception e) {
             LOGGER.error("Erro ao enviar mensagem fila {} ", impressao.getIdentificacao());
             throw new ResourceNotFoundException(e.getMessage());
         }
     }
+
+
+
 }
