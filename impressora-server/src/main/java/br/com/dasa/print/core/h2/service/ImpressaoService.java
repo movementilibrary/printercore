@@ -40,9 +40,6 @@ public class ImpressaoService {
         try {
             Optional<Impressora> impressora = Optional.ofNullable(impressoraService.listaImpressoraPelaIdentificacao(impressao.getIdentificacao()));
 
-            LOGGER.info("Atualizando Horario Impressora {} ", impressora);
-            Utils.atualizaHoraImpressora(impressora.get());
-
             LOGGER.info("Salvando impressora  {}  no Banco de Dados", impressora.get().getIdentificacao());
             impressoraRepository.save(impressora.get());
 

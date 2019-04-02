@@ -1,0 +1,6 @@
+spring:
+  port: 9091
+
+job-config:
+  cron: 0 0/1 * * * *
+  minimo-horas-consideras-para-exclusao: 2
