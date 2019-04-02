@@ -10,10 +10,8 @@ import javax.print.DocPrintJob;
 import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
-import javax.print.SimpleDoc;
 import javax.print.attribute.AttributeSet;
-import javax.print.attribute.DocAttributeSet;
-import javax.print.attribute.HashPrintRequestAttributeSet;
+
 
 
 import org.slf4j.Logger;

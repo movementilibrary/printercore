@@ -13,8 +13,7 @@ public class Utils {
      * @return
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
-
-        impressora.setUltimaAtualizacao(LocalDateTime.now());
+        impressora.setUltimaAtualizacao(LocalDateTime.now().minusHours(4));
         return impressora;
     }
 
