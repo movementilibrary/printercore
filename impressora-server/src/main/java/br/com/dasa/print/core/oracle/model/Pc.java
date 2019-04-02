@@ -1,18 +1,15 @@
 package br.com.dasa.print.core.oracle.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.io.Serializable;
 
-@Entity
+//@Entity
 public class Pc implements Serializable {
 
-    @Id
-    @Column(name = "Pc_Mnemonico")
+    //@Id
+    //@Column(name = "Pc_Mnemonico")
     private String mnemonico;
     
-    @Column(name = "Pc_Empresa")
+    //@Column(name = "Pc_Empresa")
     private String empresa;
 
     public Pc() { }

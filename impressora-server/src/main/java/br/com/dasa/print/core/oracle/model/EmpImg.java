@@ -1,19 +1,15 @@
 package br.com.dasa.print.core.oracle.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "EmpImg")
+//@Entity
+//@Table(name = "EmpImg")
 public class EmpImg implements Serializable {
 
-    @Id
-    @Column(name = "EmpImg_codigo")
+    //@Id
+    //@Column(name = "EmpImg_codigo")
     private Integer codigo;
-    @Column(name = "EmpImg_nome")
+    //@Column(name = "EmpImg_nome")
     private String nome;
 
 

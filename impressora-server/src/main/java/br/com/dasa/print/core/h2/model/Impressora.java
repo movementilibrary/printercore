@@ -1,34 +1,31 @@
 package br.com.dasa.print.core.h2.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 
-@Entity
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+@RedisHash("Impressora")
 public class Impressora implements Serializable{
 
-    @Id
-    @NotNull
+   
+    //@NotNull
+	@Id
     private String identificacao;
     private LocalDateTime ultimaAtualizacao;
-    @NotNull
+    //@NotNull
     private String unidade;
-    @NotNull
+    //@NotNull
     private String nome;
-    @NotNull
+    //@NotNull
     private String empresa;
 
     public Impressora() { }
 
 
-    public Impressora(@NotNull String identificacao, LocalDateTime ultimaAtualizacao, @NotNull String unidade, @NotNull String nome, @NotNull String empresa) {
+    public Impressora(String identificacao, LocalDateTime ultimaAtualizacao, String unidade, String nome, String empresa) {
         this.identificacao = identificacao;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;

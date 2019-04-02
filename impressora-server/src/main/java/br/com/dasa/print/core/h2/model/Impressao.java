@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
 
-@JsonIgnoreProperties
+import org.springframework.data.redis.core.RedisHash;
+
+
+@RedisHash("Impressao")
 public class Impressao implements Serializable {
 
     private String identificacao;

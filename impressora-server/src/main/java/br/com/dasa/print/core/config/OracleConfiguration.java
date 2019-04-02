@@ -1,6 +1,7 @@
 package br.com.dasa.print.core.config;
 
-import com.google.common.base.Preconditions;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,10 +9,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
+import com.google.common.base.Preconditions;
 
 @Configuration
 public class OracleConfiguration {
+	
     @Autowired
     private Environment env;
 
@@ -31,5 +33,6 @@ public class OracleConfiguration {
     public JdbcTemplate jdbcTemplate(DataSource oracleDataSource) {
         return new JdbcTemplate(oracleDataSource);
     }
+    
 }
 
