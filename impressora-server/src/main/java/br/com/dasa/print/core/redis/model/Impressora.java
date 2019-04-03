@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.h2.model;
+package br.com.dasa.print.core.redis.model;
 
 
 import java.io.Serializable;
@@ -11,15 +11,11 @@ import org.springframework.data.redis.core.RedisHash;
 public class Impressora implements Serializable{
 
    
-    //@NotNull
 	@Id
     private String identificacao;
     private LocalDateTime ultimaAtualizacao;
-    //@NotNull
     private String unidade;
-    //@NotNull
     private String nome;
-    //@NotNull
     private String empresa;
 
     public Impressora() { }

@@ -1,9 +1,9 @@
 package br.com.dasa.print.core.resource.ImpressoraRepositoryTest;
 
 import br.com.dasa.print.core.oracle.model.EmpImg;
-import br.com.dasa.print.core.h2.model.Impressora;
+import br.com.dasa.print.core.redis.model.Impressora;
 import br.com.dasa.print.core.oracle.model.Pc;
-import br.com.dasa.print.core.h2.repository.ImpressoraRepository;
+import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

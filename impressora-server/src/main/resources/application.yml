@@ -12,11 +12,11 @@ spring:
       username: gliese
       password: gliese
       driver-class-name: oracle.jdbc.driver.OracleDriver
-#    h2:
- #     url: jdbc:h2:mem:print;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    redis:
+ #     url: jdbc:redis:mem:print;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
   #    username: sa
    #   password: sa
-    #  driver-class-name: org.h2.Driver
+    #  driver-class-name: org.redis.Driver
   #main:
    #  allow-bean-definition-overriding: true
   application:

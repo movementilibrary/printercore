@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource;
 
-import br.com.dasa.print.core.h2.service.ImpressoraService;
-import br.com.dasa.print.core.h2.model.Impressora;
+import br.com.dasa.print.core.redis.service.ImpressoraService;
+import br.com.dasa.print.core.redis.model.Impressora;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -62,9 +62,8 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public ResponseEntity criaImpressora(@RequestBody Impressora impressora) {
-        impressoraService.criaImpressora(impressora);
-        return new ResponseEntity(HttpStatus.CREATED);
+    public ResponseEntity<Impressora> criaImpressora(@RequestBody Impressora impressora) {
+        return new ResponseEntity(impressoraService.criaImpressora(impressora), HttpStatus.CREATED);
     }
 
 
@@ -75,9 +74,8 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public ResponseEntity deletaImpressora(@PathVariable String identificacao) {
+    public void deletaImpressora(@PathVariable String identificacao) {
         impressoraService.apagaImpressora(identificacao);
-        return new ResponseEntity(HttpStatus.OK);
     }
 
 

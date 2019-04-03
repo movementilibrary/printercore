@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource.ImpressoraResourceTest;
 
-import br.com.dasa.print.core.h2.model.Impressora;
-import br.com.dasa.print.core.h2.repository.ImpressoraRepository;
+import br.com.dasa.print.core.redis.model.Impressora;
+import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

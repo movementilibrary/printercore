@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource;
 
-import br.com.dasa.print.core.h2.model.Impressao;
-import br.com.dasa.print.core.h2.service.ImpressaoService;
+import br.com.dasa.print.core.redis.model.Impressao;
+import br.com.dasa.print.core.redis.service.ImpressaoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -25,9 +25,8 @@ public class ImpressaoResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public ResponseEntity solicitaImpressao(@RequestBody Impressao impressao) {
-        impressaoService.solicitaImpressao(impressao);
-        return new ResponseEntity(HttpStatus.OK);
+    public void solicitaImpressao(@RequestBody Impressao impressao) {
+        impressaoService.preparaConteudoAntesImpressao(impressao);
     }
 
 }

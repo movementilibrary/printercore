@@ -1,13 +1,7 @@
-package br.com.dasa.print.core.h2.service;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+package br.com.dasa.print.core.redis.service;
 
 import javax.annotation.PostConstruct;
-import javax.print.Doc;
 import javax.print.DocFlavor;
-import javax.print.DocPrintJob;
-import javax.print.PrintException;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.AttributeSet;
@@ -59,16 +53,6 @@ public class PrinterService {
 			}
 		}
 
-//        DocPrintJob dpj = printService.createPrintJob();
-//        InputStream stream = new ByteArrayInputStream(strHexa.toString().getBytes());
-//        DocFlavor flavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-//        Doc doc = new SimpleDoc(stream, flavor, (DocAttributeSet)null);
-//        try {
-//            dpj.print(doc, new HashPrintRequestAttributeSet());
-//        } catch (PrintException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
 
 		return strHexa.toString();
 	}
@@ -141,6 +125,7 @@ public class PrinterService {
 
 			strHexa = strHexa + "A125,10,1,3,1,1,N," + strAspas + linhas[7] + strAspas + strPula;
 			strHexa = strHexa + strFim;
+
 			return strHexa;
 		}
 	}

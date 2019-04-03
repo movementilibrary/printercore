@@ -5,7 +5,7 @@ package br.com.dasa.print.core.config;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "h2EntityManager",
         transactionManagerRef = "h2TransactionManager",
-        basePackages = { "br.com.dasa.print.core.h2.repository"}
+        basePackages = { "br.com.dasa.print.core.redis.repository"}
 )*/
 public class H2Configuration {
    /* @Autowired
@@ -15,7 +15,7 @@ public class H2Configuration {
     public LocalContainerEntityManagerFactoryBean h2EntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(h2DataSource());
-        em.setPackagesToScan(new String[] { "br.com.dasa.print.core.h2.model" });
+        em.setPackagesToScan(new String[] { "br.com.dasa.print.core.redis.model" });
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
@@ -30,10 +30,10 @@ public class H2Configuration {
     public DataSource h2DataSource() {
 
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("spring.datasource.h2.driver-class-name")));
-        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("spring.datasource.h2.url")));
-        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("spring.datasource.h2.username")));
-        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("spring.datasource.h2.password")));
+        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("spring.datasource.redis.driver-class-name")));
+        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("spring.datasource.redis.url")));
+        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("spring.datasource.redis.username")));
+        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("spring.datasource.redis.password")));
 
         return dataSource;
     }

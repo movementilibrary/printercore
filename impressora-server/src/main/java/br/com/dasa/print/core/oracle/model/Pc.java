@@ -5,11 +5,8 @@ import java.io.Serializable;
 //@Entity
 public class Pc implements Serializable {
 
-    //@Id
-    //@Column(name = "Pc_Mnemonico")
     private String mnemonico;
     
-    //@Column(name = "Pc_Empresa")
     private String empresa;
 
     public Pc() { }

@@ -1,6 +1,4 @@
-package br.com.dasa.print.core.h2.model;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+package br.com.dasa.print.core.redis.model;
 
 import java.io.Serializable;
 
@@ -10,21 +8,23 @@ import org.springframework.data.redis.core.RedisHash;
 @RedisHash("Impressao")
 public class Impressao implements Serializable {
 
-    private String identificacao;
+    private String impressora;
     private String conteudoImpressao;
 
-    public Impressao(String identificacao, String conteudoImpressao) {
-        this.identificacao = identificacao;
+    public Impressao() { }
+
+    public Impressao(String impressora, String conteudoImpressao) {
+        this.impressora = impressora;
         this.conteudoImpressao = conteudoImpressao;
     }
 
 
-    public String getIdentificacao() {
-        return identificacao;
+    public String getImpressora() {
+        return impressora;
     }
 
-    public void setIdentificacao(String identificacao) {
-        this.identificacao = identificacao;
+    public void setImpressora(String impressora) {
+        this.impressora = impressora;
     }
 
     public String getConteudoImpressao() {

@@ -2,14 +2,9 @@ package br.com.dasa.print.core.oracle.model;
 
 import java.io.Serializable;
 
-//@Entity
-//@Table(name = "EmpImg")
 public class EmpImg implements Serializable {
 
-    //@Id
-    //@Column(name = "EmpImg_codigo")
     private Integer codigo;
-    //@Column(name = "EmpImg_nome")
     private String nome;
 
 
