@@ -16,7 +16,7 @@ public class PcRepository {
 
 	public List<Pc> listaUnidadePorCodigoEmpresa(String codigoEmpresa) {
 		return jdbcTemplate.query(
-				"SELECT p.\"Pc_Empresa\", \"Pc_Mnemonico\" FROM \"Pc\" p "
+				"SELECT p.\"Pc_Nome\", \"Pc_Mnemonico\" FROM \"Pc\" p "
 						+ "WHERE \"Pc_Empresa\" = ? AND \"Pc_status\" = 1 "
 						+ "AND (\"Pc_bloqueiaAdmissaoGliese\" is null or \"Pc_bloqueiaAdmissaoGliese\" <> 1) "
 						+ "ORDER BY \"Pc_Mnemonico\"",

@@ -52,6 +52,7 @@ public class ImpressoraService {
         return impressoraCriada;
     }
 
+
     /**
      * Responsável por apagar fila Rabbit
      * @author Michel Marciano

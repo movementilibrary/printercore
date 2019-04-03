@@ -7,21 +7,21 @@ public class Pc implements Serializable {
 
     private String mnemonico;
     
-    private String empresa;
+    private String nome;
 
     public Pc() { }
 
-    public Pc(String empresa, String mnemonico) {
-        this.empresa = empresa;
+    public Pc(String nome, String mnemonico) {
+        this.nome = nome;
         this.mnemonico = mnemonico;
     }
 
-    public String getEmpresa() {
-        return empresa;
+    public String getNome() {
+        return nome;
     }
 
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getMnemonico() {
