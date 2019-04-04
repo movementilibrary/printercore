@@ -40,8 +40,8 @@ public class PrinterService {
 		log.info("Imprimindo");
 		log.info(texto);
 
-		int etqCont = texto.replaceAll("[^¨]", "").length();
-		String[] risk = texto.split("¨");
+		int etqCont = texto.replaceAll("[^\250]", "").length();
+		String[] risk = texto.split("\250");
 		StringBuilder strHexa = new StringBuilder();
 
 		for (int i = 0; i < etqCont; ++i) {
