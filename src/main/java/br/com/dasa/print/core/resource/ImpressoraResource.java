@@ -19,17 +19,6 @@ public class ImpressoraResource {
     @Autowired
     private ImpressoraService impressoraService;
 
-    @GetMapping(value = "/unidade/{unidade}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Lista de Impressora por Unidade")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Sucesso"),
-            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
-            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
-    })
-    public List<Impressora> listaImpressoraPorUnidade(@PathVariable String unidade) {
-        return impressoraService.listaImpressorasPorUnidade(unidade);
-
-    }
 
     @GetMapping(value = "/identificacao/{identificacao}")
     @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora pela Identificacao")

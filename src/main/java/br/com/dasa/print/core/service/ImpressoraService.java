@@ -79,25 +79,6 @@ public class ImpressoraService {
 
     }
 
-    /**
-     * Responsável por listar Impressoras por unidade
-     * @author Michel Marciano
-     * @param unidade
-     * @throws ResourceNotFoundException
-     * @return impressoraPelaUnidade
-     *
-     */
-    public List<Impressora> listaImpressorasPorUnidade(String unidade) {
-        List<Impressora> impressoraPelaUnidade = null;
-        try {
-            LOGGER.info("Listando Impressora pela unidade {} ", unidade);
-            impressoraPelaUnidade = impressoraRepository.findByUnidade(unidade);
-        } catch (Exception e) {
-            LOGGER.error("Erro ao listar impressoras", e.getMessage());
-            throw new InternalServerException(e.getMessage());
-        }
-        return impressoraPelaUnidade;
-    }
 
     /**
      * Responsável por listar impressora pela Identificacao

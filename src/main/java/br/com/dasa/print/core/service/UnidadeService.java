@@ -60,7 +60,7 @@ public class UnidadeService {
     }
 
     /**
-     * Responsável por listar impressoras por unidade
+     * Responsável por listar impressora por unidade
      * @param unidade
      * @return listaImpressoraPorUnidade
      * @author Michel Marciano
@@ -79,7 +79,7 @@ public class UnidadeService {
 
 
     /**
-     * Rsponsável por deletar impressoras por unidade
+     * Rsponsável por deletar impressora por unidade
      * @param unidade
      * @param identificacao
      * @author Michel Marciano
