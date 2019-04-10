@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.redis.service;
+package br.com.dasa.print.core.service;
 
 import javax.annotation.PostConstruct;
 import javax.print.DocFlavor;

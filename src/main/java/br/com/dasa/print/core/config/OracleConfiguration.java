@@ -13,7 +13,7 @@ import com.google.common.base.Preconditions;
 
 @Configuration
 public class OracleConfiguration {
-	
+
     @Autowired
     private Environment env;
 
@@ -33,6 +33,6 @@ public class OracleConfiguration {
     public JdbcTemplate jdbcTemplate(DataSource oracleDataSource) {
         return new JdbcTemplate(oracleDataSource);
     }
-    
+
 }
 

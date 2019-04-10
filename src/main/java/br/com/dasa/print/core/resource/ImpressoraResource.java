@@ -1,6 +1,6 @@
 package br.com.dasa.print.core.resource;
 
-import br.com.dasa.print.core.redis.service.ImpressoraService;
+import br.com.dasa.print.core.service.ImpressoraService;
 import br.com.dasa.print.core.redis.model.Impressora;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.ApiOperation;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/impressora")
+@RequestMapping("/unidade")
 public class ImpressoraResource {
 
     @Autowired
     private ImpressoraService impressoraService;
 
     @GetMapping(value = "/unidade/{unidade}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora por Pc")
+    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Lista de Impressora por Unidade")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
@@ -75,7 +75,7 @@ public class ImpressoraResource {
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
     public void deletaImpressora(@PathVariable String identificacao) {
-        impressoraService.apagaImpressora(identificacao);
+        impressoraService.excluiImpressora(identificacao);
     }
 
 

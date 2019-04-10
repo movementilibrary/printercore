@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.redis.service;
+package br.com.dasa.print.core.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +28,9 @@ public class ImpressoraService {
 
     @Autowired
     private FilaService filaService;
+
+    @Autowired
+    private UnidadeService unidadeService;
 
     /**
      * Responsável por criar mensagem Impressora
@@ -60,7 +63,7 @@ public class ImpressoraService {
      * @throws ResourceNotFoundException
      */
     @CacheEvict(cacheNames = "impressao", key = "#identificacao")
-    public void apagaImpressora(String identificacao) {
+    public void excluiImpressora(String identificacao) {
         try {
             Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPelaIdentificacao(identificacao));
 

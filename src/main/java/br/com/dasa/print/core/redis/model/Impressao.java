@@ -3,11 +3,13 @@ package br.com.dasa.print.core.redis.model;
 import java.io.Serializable;
 
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.annotation.Id;
 
 
 @RedisHash("Impressao")
 public class Impressao implements Serializable {
 
+    @Id
     private String impressora;
     private String conteudoImpressao;
 

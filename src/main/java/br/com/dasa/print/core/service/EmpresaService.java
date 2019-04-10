@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.oracle.service;
+package br.com.dasa.print.core.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.oracle.model.EmpImg;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class EmpImgService {
+public class EmpresaService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmpImgService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmpresaService.class);
 
     @Autowired
     private EmpImgRepository empImgRepository;

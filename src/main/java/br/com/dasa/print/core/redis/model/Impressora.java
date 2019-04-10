@@ -15,8 +15,8 @@ public class Impressora implements Serializable{
     private String identificacao;
     private LocalDateTime ultimaAtualizacao;
     private String unidade;
-    private String nome;
     private String empresa;
+    private String nome;
 
     public Impressora() { }
 

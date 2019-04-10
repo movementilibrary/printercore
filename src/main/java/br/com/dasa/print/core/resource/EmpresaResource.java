@@ -1,7 +1,7 @@
 package br.com.dasa.print.core.resource;
 
 import br.com.dasa.print.core.oracle.model.EmpImg;
-import br.com.dasa.print.core.oracle.service.EmpImgService;
+import br.com.dasa.print.core.service.EmpresaService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class EmpImgResource {
+public class EmpresaResource {
 
     @Autowired
-    private EmpImgService empImgService;
+    private EmpresaService empImgService;
 
     @GetMapping(value="/empresas")
     @ApiOperation(httpMethod = "GET", value = "Responsável por listar todas as empresas'")

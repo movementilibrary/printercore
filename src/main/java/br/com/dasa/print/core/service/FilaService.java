@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.redis.service;
+package br.com.dasa.print.core.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.redis.model.Impressora;

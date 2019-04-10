@@ -2,7 +2,6 @@ package br.com.dasa.print.core.oracle.model;
 
 import java.io.Serializable;
 
-//@Entity
 public class Pc implements Serializable {
 
     private String mnemonico;
