@@ -73,21 +73,21 @@ public class UnidadeService {
      * @return listaImpressoraPorUnidade
      * @author Michel Marciano
      */
-    public List<Unidade> listaImpressorasPorUnidade(Unidade unidade){
+    public List<Unidade> listaImpressorasPorUnidade(String unidade){
         List listaImpressoraPorUnidade = null;
-        List<Unidade> uni = null;
+        List<Unidade> listaImpressora = null;
 
         try{
             LOGGER.info("Listando impressoras da unidade {} ", unidade);
-           listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade.getNome(), 0, -1);
+           listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
 
-            uni = objm.readValue(listaImpressoraPorUnidade.toString() ,new TypeReference<List<Unidade>>(){});
+            listaImpressora = objm.readValue(listaImpressoraPorUnidade.toString() ,new TypeReference<List<Unidade>>(){});
 
 
         }catch (Exception e){
             LOGGER.error("Não foi possivel listar impressoras da unidade {}  ", unidade,  e);
         }
-        return uni;
+        return listaImpressora;
     }
 
 
