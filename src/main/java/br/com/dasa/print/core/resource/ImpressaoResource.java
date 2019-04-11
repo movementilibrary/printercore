@@ -8,15 +8,17 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping(value = "impressao")
 public class ImpressaoResource {
 
     @Autowired
     private ImpressaoService impressaoService;
 
-    @PostMapping(value="/impressao")
+    @PostMapping()
     @ApiOperation(httpMethod = "POST", value = "Responsável por enviar mensagem para impressão")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),

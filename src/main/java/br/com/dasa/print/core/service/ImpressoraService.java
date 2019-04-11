@@ -1,10 +1,9 @@
 package br.com.dasa.print.core.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import br.com.dasa.print.core.exception.InternalServerException;
+import br.com.dasa.print.core.exception.ResourceNotFoundException;
+import br.com.dasa.print.core.redis.model.Impressora;
+import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,10 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import br.com.dasa.print.core.exception.InternalServerException;
-import br.com.dasa.print.core.exception.ResourceNotFoundException;
-import br.com.dasa.print.core.redis.model.Impressora;
-import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImpressoraService {
@@ -44,8 +43,11 @@ public class ImpressoraService {
         try {
             filaService.novaFila(impressora);
 
+            unidadeService.criaListaImpressoraPorUnidade(impressora);
+
             LOGGER.info("Salvando impressora {} ", impressora.getIdentificacao());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
+
 
         } catch (Exception e) {
             LOGGER.error("Erro ao salvar impressora {}", impressora.getIdentificacao() + e.getMessage());
@@ -68,6 +70,7 @@ public class ImpressoraService {
             Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPelaIdentificacao(identificacao));
 
             filaService.apagaFila(impressora.get().getIdentificacao());
+
 
             LOGGER.info("Deletando impressora pela identificacao {} ", impressora.get().getIdentificacao());
             this.impressoraRepository.delete(impressora.get());

@@ -3,6 +3,11 @@ package br.com.dasa.print.core.service;
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.oracle.model.Pc;
 import br.com.dasa.print.core.oracle.repository.PcRepository;
+import br.com.dasa.print.core.redis.model.Impressora;
+import br.com.dasa.print.core.redis.model.Unidade;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +26,9 @@ public class UnidadeService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+    @Autowired
+    private ObjectMapper objm;
 
     /**
      * Responsável por listar Unidades pela identificacao
@@ -44,16 +52,16 @@ public class UnidadeService {
 
     /**
      * Responsável por criar lista de impressora por unidade
-     * @param unidade
-     * @param identificacao
+     * @param impressora
      * @author Michel Marciano
      */
-    public void criaListaImpressoraPorUnidade(String unidade, String identificacao) {
+    public void criaListaImpressoraPorUnidade(Impressora impressora) {
         try {
-            LOGGER.info("Inserindo impressora {} da unidade {} ", identificacao, unidade );
-            redisTemplate.opsForList().leftPush(unidade, identificacao);
+
+            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade());
+            redisTemplate.opsForList().leftPush(impressora.getUnidade(),  objm.writeValueAsString(new Unidade(impressora.getIdentificacao(),impressora.getUnidade())) );
         }catch (Exception e){
-            LOGGER.error("Não foi possivel inserir impressora {} da unidade {} ", identificacao, unidade, e);
+            LOGGER.error("Não foi possivel inserir impressora {} na lista da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade(), e);
 
         }
 
@@ -65,32 +73,39 @@ public class UnidadeService {
      * @return listaImpressoraPorUnidade
      * @author Michel Marciano
      */
-    public List<String> listaImpressorasPorUnidade(String unidade ){
+    public List<Unidade> listaImpressorasPorUnidade(Unidade unidade){
         List listaImpressoraPorUnidade = null;
+        List<Unidade> uni = null;
+
         try{
             LOGGER.info("Listando impressoras da unidade {} ", unidade);
-            listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
+           listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade.getNome(), 0, -1);
+
+            uni = objm.readValue(listaImpressoraPorUnidade.toString() ,new TypeReference<List<Unidade>>(){});
+
 
         }catch (Exception e){
             LOGGER.error("Não foi possivel listar impressoras da unidade {}  ", unidade,  e);
         }
-        return listaImpressoraPorUnidade;
+        return uni;
     }
 
 
     /**
      * Rsponsável por deletar impressora por unidade
-     * @param unidade
-     * @param identificacao
+     * @param impressora
      * @author Michel Marciano
      */
-    public void deletaValorLista(String unidade, String identificacao) {
+    public void excluindoImpressora(Impressora impressora) {
         try {
-            LOGGER.info("Excluindo impressora {}  da unidade {} ", identificacao, unidade);
-            redisTemplate.opsForList().remove(unidade, 0, identificacao);
+
+            String unidade = objm.writeValueAsString(new Unidade(impressora.getIdentificacao(), impressora.getUnidade()));
+
+            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade());
+            redisTemplate.opsForList().remove(unidade, 1, unidade);
 
         }catch (Exception e ){
-            LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", identificacao, unidade, e);
+            LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade(), e);
         }
 
     }

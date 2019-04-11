@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/unidade")
+@RequestMapping("/impressora")
 public class ImpressoraResource {
 
     @Autowired

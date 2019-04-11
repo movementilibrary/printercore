@@ -7,17 +7,19 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "empresas")
 public class EmpresaResource {
 
     @Autowired
     private EmpresaService empImgService;
 
-    @GetMapping(value="/empresas")
+    @GetMapping()
     @ApiOperation(httpMethod = "GET", value = "Responsável por listar todas as empresas'")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
