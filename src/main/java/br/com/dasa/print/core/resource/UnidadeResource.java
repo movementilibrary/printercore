@@ -22,7 +22,7 @@ public class UnidadeResource {
     @Autowired
     private UnidadeService unidadeService;
 
-    @GetMapping(value="/empresa/{codigoEmpresa}")
+    @GetMapping(value="/empresa/{empresa}")
     @ApiOperation(httpMethod = "GET", value = "Responsável por listar todas as unidades por empresa")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
