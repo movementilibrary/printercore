@@ -58,9 +58,8 @@ public class UnidadeService {
      */
     public void criaListaImpressoraPorUnidade(Impressora impressora) {
         try {
-
-            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getUnidade());
-            redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getUnidade())));
+            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getNome());
+            redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getNome())));
         } catch (Exception e) {
             LOGGER.error("Não foi possivel inserir impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getUnidade(), e);
         }
@@ -99,9 +98,9 @@ public class UnidadeService {
     public void excluindoImpressora(Impressora impressora) {
         try {
 
-            String unidade = objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getUnidade()));
+            String unidade = objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getNome()));
 
-            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getMacaddress(), impressora.getUnidade());
+            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getMacaddress(), impressora.getNome());
             redisTemplate.opsForList().remove(impressora.getUnidade(), 1, unidade);
 
         } catch (Exception e) {

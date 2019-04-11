@@ -33,7 +33,7 @@ public class UnidadeResource {
         return this.pcService.listaUnidadePorCodigoEmpresa(empresa);
     }
 
-    @GetMapping(value = "/impressora/{unidade}")
+    @GetMapping(value = "/{unidade}/impressora")
     @ApiOperation(httpMethod = "GET", value = "Responsável por listar Impressoras por unidade")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),

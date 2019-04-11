@@ -71,7 +71,6 @@ public class ImpressoraService {
 
             filaService.apagaFila(impressora.get().getMacaddress());
 
-
             LOGGER.info("Deletando impressora pelo macaddress {} ", impressora.get().getMacaddress());
             this.impressoraRepository.delete(impressora.get());
 
