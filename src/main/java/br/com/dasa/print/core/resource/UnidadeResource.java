@@ -29,8 +29,8 @@ public class UnidadeResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public List<Pc> listaUnidadePorCodigoEmpresa(@PathVariable String codigoEmpresa) {
-        return this.pcService.listaUnidadePorCodigoEmpresa(codigoEmpresa);
+    public List<Pc> listaUnidadePorCodigoEmpresa(@PathVariable String empresa) {
+        return this.pcService.listaUnidadePorCodigoEmpresa(empresa);
     }
 
     @GetMapping(value = "/impressora/{unidade}")

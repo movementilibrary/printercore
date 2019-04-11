@@ -33,16 +33,16 @@ public class UnidadeService {
     /**
      * Responsável por listar Unidades pela identificacao
      * @author Michel Marciano
-     * @param codigoEmpresa
+     * @param empresa
      * @exception InternalServerException
      * @return listaUnidadePorIdentificacao
      *
      */
-    public List<Pc> listaUnidadePorCodigoEmpresa(String codigoEmpresa) {
+    public List<Pc> listaUnidadePorCodigoEmpresa(String empresa) {
         List<Pc> listaUnidadePorCodigo = null;
         try {
-            LOGGER.info("Listando Unidade por codigoEmpresa {} ", codigoEmpresa);
-            listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(codigoEmpresa);
+            LOGGER.info("Listando Unidade por codigoEmpresa {} ", empresa);
+            listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(empresa);
         } catch (Exception e) {
             LOGGER.error("Erro ao listar unidade", e.getMessage());
             throw new InternalServerException(e.getMessage());
@@ -102,7 +102,7 @@ public class UnidadeService {
             String unidade = objm.writeValueAsString(new Unidade(impressora.getIdentificacao(), impressora.getUnidade()));
 
             LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade());
-            redisTemplate.opsForList().remove(unidade, 1, unidade);
+            redisTemplate.opsForList().remove(impressora.getUnidade(), 1, unidade);
 
         }catch (Exception e ){
             LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade(), e);
