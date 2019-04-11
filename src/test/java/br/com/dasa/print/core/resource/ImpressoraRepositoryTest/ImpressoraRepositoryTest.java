@@ -48,20 +48,20 @@ public class ImpressoraRepositoryTest {
     @Test
     public void deveCriarNovaImpressora() {
         this.impressoraRepository.save(impressora);
-        assertThat(impressora.getIdentificacao()).isEqualTo("SHA01");
+        assertThat(impressora.getMacaddress()).isEqualTo("SHA01");
         assertThat(impressora.getEmpresa()).isEqualTo("Delboni");
         assertThat(impressora.getUnidade()).isEqualTo("Paulista");
-        assertThat(impressora.getIdentificacao()).isNotNull();
+        assertThat(impressora.getMacaddress()).isNotNull();
     }
 
     @Test
     public void deveAtualizarImpressora() {
         this.impressoraRepository.save(impressora);
-        impressora.setIdentificacao("SHA02");
+        impressora.setMacaddress("SHA02");
         impressora.setEmpresa("Alta");
         impressora.setNome("Impress02");
         this.impressoraRepository.save(impressora);
-        assertThat(impressora.getIdentificacao()).isEqualTo("SHA02");
+        assertThat(impressora.getMacaddress()).isEqualTo("SHA02");
         assertThat(impressora.getNome()).isEqualTo("Impress02");
     }
 

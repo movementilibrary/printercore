@@ -20,15 +20,15 @@ public class ImpressoraResource {
     private ImpressoraService impressoraService;
 
 
-    @GetMapping(value = "/identificacao/{identificacao}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora pela Identificacao")
+    @GetMapping(value = "/macaddress/{macaddress}")
+    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora pelo macaddress")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public Impressora listaImpressoraPelaIdentificacao(@PathVariable String identificacao) {
-        return impressoraService.listaImpressoraPelaIdentificacao(identificacao);
+    public Impressora listaImpressoraPelaIdentificacao(@PathVariable String macaddress) {
+        return impressoraService.listaImpressoraPeloMacaddress(macaddress);
 
     }
 
@@ -56,15 +56,15 @@ public class ImpressoraResource {
     }
 
 
-    @DeleteMapping(value = "/identificacao/{identificacao}")
+    @DeleteMapping(value = "/macaddress/{macaddress}")
     @ApiOperation(httpMethod = "DELETE", value = "Responsável por apagar Impressora")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public void deletaImpressora(@PathVariable String identificacao) {
-        impressoraService.excluiImpressora(identificacao);
+    public void deletaImpressora(@PathVariable String macaddress) {
+        impressoraService.excluiImpressora(macaddress);
     }
 
 

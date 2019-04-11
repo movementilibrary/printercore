@@ -32,11 +32,11 @@ public class UnidadeService {
 
     /**
      * Responsável por listar Unidades pela identificacao
-     * @author Michel Marciano
-     * @param empresa
-     * @exception InternalServerException
-     * @return listaUnidadePorIdentificacao
      *
+     * @param empresa
+     * @return listaUnidadePorIdentificacao
+     * @throws InternalServerException
+     * @author Michel Marciano
      */
     public List<Pc> listaUnidadePorCodigoEmpresa(String empresa) {
         List<Pc> listaUnidadePorCodigo = null;
@@ -52,40 +52,39 @@ public class UnidadeService {
 
     /**
      * Responsável por criar lista de impressora por unidade
+     *
      * @param impressora
      * @author Michel Marciano
      */
     public void criaListaImpressoraPorUnidade(Impressora impressora) {
         try {
 
-            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade());
-            redisTemplate.opsForList().leftPush(impressora.getUnidade(),  objm.writeValueAsString(new Unidade(impressora.getIdentificacao(),impressora.getUnidade())) );
-        }catch (Exception e){
-            LOGGER.error("Não foi possivel inserir impressora {} na lista da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade(), e);
-
+            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getUnidade());
+            redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getUnidade())));
+        } catch (Exception e) {
+            LOGGER.error("Não foi possivel inserir impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getUnidade(), e);
         }
-
     }
 
     /**
      * Responsável por listar impressora por unidade
+     *
      * @param unidade
      * @return listaImpressoraPorUnidade
      * @author Michel Marciano
      */
-    public List<Unidade> listaImpressorasPorUnidade(String unidade){
+    public List<Unidade> listaImpressorasPorUnidade(String unidade) {
         List listaImpressoraPorUnidade = null;
         List<Unidade> listaImpressora = null;
 
-        try{
+        try {
             LOGGER.info("Listando impressoras da unidade {} ", unidade);
-           listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
+            listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
+            listaImpressora = objm.readValue(listaImpressoraPorUnidade.toString(), new TypeReference<List<Unidade>>() {
+            });
 
-            listaImpressora = objm.readValue(listaImpressoraPorUnidade.toString() ,new TypeReference<List<Unidade>>(){});
-
-
-        }catch (Exception e){
-            LOGGER.error("Não foi possivel listar impressoras da unidade {}  ", unidade,  e);
+        } catch (Exception e) {
+            LOGGER.error("Não foi possivel listar impressoras da unidade {}  ", unidade, e);
         }
         return listaImpressora;
     }
@@ -93,19 +92,20 @@ public class UnidadeService {
 
     /**
      * Rsponsável por deletar impressora por unidade
+     *
      * @param impressora
      * @author Michel Marciano
      */
     public void excluindoImpressora(Impressora impressora) {
         try {
 
-            String unidade = objm.writeValueAsString(new Unidade(impressora.getIdentificacao(), impressora.getUnidade()));
+            String unidade = objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getUnidade()));
 
-            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade());
+            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getMacaddress(), impressora.getUnidade());
             redisTemplate.opsForList().remove(impressora.getUnidade(), 1, unidade);
 
-        }catch (Exception e ){
-            LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", impressora.getIdentificacao(), impressora.getUnidade(), e);
+        } catch (Exception e) {
+            LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", impressora.getMacaddress(), impressora.getUnidade(), e);
         }
 
     }

@@ -1,18 +1,18 @@
 package br.com.dasa.print.core.redis.model;
 
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @RedisHash("Impressora")
 public class Impressora implements Serializable{
 
    
 	@Id
-    private String identificacao;
+    private String macaddress;
     private LocalDateTime ultimaAtualizacao;
     private String unidade;
     private String empresa;
@@ -20,21 +20,20 @@ public class Impressora implements Serializable{
 
     public Impressora() { }
 
-
-    public Impressora(String identificacao, LocalDateTime ultimaAtualizacao, String unidade, String nome, String empresa) {
-        this.identificacao = identificacao;
+    public Impressora(String macaddress, LocalDateTime ultimaAtualizacao, String unidade, String empresa, String nome) {
+        this.macaddress = macaddress;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;
-        this.nome = nome;
         this.empresa = empresa;
+        this.nome = nome;
     }
 
-    public String getIdentificacao() {
-        return identificacao;
+    public String getMacaddress() {
+        return macaddress;
     }
 
-    public void setIdentificacao(String identificacao) {
-        this.identificacao = identificacao;
+    public void setMacaddress(String macaddress) {
+        this.macaddress = macaddress;
     }
 
     public LocalDateTime getUltimaAtualizacao() {
@@ -53,19 +52,19 @@ public class Impressora implements Serializable{
         this.unidade = unidade;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public String getEmpresa() {
         return empresa;
     }
 
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }

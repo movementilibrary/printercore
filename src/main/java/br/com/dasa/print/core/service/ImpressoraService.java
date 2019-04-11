@@ -37,7 +37,7 @@ public class ImpressoraService {
      * @param impressora
      * @throws InternalServerException
      */
-    @CachePut(cacheNames = "impressao",  key="#impressora?.identificacao")
+    @CachePut(cacheNames = "impressao",  key="#impressora?.macaddress")
     public Impressora criaImpressora(Impressora impressora) {
         Impressora impressoraCriada = null;
         try {
@@ -45,12 +45,12 @@ public class ImpressoraService {
 
             unidadeService.criaListaImpressoraPorUnidade(impressora);
 
-            LOGGER.info("Salvando impressora {} ", impressora.getIdentificacao());
+            LOGGER.info("Salvando impressora {} ", impressora.getMacaddress());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
 
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao salvar impressora {}", impressora.getIdentificacao() + e.getMessage());
+            LOGGER.error("Erro ao salvar impressora {}", impressora.getMacaddress() + e.getMessage());
             throw new InternalServerException(e.getMessage());
 
         }
@@ -61,18 +61,18 @@ public class ImpressoraService {
     /**
      * Responsável por apagar fila Rabbit
      * @author Michel Marciano
-     * @param identificacao
+     * @param macaddress
      * @throws ResourceNotFoundException
      */
-    @CacheEvict(cacheNames = "impressao", key = "#identificacao")
-    public void excluiImpressora(String identificacao) {
+    @CacheEvict(cacheNames = "impressao", key = "#macaddress")
+    public void excluiImpressora(String macaddress) {
         try {
-            Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPelaIdentificacao(identificacao));
+            Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPeloMacaddress(macaddress));
 
-            filaService.apagaFila(impressora.get().getIdentificacao());
+            filaService.apagaFila(impressora.get().getMacaddress());
 
 
-            LOGGER.info("Deletando impressora pela identificacao {} ", impressora.get().getIdentificacao());
+            LOGGER.info("Deletando impressora pelo macaddress {} ", impressora.get().getMacaddress());
             this.impressoraRepository.delete(impressora.get());
 
         } catch (Exception e) {
@@ -84,23 +84,23 @@ public class ImpressoraService {
 
 
     /**
-     * Responsável por listar impressora pela Identificacao
+     * Responsável por listar impressora pelo macaddress
      * @author Michel Marciano
-     * @return impressoraPelaIdentificacao
-     * @param identificacao
+     * @return impressoraPeloMacaddress
+     * @param macaddress
      * @throws ResourceNotFoundException
      */
-    @Cacheable(cacheNames = "impressao", key="#identificacao")
-    public Impressora listaImpressoraPelaIdentificacao(String identificacao) {
-        Optional<Impressora> impressoraPelaIdentificacao = null;
+    @Cacheable(cacheNames = "impressao", key="#macaddress")
+    public Impressora listaImpressoraPeloMacaddress(String macaddress) {
+        Optional<Impressora> impressoraPeloMacaddress= null;
         try {
-            LOGGER.info("Buscando impressora pela identificacao {} ", identificacao);
-            impressoraPelaIdentificacao = this.impressoraRepository.findById(identificacao);
+            LOGGER.info("Buscando impressora pelo macaddress {} ", macaddress);
+            impressoraPeloMacaddress = this.impressoraRepository.findById(macaddress);
         } catch (Exception e) {
             LOGGER.error("Erro ao realizar busca da impressora", e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
-        return impressoraPelaIdentificacao.orElseThrow(() -> new ResourceNotFoundException("Não foi possivel encontrar impressora"));
+        return impressoraPeloMacaddress.orElseThrow(() -> new ResourceNotFoundException("Não foi possivel encontrar impressora"));
     }
 
     /**

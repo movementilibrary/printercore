@@ -28,10 +28,10 @@ public class FilaService {
      */
     public void novaFila(Impressora impressora) {
         try {
-            LOGGER.info("Criando fila {}  no RabbbitMq", impressora.getIdentificacao());
-            this.rabbitAdmin.declareQueue(new Queue(impressora.getIdentificacao()));
+            LOGGER.info("Criando fila {}  no RabbbitMq", impressora.getMacaddress());
+            this.rabbitAdmin.declareQueue(new Queue(impressora.getMacaddress()));
         } catch (Exception e) {
-            LOGGER.error("Erro ao criar impressora {}", impressora.getIdentificacao(), e.getMessage());
+            LOGGER.error("Erro ao criar impressora {}", impressora.getMacaddress(), e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
     }
