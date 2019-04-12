@@ -40,7 +40,7 @@ public class UnidadeResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public List<Unidade> listaImpressoras(String unidade) {
+    public List<Unidade> listaImpressoras(@PathVariable String unidade) {
         return unidadeService.listaImpressorasPorUnidade(unidade);
 
     }
