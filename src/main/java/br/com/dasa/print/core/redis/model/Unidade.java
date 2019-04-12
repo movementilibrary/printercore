@@ -1,7 +1,6 @@
 package br.com.dasa.print.core.redis.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 
@@ -15,7 +14,7 @@ public class Unidade implements Serializable {
 
     }
 
-    public Unidade(@JsonProperty  String macaddress, @JsonProperty String nome) {
+    public Unidade(String macaddress,String nome) {
         this.macaddress = macaddress;
         this.nome = nome;
     }
