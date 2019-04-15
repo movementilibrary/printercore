@@ -1,7 +1,8 @@
 target/
 build/
 .idea/
-
+.settings/
 
 *.iml
 *.project
+*.classpath
