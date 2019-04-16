@@ -48,7 +48,6 @@ public class ImpressoraService {
             LOGGER.info("Salvando impressora {} ", impressora.getMacaddress());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
 
-
         } catch (Exception e) {
             LOGGER.error("Erro ao salvar impressora {}", impressora.getMacaddress() + e.getMessage());
             throw new InternalServerException(e.getMessage());

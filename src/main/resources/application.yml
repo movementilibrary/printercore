@@ -22,12 +22,11 @@ spring:
   application:
     name: printerserver
 
-
   cache:
     type: redis
   redis:
-    host: localhost
-    port: 6379
+   host: localhost
+   port: 6379
 #  main:
 #    allow-bean-definition-overriding: true
   rabbitmq:

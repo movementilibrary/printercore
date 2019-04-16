@@ -1,34 +1,20 @@
 package br.com.dasa.print.core.resource.ImpressoraResourceTest;
 
-import br.com.dasa.print.core.redis.model.Impressora;
-import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@AutoConfigureMockMvc
 public class ImpressoraResourceTest {
-
-    @Autowired
-    private TestRestTemplate restTemplate;
-
-    @MockBean
-    private ImpressoraRepository impressoraRepository;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    private Impressora impressora;
+//
+//    @Autowired
+//    private TestRestTemplate restTemplate;
+//
+//    @MockBean
+//    private ImpressoraRepository impressoraRepository;
+//
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    private Impressora impressora;
 
 //    @Before
 //    public void setUp() {

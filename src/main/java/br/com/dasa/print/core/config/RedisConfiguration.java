@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class RedisConfiguration {
 
 	@Value("${spring.redis.host}")
-	private String host; 
+	private String host;
 	@Value("${spring.redis.port}")
 	private String port;
-	
+
 	@Bean
 	public LettuceConnectionFactory redisConnectionFactory() {
 		return new LettuceConnectionFactory(new RedisStandaloneConfiguration(host, Integer.valueOf(port)));
