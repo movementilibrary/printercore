@@ -6,11 +6,12 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.attribute.AttributeSet;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import br.com.dasa.print.core.redis.model.Impressao;
 
 @Service
 public class PrinterService {
@@ -35,8 +36,8 @@ public class PrinterService {
 		}
 	}
 
-	@Async
-	public String imprimir(String texto) {
+	public void imprimir(Impressao impressao) {
+		String texto = impressao.getConteudoImpressao();
 		log.info("Imprimindo");
 		log.info(texto);
 
@@ -53,8 +54,8 @@ public class PrinterService {
 			}
 		}
 
+		impressao.setConteudoImpressao(strHexa.toString());
 
-		return strHexa.toString();
 	}
 
 	public String formataAscII(String texto) {

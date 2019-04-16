@@ -31,7 +31,7 @@ public class ImpressaoService {
     public void preparaConteudoAntesImpressao(Impressao impressao) {
         try {
             LOGGER.info("Preparando conteudo para impressao");
-            printerService.imprimir(impressao.getConteudoImpressao());
+            printerService.imprimir(impressao);
 
             solicitaImpressao(impressao);
         } catch (Exception e) {
