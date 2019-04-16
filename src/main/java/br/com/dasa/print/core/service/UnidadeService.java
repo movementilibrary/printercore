@@ -15,6 +15,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class UnidadeService {
@@ -43,12 +45,15 @@ public class UnidadeService {
         try {
             LOGGER.info("Listando Unidade por codigoEmpresa {} ", empresa);
             listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(empresa);
+            listaUnidadePorCodigo.forEach(unidade -> unidade.setNome(unidade.getMnemonico().concat(" - ").concat(unidade.getNome())));
+
         } catch (Exception e) {
             LOGGER.error("Erro ao listar unidade", e.getMessage());
             throw new InternalServerException(e.getMessage());
         }
         return listaUnidadePorCodigo;
     }
+
 
     /**
      * Responsável por criar lista de impressora por unidade
