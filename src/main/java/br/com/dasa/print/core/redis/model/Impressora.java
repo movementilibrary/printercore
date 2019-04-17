@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @RedisHash("Impressora")
+//TODO: Colocar bean validation e escrever testes para validacao
 public class Impressora implements Serializable{
 
    

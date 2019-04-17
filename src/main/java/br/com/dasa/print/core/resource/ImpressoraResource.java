@@ -28,7 +28,7 @@ public class ImpressoraResource {
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
     public Impressora listaImpressoraPelaIdentificacao(@PathVariable String macaddress) {
-        return impressoraService.listaImpressoraPeloMacaddress(macaddress);
+        return impressoraService.buscaImpressoraPeloMacaddress(macaddress);
 
     }
 

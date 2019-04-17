@@ -1,22 +1,21 @@
 package br.com.dasa.print.core.service;
 
-import br.com.dasa.print.core.exception.InternalServerException;
-import br.com.dasa.print.core.oracle.model.Pc;
-import br.com.dasa.print.core.oracle.repository.PcRepository;
-import br.com.dasa.print.core.redis.model.Impressora;
-import br.com.dasa.print.core.redis.model.Unidade;
+import java.util.List;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.dasa.print.core.exception.InternalServerException;
+import br.com.dasa.print.core.oracle.model.Pc;
+import br.com.dasa.print.core.oracle.repository.PcRepository;
+import br.com.dasa.print.core.redis.model.Impressora;
+import br.com.dasa.print.core.redis.model.Unidade;
 
 @Service
 public class UnidadeService {
@@ -48,8 +47,8 @@ public class UnidadeService {
             listaUnidadePorCodigo.forEach(unidade -> unidade.setNome(unidade.getMnemonico().concat(" - ").concat(unidade.getNome())));
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao listar unidade", e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao listar unidade {} ", e.getMessage(), e);
+            throw new InternalServerException(e.getMessage(), e);
         }
         return listaUnidadePorCodigo;
     }

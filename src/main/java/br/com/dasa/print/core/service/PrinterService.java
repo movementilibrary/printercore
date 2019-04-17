@@ -8,7 +8,6 @@ import javax.print.attribute.AttributeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import br.com.dasa.print.core.redis.model.Impressao;
@@ -18,23 +17,7 @@ public class PrinterService {
 
 	private static final Logger log = LoggerFactory.getLogger(PrinterService.class);
 
-	private PrintService printService;
-
-	@PostConstruct
-	public void setup() {
-		try {
-			DocFlavor df = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
-			PrintService[] ps = PrintServiceLookup.lookupPrintServices(df, (AttributeSet) null);
-			for (PrintService p : ps) {
-				if (p.getName().equals("Zebra")) {
-					printService = p;
-					break;
-				}
-			}
-		} catch (Exception e) {
-			log.error("Erro ao obter servico de impressora", e);
-		}
-	}
+	
 
 	public void imprimir(Impressao impressao) {
 		String texto = impressao.getConteudoImpressao();

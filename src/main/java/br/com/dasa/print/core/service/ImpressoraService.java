@@ -66,12 +66,12 @@ public class ImpressoraService {
     @CacheEvict(cacheNames = "impressao", key = "#macaddress")
     public void excluiImpressora(String macaddress) {
         try {
-            Optional<Impressora> impressora = Optional.ofNullable(listaImpressoraPeloMacaddress(macaddress));
+            Impressora impressora = buscaImpressoraPeloMacaddress(macaddress);
 
-            filaService.apagaFila(impressora.get().getMacaddress());
+            filaService.apagaFila(impressora.getMacaddress());
 
-            LOGGER.info("Deletando impressora pelo macaddress {} ", impressora.get().getMacaddress());
-            this.impressoraRepository.delete(impressora.get());
+            LOGGER.info("Deletando impressora pelo macaddress {} ", impressora.getMacaddress());
+            this.impressoraRepository.delete(impressora);
 
         } catch (Exception e) {
             LOGGER.error("Erro ao apagar impressora", e.getMessage());
@@ -89,7 +89,7 @@ public class ImpressoraService {
      * @throws ResourceNotFoundException
      */
     @Cacheable(cacheNames = "impressao", key="#macaddress")
-    public Impressora listaImpressoraPeloMacaddress(String macaddress) {
+    public Impressora buscaImpressoraPeloMacaddress(String macaddress) {
         Optional<Impressora> impressoraPeloMacaddress= null;
         try {
             LOGGER.info("Buscando impressora pelo macaddress {} ", macaddress);

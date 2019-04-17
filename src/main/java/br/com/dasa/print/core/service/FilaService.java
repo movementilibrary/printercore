@@ -31,8 +31,8 @@ public class FilaService {
             LOGGER.info("Criando fila {}  no RabbbitMq", impressora.getMacaddress());
             this.rabbitAdmin.declareQueue(new Queue(impressora.getMacaddress()));
         } catch (Exception e) {
-            LOGGER.error("Erro ao criar impressora {}", impressora.getMacaddress(), e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao criar impressora {} {}", impressora.getMacaddress(), e.getMessage(), e);
+            throw new InternalServerException(e.getMessage(), e);
         }
     }
 
@@ -41,8 +41,8 @@ public class FilaService {
             LOGGER.info("Apagando fila {}", identificacao);
             this.rabbitAdmin.deleteQueue(identificacao);
         }catch (Exception e){
-            LOGGER.error("Erro ao apagar impressora {}", identificacao, e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao apagar impressora {} {}", identificacao, e.getMessage(), e);
+            throw new InternalServerException("Erro ao apagar impressora", e);
         }
     }
 

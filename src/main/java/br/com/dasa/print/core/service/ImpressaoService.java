@@ -35,8 +35,8 @@ public class ImpressaoService {
 
             solicitaImpressao(impressao);
         } catch (Exception e) {
-            LOGGER.error("Erro ao preparar conteudo para impressao ", e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao preparar conteudo para impressao {} ", e.getMessage(), e);
+            throw new InternalServerException(e.getMessage(), e);
         }
     }
 
@@ -51,8 +51,8 @@ public class ImpressaoService {
             LOGGER.info("Enviando impressao para impresssora {}", impressao.getImpressora());
             rabbitTemplate.convertAndSend(impressao.getImpressora(), impressao.getConteudoImpressao());
         } catch (Exception e) {
-            LOGGER.error("Erro ao enviar mensagem para impressora {} ", impressao.getImpressora());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao enviar mensagem para impressora {} ", impressao.getImpressora(), e);
+            throw new InternalServerException(e.getMessage(), e);
         }
     }
 

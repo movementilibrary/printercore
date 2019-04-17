@@ -1,0 +1,37 @@
+server:
+  port: 9090
+
+spring:
+  #jpa:
+    #show-sql: true
+    #hibernate:
+      #ddl-auto: none
+  datasource:
+    oracle:
+      url: jdbc:oracle:thin:@brlspldgdb01.dasa.net:10010:glidev01
+      username: gliese
+      password: gliese
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+#    redis:
+ #     url: jdbc:redis:mem:print;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+  #    username: sa
+   #   password: sa
+    #  driver-class-name: org.redis.Driver
+  #main:
+   #  allow-bean-definition-overriding: true
+  application:
+    name: printerserver
+
+  cache:
+    type: redis
+  redis:
+   host: localhost
+   port: 6379
+#  main:
+#    allow-bean-definition-overriding: true
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+

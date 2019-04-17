@@ -11,11 +11,13 @@ public class InternalServerException extends RuntimeException{
      */
     private static final long serialVersionUID = 1L;
 
-    public InternalServerException() {
-        super("Um erro interno foi detectado");
+    public InternalServerException(String message, Exception e) {
+        super(message, e);
     }
 
     public InternalServerException (String message) {
         super(message);
     }
+    
+    
 }

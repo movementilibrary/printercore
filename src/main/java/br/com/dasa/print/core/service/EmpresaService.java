@@ -31,8 +31,8 @@ public class EmpresaService {
             listaTodasEmpImgs = empImgRepository.listaEmpresas();
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao Buscar empresas ", e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error("Erro ao Buscar empresas {}", e.getMessage());
+            throw new InternalServerException(e.getMessage(), e);
         }
         return listaTodasEmpImgs;
 
