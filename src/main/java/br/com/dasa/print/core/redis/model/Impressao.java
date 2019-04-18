@@ -16,14 +16,21 @@ public class Impressao implements Serializable {
 	@Id
     private String impressora;
     private String conteudoImpressao;
+    private TipoEtiqueta tipoEtiqueta;
 
-    public Impressao() { }
-
-    public Impressao(String impressora, String conteudoImpressao) {
-        this.impressora = impressora;
-        this.conteudoImpressao = conteudoImpressao;
+    public Impressao() {
+        this(null, null);
     }
 
+    public Impressao(String impressora, String conteudoImpressao) {
+        this(impressora, conteudoImpressao, TipoEtiqueta.PORTRAIT);
+    }
+
+    public Impressao(String impressora, String conteudoImpressao, TipoEtiqueta tipoEtiqueta) {
+        this.impressora = impressora;
+        this.conteudoImpressao = conteudoImpressao;
+        this.tipoEtiqueta = tipoEtiqueta;
+    }
 
     public String getImpressora() {
         return impressora;
@@ -39,5 +46,13 @@ public class Impressao implements Serializable {
 
     public void setConteudoImpressao(String conteudoImpressao) {
         this.conteudoImpressao = conteudoImpressao;
+    }
+
+    public TipoEtiqueta getTipoEtiqueta() {
+        return tipoEtiqueta;
+    }
+
+    public void setTipoEtiqueta(TipoEtiqueta tipoEtiqueta) {
+        this.tipoEtiqueta = tipoEtiqueta;
     }
 }
