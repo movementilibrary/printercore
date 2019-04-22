@@ -3,6 +3,8 @@ package br.com.dasa.print.core.service;
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.oracle.model.EmpImg;
 import br.com.dasa.print.core.oracle.repository.EmpImgRepository;
+import br.com.dasa.print.core.type.MensagemErroType;
+import br.com.dasa.print.core.type.MensagemInfoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +23,17 @@ public class EmpresaService {
     /**
      * Metodo Responsável por Lista todas as Empresas
      * @author Michel Marciano
-     * @return retornaTodasEmpresas
+     * @return listaTodasEmpImgs
      * @exception InternalServerException
      */
     public List<EmpImg> listaTodasEmpresas() {
         List<EmpImg> listaTodasEmpImgs = null;
         try {
-            LOGGER.info("Buscando Empresas...");
+            LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem());
             listaTodasEmpImgs = empImgRepository.listaEmpresas();
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao Buscar empresas {}", e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_EMPRESAS.getMensagem(),  e.getMessage());
             throw new InternalServerException(e.getMessage(), e);
         }
         return listaTodasEmpImgs;

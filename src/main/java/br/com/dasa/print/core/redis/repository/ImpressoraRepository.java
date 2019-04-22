@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface ImpressoraRepository extends CrudRepository<Impressora, String> {
 
     List<Impressora> findByUnidade(String unidade);
-    Optional<Impressora> findByMacaddress(String macaddress);
+    Optional<Impressora> findById(String id);
 
 }

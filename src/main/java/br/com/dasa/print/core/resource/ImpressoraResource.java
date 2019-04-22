@@ -20,15 +20,15 @@ public class ImpressoraResource {
     private ImpressoraService impressoraService;
 
 
-    @GetMapping(value = "/macaddress/{macaddress}")
+    @GetMapping(value = "/id/{id}")
     @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora pelo macaddress")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public Impressora listaImpressoraPelaIdentificacao(@PathVariable String macaddress) {
-        return impressoraService.buscaImpressoraPeloMacaddress(macaddress);
+    public Impressora listaImpressoraPelaIdentificacao(@PathVariable String id) {
+        return impressoraService.buscaImpressoraPeloId(id);
 
     }
 

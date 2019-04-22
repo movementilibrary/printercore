@@ -4,6 +4,9 @@ import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.exception.ResourceNotFoundException;
 import br.com.dasa.print.core.redis.model.Impressora;
 import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
+import br.com.dasa.print.core.type.MensagemErroType;
+import br.com.dasa.print.core.type.MensagemInfoType;
+import br.com.dasa.print.core.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +40,20 @@ public class ImpressoraService {
      * @param impressora
      * @throws InternalServerException
      */
-    @CachePut(cacheNames = "impressao",  key="#impressora?.macaddress")
+    @CachePut(cacheNames = "impressao",  key="#impressora?.id")
     public Impressora criaImpressora(Impressora impressora) {
         Impressora impressoraCriada = null;
         try {
-            filaService.novaFila(impressora);
+
+            filaService.novaFila(Utils.criaIdImpressora(impressora));
 
             unidadeService.criaListaImpressoraPorUnidade(impressora);
 
-            LOGGER.info("Salvando impressora {} ", impressora.getMacaddress());
+            LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao salvar impressora {}", impressora.getMacaddress() + e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_SALVAR_IMPRESSORA.getMensagem().concat(" {}") , impressora.getId(), e.getMessage());
             throw new InternalServerException(e.getMessage());
 
         }
@@ -60,23 +64,24 @@ public class ImpressoraService {
     /**
      * Responsável por apagar fila Rabbit
      * @author Michel Marciano
-     * @param macaddress
+     * @param id
      * @throws ResourceNotFoundException
      */
-    @CacheEvict(cacheNames = "impressao", key = "#macaddress")
-    public void excluiImpressora(String macaddress) {
+    @CacheEvict(cacheNames = "impressao", key = "#id")
+    public void excluiImpressora(String id) {
         try {
-            Impressora impressora = buscaImpressoraPeloMacaddress(macaddress);
+            Impressora impressora = buscaImpressoraPeloId(id);
 
-            filaService.apagaFila(impressora.getMacaddress());
+            filaService.apagaFila(impressora.getId());
 
-            LOGGER.info("Deletando impressora pelo macaddress {} ", impressora.getMacaddress());
+            LOGGER.info(MensagemInfoType.DELETANDO_IMPRESSORA.getMensagem().concat("{}"), impressora.getId());
             this.impressoraRepository.delete(impressora);
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao apagar impressora", e.getMessage());
-            throw new ResourceNotFoundException(e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_DELETAR_IMPRESSORA.getMensagem().concat("{}"), e.getMessage());
+            throw new ResourceNotFoundException(e.getMessage(), e);
         }
+
 
     }
 
@@ -85,20 +90,20 @@ public class ImpressoraService {
      * Responsável por listar impressora pelo macaddress
      * @author Michel Marciano
      * @return impressoraPeloMacaddress
-     * @param macaddress
+     * @param id
      * @throws ResourceNotFoundException
      */
-    @Cacheable(cacheNames = "impressao", key="#macaddress")
-    public Impressora buscaImpressoraPeloMacaddress(String macaddress) {
+    @Cacheable(cacheNames = "impressao", key="#id")
+    public Impressora buscaImpressoraPeloId(String id) {
         Optional<Impressora> impressoraPeloMacaddress= null;
         try {
-            LOGGER.info("Buscando impressora pelo macaddress {} ", macaddress);
-            impressoraPeloMacaddress = this.impressoraRepository.findById(macaddress);
+            LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem().concat("{}"), id);
+            impressoraPeloMacaddress = this.impressoraRepository.findById(id);
         } catch (Exception e) {
-            LOGGER.error("Erro ao realizar busca da impressora", e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORAS.getMensagem().concat("{}"), e.getMessage());
+            throw new InternalServerException(e.getMessage(), e);
         }
-        return impressoraPeloMacaddress.orElseThrow(() -> new ResourceNotFoundException("Não foi possivel encontrar impressora"));
+        return impressoraPeloMacaddress.orElseThrow(() -> new ResourceNotFoundException(MensagemInfoType.IMPRESSORA_NOT_FOUND.getMensagem()));
     }
 
     /**
@@ -111,12 +116,12 @@ public class ImpressoraService {
     public List<Impressora> listaTodasImpressoras() {
         List<Impressora> listaImpressoras = new ArrayList<>();
         try {
-            LOGGER.info("Buscando impressoras...");
+            LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem());
             this.impressoraRepository.findAll().forEach(impressora -> listaImpressoras.add(impressora));
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao Buscar impressoras ", e.getMessage());
-            throw new InternalServerException(e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORAS.getMensagem(), e);
+            throw new InternalServerException(e.getMessage(), e);
         }
         return listaImpressoras;
     }
@@ -128,10 +133,11 @@ public class ImpressoraService {
      * @return
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
-        LOGGER.info("Atualizando horario impressora {} ", impressora);
+        LOGGER.info( MensagemInfoType.ATUALIZANDO_HORARIO_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId());
         impressora.setUltimaAtualizacao(LocalDateTime.now().minusHours(4));
         return impressora;
     }
+
 
 
 }

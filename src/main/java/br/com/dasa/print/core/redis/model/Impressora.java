@@ -14,6 +14,7 @@ public class Impressora implements Serializable{
    
 	@Id
     private String macaddress;
+	private String id;
     private LocalDateTime ultimaAtualizacao;
     private String unidade;
     private String empresa;
@@ -21,8 +22,9 @@ public class Impressora implements Serializable{
 
     public Impressora() { }
 
-    public Impressora(String macaddress, LocalDateTime ultimaAtualizacao, String unidade, String empresa, String nome) {
+    public Impressora(String macaddress, String id, LocalDateTime ultimaAtualizacao, String unidade, String empresa, String nome) {
         this.macaddress = macaddress;
+        this.id = id;
         this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;
         this.empresa = empresa;
@@ -35,6 +37,14 @@ public class Impressora implements Serializable{
 
     public void setMacaddress(String macaddress) {
         this.macaddress = macaddress;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public LocalDateTime getUltimaAtualizacao() {

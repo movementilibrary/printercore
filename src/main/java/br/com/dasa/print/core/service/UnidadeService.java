@@ -2,6 +2,8 @@ package br.com.dasa.print.core.service;
 
 import java.util.List;
 
+import br.com.dasa.print.core.type.MensagemErroType;
+import br.com.dasa.print.core.type.MensagemInfoType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +44,12 @@ public class UnidadeService {
     public List<Pc> listaUnidadePorCodigoEmpresa(String empresa) {
         List<Pc> listaUnidadePorCodigo = null;
         try {
-            LOGGER.info("Listando Unidade por codigoEmpresa {} ", empresa);
+            LOGGER.info(MensagemInfoType.BUSCANDO_UNIDADE_POR_EMPRESA.getMensagem().concat("{}"), empresa);
             listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(empresa);
             listaUnidadePorCodigo.forEach(unidade -> unidade.setNome(unidade.getMnemonico().concat(" - ").concat(unidade.getNome())));
 
         } catch (Exception e) {
-            LOGGER.error("Erro ao listar unidade {} ", e.getMessage(), e);
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), e.getMessage(), e);
             throw new InternalServerException(e.getMessage(), e);
         }
         return listaUnidadePorCodigo;
@@ -62,10 +64,10 @@ public class UnidadeService {
      */
     public void criaListaImpressoraPorUnidade(Impressora impressora) {
         try {
-            LOGGER.info("Inserindo impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getNome());
+            LOGGER.info(MensagemInfoType.INSERINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getNome());
             redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getNome())));
         } catch (Exception e) {
-            LOGGER.error("Não foi possivel inserir impressora {} na lista da unidade {} ", impressora.getMacaddress(), impressora.getUnidade(), e);
+            LOGGER.error(MensagemErroType.ERRO_INSERIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getUnidade(), e.getMessage(), e);
         }
     }
 
@@ -81,13 +83,13 @@ public class UnidadeService {
         List<Unidade> listaImpressora = null;
 
         try {
-            LOGGER.info("Listando impressoras da unidade {} ", unidade);
+            LOGGER.info( MensagemInfoType.BUSCANDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), unidade);
             listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
             listaImpressora = objm.readValue(listaImpressoraPorUnidade.toString(), new TypeReference<List<Unidade>>() {
             });
 
         } catch (Exception e) {
-            LOGGER.error("Não foi possivel listar impressoras da unidade {}  ", unidade, e);
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), unidade, e);
         }
         return listaImpressora;
     }
@@ -102,13 +104,13 @@ public class UnidadeService {
     public void excluindoImpressora(Impressora impressora) {
         try {
 
-            String unidade = objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getNome()));
+            String unidade = objm.writeValueAsString(new Unidade(impressora.getId(), impressora.getNome()));
 
-            LOGGER.info("Excluindo impressora {}  da unidade {} ", impressora.getMacaddress(), impressora.getNome());
+            LOGGER.info(MensagemInfoType.EXCLUINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getId(), impressora.getNome());
             redisTemplate.opsForList().remove(impressora.getUnidade(), 1, unidade);
 
         } catch (Exception e) {
-            LOGGER.error("Não foi possivel excluir impressora {} da unidade {} ", impressora.getMacaddress(), impressora.getUnidade(), e);
+            LOGGER.error(MensagemErroType.ERRO_EXCLUIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getId(), impressora.getUnidade(), e);
         }
 
     }
