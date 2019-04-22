@@ -1,7 +1,10 @@
 package br.com.dasa.print.core.resource;
 
+import br.com.dasa.print.core.redis.dto.ImpressoraDto;
+import br.com.dasa.print.core.redis.model.Unidade;
 import br.com.dasa.print.core.service.ImpressoraService;
 import br.com.dasa.print.core.redis.model.Impressora;
+import br.com.dasa.print.core.service.UnidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,24 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/impressora")
+@RequestMapping("/impressoras")
 public class ImpressoraResource {
 
     @Autowired
     private ImpressoraService impressoraService;
 
+    @Autowired
+    private UnidadeService unidadeService;
 
-    @GetMapping(value = "/id/{id}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Impressora pelo macaddress")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Sucesso"),
-            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
-            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
-    })
-    public Impressora listaImpressoraPelaIdentificacao(@PathVariable String id) {
-        return impressoraService.buscaImpressoraPeloId(id);
-
-    }
 
     @GetMapping()
     @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Todas as Impressoras")
@@ -39,8 +33,8 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public List<Impressora> listaTodasImpressoras() {
-        return impressoraService.listaTodasImpressoras();
+    public List<Impressora> listaTodasImpressoras(@RequestParam (required=false) String id) {
+        return impressoraService.listaTodasImpressoras(id);
     }
 
 
@@ -56,15 +50,15 @@ public class ImpressoraResource {
     }
 
 
-    @DeleteMapping(value = "/macaddress/{macaddress}")
+    @DeleteMapping(value = "/{id}")
     @ApiOperation(httpMethod = "DELETE", value = "Responsável por apagar Impressora")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public void deletaImpressora(@PathVariable String macaddress) {
-        impressoraService.excluiImpressora(macaddress);
+    public void deletaImpressora(@PathVariable String id) {
+        impressoraService.excluiImpressora(id);
     }
 
 

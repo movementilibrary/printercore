@@ -1,4 +1,4 @@
-package br.com.dasa.print.core.redis.model;
+package br.com.dasa.print.core.type;
 
 /**
  * Informacoes sobre tipos de etiqueta.
@@ -6,7 +6,7 @@ package br.com.dasa.print.core.redis.model;
  * Contem informacoes predefinidas de largura e altura em milimetros das etiquetas.
  *
  */
-public enum TipoEtiqueta {
+public enum TipoEtiquetaType {
     PORTRAIT(31, 55, 3),
     LANDSCAPE(45, 30, 3);
 
@@ -14,7 +14,7 @@ public enum TipoEtiqueta {
     double height;
     double gap;
 
-    TipoEtiqueta(double width, double height, double gap) {
+    TipoEtiquetaType(double width, double height, double gap) {
         this.width = width;
         this.height = height;
         this.gap = gap;

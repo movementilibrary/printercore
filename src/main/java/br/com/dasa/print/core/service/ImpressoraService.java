@@ -6,7 +6,6 @@ import br.com.dasa.print.core.redis.model.Impressora;
 import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
 import br.com.dasa.print.core.type.MensagemErroType;
 import br.com.dasa.print.core.type.MensagemInfoType;
-import br.com.dasa.print.core.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,20 +44,23 @@ public class ImpressoraService {
         Impressora impressoraCriada = null;
         try {
 
-            filaService.novaFila(Utils.criaIdImpressora(impressora));
+            //TODO: Verificar se impressora existe antes de criar
+            filaService.novaFila(criaIdImpressora(impressora));
 
             unidadeService.criaListaImpressoraPorUnidade(impressora);
 
-            LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
+            LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getMacaddress());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
 
         } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_SALVAR_IMPRESSORA.getMensagem().concat(" {}") , impressora.getId(), e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_SALVAR_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId(), e.getMessage());
             throw new InternalServerException(e.getMessage());
 
         }
         return impressoraCriada;
     }
+
+
 
 
     /**
@@ -70,21 +72,21 @@ public class ImpressoraService {
     @CacheEvict(cacheNames = "impressao", key = "#id")
     public void excluiImpressora(String id) {
         try {
+
             Impressora impressora = buscaImpressoraPeloId(id);
 
             filaService.apagaFila(impressora.getId());
 
-            LOGGER.info(MensagemInfoType.DELETANDO_IMPRESSORA.getMensagem().concat("{}"), impressora.getId());
+            unidadeService.excluiImpressora(id);
+
+            LOGGER.info(MensagemInfoType.DELETANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
             this.impressoraRepository.delete(impressora);
 
         } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_DELETAR_IMPRESSORA.getMensagem().concat("{}"), e.getMessage());
+            LOGGER.error(MensagemErroType.ERRO_DELETAR_IMPRESSORA.getMensagem().concat(" {} "), e.getMessage());
             throw new ResourceNotFoundException(e.getMessage(), e);
         }
-
-
     }
-
 
     /**
      * Responsável por listar impressora pelo macaddress
@@ -113,11 +115,15 @@ public class ImpressoraService {
      * @throws InternalServerException
      *
      */
-    public List<Impressora> listaTodasImpressoras() {
+    public List<Impressora> listaTodasImpressoras(String id) {
         List<Impressora> listaImpressoras = new ArrayList<>();
         try {
-            LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem());
-            this.impressoraRepository.findAll().forEach(impressora -> listaImpressoras.add(impressora));
+            if(id == null){
+                LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem());
+                this.impressoraRepository.findAll().forEach(impressora -> listaImpressoras.add(impressora));
+            }else{
+                listaImpressoras.add(buscaImpressoraPeloId(id));
+            }
 
         } catch (Exception e) {
             LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORAS.getMensagem(), e);
@@ -134,7 +140,18 @@ public class ImpressoraService {
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
         LOGGER.info( MensagemInfoType.ATUALIZANDO_HORARIO_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId());
-        impressora.setUltimaAtualizacao(LocalDateTime.now().minusHours(4));
+        impressora.setUltima_atualizacao(LocalDateTime.now().minusHours(4));
+        return impressora;
+    }
+
+
+    /**
+     * Metodo Responsável por criar Id Impressora
+     * @param impressora
+     * @return
+     */
+    public static Impressora criaIdImpressora(Impressora impressora){
+        impressora.setId(impressora.getUnidade().concat("-").concat(impressora.getMacaddress()));
         return impressora;
     }
 

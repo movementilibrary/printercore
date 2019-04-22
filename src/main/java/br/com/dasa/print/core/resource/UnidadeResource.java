@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "unidade")
+@RequestMapping(value = "unidades")
 public class UnidadeResource {
 
     @Autowired
@@ -22,18 +22,9 @@ public class UnidadeResource {
     @Autowired
     private UnidadeService unidadeService;
 
-    @GetMapping(value="/empresa/{empresa}")
-    @ApiOperation(httpMethod = "GET", value = "Responsável por listar todas as unidades por empresa")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Sucesso"),
-            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
-            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
-    })
-    public List<Pc> listaUnidadePorCodigoEmpresa(@PathVariable String empresa) {
-        return this.pcService.listaUnidadePorCodigoEmpresa(empresa);
-    }
 
-    @GetMapping(value = "/{unidade}/impressora")
+
+    @GetMapping(value = "/{unidade}/impressoras")
     @ApiOperation(httpMethod = "GET", value = "Responsável por listar Impressoras por unidade")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Sucesso"),
@@ -45,16 +36,16 @@ public class UnidadeResource {
 
     }
 
-
-    @DeleteMapping()
-    @ApiOperation(httpMethod = "DELETE", value = "Responsável por deletar Impressora por Unidade")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Sucesso"),
-            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
-            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
-    })
-    public void deletaImpressora(@RequestBody  Impressora impressora) {
-        unidadeService.excluindoImpressora(impressora);
-
-    }
+//
+//    @DeleteMapping(value = "/{id}/impressora")
+//    @ApiOperation(httpMethod = "DELETE", value = "Responsável por deletar Impressora por Unidade")
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Sucesso"),
+//            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
+//            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
+//    })
+//    public void deletaImpressora(@PathVariable  String id) {
+//        unidadeService.excluiImpressora(id);
+//
+//    }
 }

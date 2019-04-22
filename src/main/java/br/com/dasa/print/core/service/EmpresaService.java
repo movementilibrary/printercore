@@ -2,7 +2,9 @@ package br.com.dasa.print.core.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.oracle.model.EmpImg;
+import br.com.dasa.print.core.oracle.model.Pc;
 import br.com.dasa.print.core.oracle.repository.EmpImgRepository;
+import br.com.dasa.print.core.oracle.repository.PcRepository;
 import br.com.dasa.print.core.type.MensagemErroType;
 import br.com.dasa.print.core.type.MensagemInfoType;
 import org.slf4j.Logger;
@@ -19,6 +21,9 @@ public class EmpresaService {
 
     @Autowired
     private EmpImgRepository empImgRepository;
+
+    @Autowired
+    private PcRepository pcRepository;
 
     /**
      * Metodo Responsável por Lista todas as Empresas
@@ -37,6 +42,28 @@ public class EmpresaService {
             throw new InternalServerException(e.getMessage(), e);
         }
         return listaTodasEmpImgs;
-
     }
+
+    /**
+     * Responsável por listar Unidades pela identificacao
+     *
+     * @param id
+     * @return listaUnidadePorIdentificacao
+     * @throws InternalServerException
+     * @author Michel Marciano
+     */
+    public List<Pc> listaUnidadePorCodigoEmpresa(String id) {
+        List<Pc> listaUnidadePorCodigo = null;
+        try {
+            LOGGER.info(MensagemInfoType.BUSCANDO_UNIDADE_POR_EMPRESA.getMensagem().concat("{}"), id);
+            listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(id);
+            listaUnidadePorCodigo.forEach(unidade -> unidade.setNome(unidade.getMnemonico().concat(" - ").concat(unidade.getNome())));
+
+        } catch (Exception e) {
+            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), e.getMessage(), e);
+            throw new InternalServerException(e.getMessage(), e);
+        }
+        return listaUnidadePorCodigo;
+    }
+
 }

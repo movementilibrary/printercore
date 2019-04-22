@@ -8,35 +8,26 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @RedisHash("Impressora")
-//TODO: Colocar bean validation e escrever testes para validacao
 public class Impressora implements Serializable{
 
    
 	@Id
-    private String macaddress;
 	private String id;
-    private LocalDateTime ultimaAtualizacao;
+    private String macaddress;
+    private LocalDateTime ultima_atualizacao;
     private String unidade;
     private String empresa;
     private String nome;
 
     public Impressora() { }
 
-    public Impressora(String macaddress, String id, LocalDateTime ultimaAtualizacao, String unidade, String empresa, String nome) {
-        this.macaddress = macaddress;
+    public Impressora(String id, String macaddress, LocalDateTime ultima_atualizacao, String unidade, String empresa, String nome) {
         this.id = id;
-        this.ultimaAtualizacao = ultimaAtualizacao;
+        this.macaddress = macaddress;
+        this.ultima_atualizacao = ultima_atualizacao;
         this.unidade = unidade;
         this.empresa = empresa;
         this.nome = nome;
-    }
-
-    public String getMacaddress() {
-        return macaddress;
-    }
-
-    public void setMacaddress(String macaddress) {
-        this.macaddress = macaddress;
     }
 
     public String getId() {
@@ -47,12 +38,20 @@ public class Impressora implements Serializable{
         this.id = id;
     }
 
-    public LocalDateTime getUltimaAtualizacao() {
-        return ultimaAtualizacao;
+    public String getMacaddress() {
+        return macaddress;
     }
 
-    public void setUltimaAtualizacao(LocalDateTime ultimaAtualizacao) {
-        this.ultimaAtualizacao = ultimaAtualizacao;
+    public void setMacaddress(String macaddress) {
+        this.macaddress = macaddress;
+    }
+
+    public LocalDateTime getUltima_atualizacao() {
+        return ultima_atualizacao;
+    }
+
+    public void setUltima_atualizacao(LocalDateTime ultima_atualizacao) {
+        this.ultima_atualizacao = ultima_atualizacao;
     }
 
     public String getUnidade() {

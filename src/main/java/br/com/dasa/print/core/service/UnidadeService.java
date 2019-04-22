@@ -24,8 +24,6 @@ public class UnidadeService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UnidadeService.class);
 
-    @Autowired
-    private PcRepository pcRepository;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -33,27 +31,9 @@ public class UnidadeService {
     @Autowired
     private ObjectMapper objm;
 
-    /**
-     * Responsável por listar Unidades pela identificacao
-     *
-     * @param empresa
-     * @return listaUnidadePorIdentificacao
-     * @throws InternalServerException
-     * @author Michel Marciano
-     */
-    public List<Pc> listaUnidadePorCodigoEmpresa(String empresa) {
-        List<Pc> listaUnidadePorCodigo = null;
-        try {
-            LOGGER.info(MensagemInfoType.BUSCANDO_UNIDADE_POR_EMPRESA.getMensagem().concat("{}"), empresa);
-            listaUnidadePorCodigo = pcRepository.listaUnidadePorCodigoEmpresa(empresa);
-            listaUnidadePorCodigo.forEach(unidade -> unidade.setNome(unidade.getMnemonico().concat(" - ").concat(unidade.getNome())));
+    @Autowired
+    private ImpressoraService impressoraService;
 
-        } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_BUSCAR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), e.getMessage(), e);
-            throw new InternalServerException(e.getMessage(), e);
-        }
-        return listaUnidadePorCodigo;
-    }
 
 
     /**
@@ -64,10 +44,10 @@ public class UnidadeService {
      */
     public void criaListaImpressoraPorUnidade(Impressora impressora) {
         try {
-            LOGGER.info(MensagemInfoType.INSERINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getNome());
-            redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getMacaddress(), impressora.getNome())));
+            LOGGER.info(MensagemInfoType.INSERINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat(" {} "), impressora.getNome());
+            redisTemplate.opsForList().leftPush(impressora.getUnidade(), objm.writeValueAsString(new Unidade(impressora.getId(), impressora.getNome())));
         } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_INSERIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getUnidade(), e.getMessage(), e);
+            LOGGER.error(MensagemErroType.ERRO_INSERIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat(" {} "), impressora.getUnidade(), e.getMessage(), e);
         }
     }
 
@@ -83,7 +63,7 @@ public class UnidadeService {
         List<Unidade> listaImpressora = null;
 
         try {
-            LOGGER.info( MensagemInfoType.BUSCANDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), unidade);
+            LOGGER.info( MensagemInfoType.BUSCANDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat(" {} "), unidade);
             listaImpressoraPorUnidade = redisTemplate.opsForList().range(unidade, 0, -1);
             listaImpressora = objm.readValue(listaImpressoraPorUnidade.toString(), new TypeReference<List<Unidade>>() {
             });
@@ -96,21 +76,25 @@ public class UnidadeService {
 
 
     /**
-     * Rsponsável por deletar impressora por unidade
+     * Responsável por deletar impressora por unidade
      *
-     * @param impressora
+     * @param id
      * @author Michel Marciano
      */
-    public void excluindoImpressora(Impressora impressora) {
+    public void excluiImpressora(String id) {
+        Impressora impressora = null;
         try {
+
+            impressora = impressoraService.buscaImpressoraPeloId(id);
 
             String unidade = objm.writeValueAsString(new Unidade(impressora.getId(), impressora.getNome()));
 
-            LOGGER.info(MensagemInfoType.EXCLUINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getId(), impressora.getNome());
+            LOGGER.info(MensagemInfoType.EXCLUINDO_IMPRESSORA_POR_UNIDADE.getMensagem().concat(" {} "), impressora.getId(), impressora.getNome());
             redisTemplate.opsForList().remove(impressora.getUnidade(), 1, unidade);
 
         } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_EXCLUIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat("{}"), impressora.getId(), impressora.getUnidade(), e);
+            LOGGER.error(MensagemErroType.ERRO_EXCLUIR_IMPRESSORA_POR_UNIDADE.getMensagem().concat(" {} "), impressora.getId(), impressora.getUnidade(), e);
+
         }
 
     }

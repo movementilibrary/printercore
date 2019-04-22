@@ -8,7 +8,7 @@ import javax.print.attribute.AttributeSet;
 
 
 import br.com.dasa.print.core.redis.model.Impressao;
-import br.com.dasa.print.core.redis.model.TipoEtiqueta;
+import br.com.dasa.print.core.type.TipoEtiquetaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -43,8 +43,8 @@ public class PrinterService {
 	@Async
 	public String convertToEPL2(Impressao impressao) {
 		log.info("Imprimindo");
-		log.info(impressao.getConteudoImpressao());
-		String texto = impressao.getConteudoImpressao();
+		log.info(impressao.getConteudo_impressao());
+		String texto = impressao.getConteudo_impressao();
 
 		int etqCont = texto.replaceAll("[^\250]", "").length();
 		String[] risk = texto.split("\250");
@@ -52,7 +52,7 @@ public class PrinterService {
 
 		for (int i = 0; i < etqCont; ++i) {
 			try {
-				strHexa.append(formataEPL2(impressao.getTipoEtiqueta(), risk[i]));
+				strHexa.append(formataEPL2(impressao.getTipo_etiqueta(), risk[i]));
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
@@ -66,23 +66,23 @@ public class PrinterService {
 	 * CHAR	DEC	OCTAL
 	 * ¾	190	276		=> caractere indicativo para quebra de linha em etiqueta
 	 * ¨	168	250		=> caractere indicativo para fim de etiqueta
-	 * @param tipoEtiqueta
+	 * @param tipoEtiquetaType
 	 * @param texto
 	 * @return conteudo EPL2
 	 */
-	private String formataEPL2(TipoEtiqueta tipoEtiqueta, String texto) {
-		String header = buildInfoEtiqueta(tipoEtiqueta);
-		if (tipoEtiqueta == TipoEtiqueta.PORTRAIT) {
+	private String formataEPL2(TipoEtiquetaType tipoEtiquetaType, String texto) {
+		String header = buildInfoEtiqueta(tipoEtiquetaType);
+		if (tipoEtiquetaType == TipoEtiquetaType.PORTRAIT) {
 			return portraitEPL(header, texto);
 		} else {
 			return landscapeEPL(header, texto);
 		}
 	}
 
-	private String buildInfoEtiqueta(TipoEtiqueta tipoEtiqueta) {
-		int formSize = (int) tipoEtiqueta.getHeight() * DOTS_PER_MILIMETER;
-		int gapSize =  (int) tipoEtiqueta.getGap() * DOTS_PER_MILIMETER;
-		int printerAreaSize = (int) tipoEtiqueta.getWidth() * DOTS_PER_MILIMETER;
+	private String buildInfoEtiqueta(TipoEtiquetaType tipoEtiquetaType) {
+		int formSize = (int) tipoEtiquetaType.getHeight() * DOTS_PER_MILIMETER;
+		int gapSize =  (int) tipoEtiquetaType.getGap() * DOTS_PER_MILIMETER;
+		int printerAreaSize = (int) tipoEtiquetaType.getWidth() * DOTS_PER_MILIMETER;
 
 		String header = String.format("JF%sQ%d,%d%sq%d%sN%s",
 				LINE_FEED, formSize, gapSize,
@@ -162,7 +162,7 @@ public class PrinterService {
 
 		Impressao impressao = new Impressao("DAP",
 				"I2o5¾        FINAL DE LOTE         ¾Testes Processos de Atendiment¾888/1184¾QTD REC: 2  LEITO: 11¾¾NUM CHAMADA: null¾COLETADOR: ¾¨I2o5¾        FINAL DE LOTE         ¾Testes Processos de Atendiment¾888/1184¾QTD REC: 2  LEITO: 11¾¾NUM CHAMADA: null¾COLETADOR: ¾¨",
-				TipoEtiqueta.PORTRAIT);
+				TipoEtiquetaType.PORTRAIT);
 		service.convertToEPL2(impressao);
 	}
 
