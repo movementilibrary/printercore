@@ -1,6 +1,7 @@
 package br.com.dasa.print.core.redis.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -14,17 +15,18 @@ public class Impressora implements Serializable{
 	@Id
 	private String id;
     private String macaddress;
-    private LocalDateTime ultima_atualizacao;
+    @JsonProperty("ultima_atualizacao")
+    private LocalDateTime ultimaAtualizacao;
     private String unidade;
     private String empresa;
     private String nome;
 
     public Impressora() { }
 
-    public Impressora(String id, String macaddress, LocalDateTime ultima_atualizacao, String unidade, String empresa, String nome) {
+    public Impressora(String id, String macaddress, LocalDateTime ultimaAtualizacao, String unidade, String empresa, String nome) {
         this.id = id;
         this.macaddress = macaddress;
-        this.ultima_atualizacao = ultima_atualizacao;
+        this.ultimaAtualizacao = ultimaAtualizacao;
         this.unidade = unidade;
         this.empresa = empresa;
         this.nome = nome;
@@ -46,12 +48,12 @@ public class Impressora implements Serializable{
         this.macaddress = macaddress;
     }
 
-    public LocalDateTime getUltima_atualizacao() {
-        return ultima_atualizacao;
+    public LocalDateTime getUltimaAtualizacao() {
+        return ultimaAtualizacao;
     }
 
-    public void setUltima_atualizacao(LocalDateTime ultima_atualizacao) {
-        this.ultima_atualizacao = ultima_atualizacao;
+    public void setUltimaAtualizacao(LocalDateTime ultimaAtualizacao) {
+        this.ultimaAtualizacao = ultimaAtualizacao;
     }
 
     public String getUnidade() {

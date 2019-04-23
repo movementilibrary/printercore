@@ -3,6 +3,7 @@ package br.com.dasa.print.core.redis.model;
 import java.io.Serializable;
 
 import br.com.dasa.print.core.type.TipoEtiquetaType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.annotation.Id;
 
@@ -13,8 +14,10 @@ public class Impressao implements Serializable {
 	
 	@Id
     private String impressora;
-    private String conteudo_impressao;
-    private TipoEtiquetaType tipo_etiqueta;
+	@JsonProperty("conteudo_impressao")
+    private String conteudoImpressao;
+    @JsonProperty("tipo_etiqueta")
+    private TipoEtiquetaType tipoEtiqueta;
 
     public Impressao() {
         this(null, null);
@@ -24,11 +27,12 @@ public class Impressao implements Serializable {
         this(impressora, conteudo_impressao, TipoEtiquetaType.PORTRAIT);
     }
 
-    public Impressao(String impressora, String conteudo_impressao, TipoEtiquetaType tipo_etiqueta) {
+    public Impressao(String impressora, String conteudoImpressao, TipoEtiquetaType tipoEtiqueta) {
         this.impressora = impressora;
-        this.conteudo_impressao = conteudo_impressao;
-        this.tipo_etiqueta = tipo_etiqueta;
+        this.conteudoImpressao = conteudoImpressao;
+        this.tipoEtiqueta = tipoEtiqueta;
     }
+
 
     public String getImpressora() {
         return impressora;
@@ -38,19 +42,19 @@ public class Impressao implements Serializable {
         this.impressora = impressora;
     }
 
-    public String getConteudo_impressao() {
-        return conteudo_impressao;
+    public String getConteudoImpressao() {
+        return conteudoImpressao;
     }
 
-    public void setConteudo_impressao(String conteudo_impressao) {
-        this.conteudo_impressao = conteudo_impressao;
+    public void setConteudoImpressao(String conteudoImpressao) {
+        this.conteudoImpressao = conteudoImpressao;
     }
 
-    public TipoEtiquetaType getTipo_etiqueta() {
-        return tipo_etiqueta;
+    public TipoEtiquetaType getTipoEtiqueta() {
+        return tipoEtiqueta;
     }
 
-    public void setTipo_etiqueta(TipoEtiquetaType tipo_etiqueta) {
-        this.tipo_etiqueta = tipo_etiqueta;
+    public void setTipoEtiqueta(TipoEtiquetaType tipoEtiqueta) {
+        this.tipoEtiqueta = tipoEtiqueta;
     }
 }
