@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 
 
 @RedisHash("Impressao")
-//TODO: Colocar bean validation e escrever testes para validacao
 public class Impressao implements Serializable {
 
 	

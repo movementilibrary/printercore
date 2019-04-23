@@ -1,15 +1,13 @@
 package br.com.dasa.print.core.resource;
 
 import br.com.dasa.print.core.redis.model.Impressao;
+import br.com.dasa.print.core.redis.model.Impressora;
 import br.com.dasa.print.core.service.ImpressaoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "impressao")
@@ -28,5 +26,6 @@ public class ImpressaoResource {
     public void solicitaImpressao(@RequestBody Impressao impressao) {
         impressaoService.preparaConteudoAntesImpressao(impressao);
     }
+
 
 }

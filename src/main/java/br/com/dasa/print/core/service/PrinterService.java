@@ -8,7 +8,7 @@ import javax.print.attribute.AttributeSet;
 
 
 import br.com.dasa.print.core.redis.model.Impressao;
-import br.com.dasa.print.core.redis.model.TipoEtiqueta;
+import br.com.dasa.print.core.type.TipoEtiquetaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -43,8 +43,8 @@ public class PrinterService {
 	@Async
 	public String convertToEPL2(Impressao impressao) {
 		log.info("Imprimindo");
-		log.info(impressao.getConteudoImpressao());
-		String texto = impressao.getConteudoImpressao();
+		log.info(impressao.getConteudo_impressao());
+		String texto = impressao.getConteudo_impressao();
 
 		int etqCont = texto.replaceAll("[^\250]", "").length();
 		String[] risk = texto.split("\250");
@@ -52,7 +52,7 @@ public class PrinterService {
 
 		for (int i = 0; i < etqCont; ++i) {
 			try {
-				strHexa.append(formataEPL2(impressao.getTipoEtiqueta(), risk[i]));
+				strHexa.append(formataEPL2(impressao.getTipo_etiqueta(), risk[i]));
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
@@ -70,16 +70,16 @@ public class PrinterService {
 	 * @param texto
 	 * @return conteudo EPL2
 	 */
-	private String formataEPL2(TipoEtiqueta tipoEtiqueta, String texto) {
+	private String formataEPL2(TipoEtiquetaType tipoEtiqueta, String texto) {
 		String header = buildInfoEtiqueta(tipoEtiqueta);
-		if (tipoEtiqueta == TipoEtiqueta.PORTRAIT) {
+		if (tipoEtiqueta == TipoEtiquetaType.PORTRAIT) {
 			return portraitEPL(header, texto);
 		} else {
 			return landscapeEPL(header, texto);
 		}
 	}
 
-	private String buildInfoEtiqueta(TipoEtiqueta tipoEtiqueta) {
+	private String buildInfoEtiqueta(TipoEtiquetaType tipoEtiqueta) {
 		int formSize = (int) tipoEtiqueta.getHeight() * DOTS_PER_MILIMETER;
 		int gapSize =  (int) tipoEtiqueta.getGap() * DOTS_PER_MILIMETER;
 		int printerAreaSize = (int) tipoEtiqueta.getWidth() * DOTS_PER_MILIMETER;

@@ -25,6 +25,9 @@ public class ImpressoraResource {
     @Autowired
     private UnidadeService unidadeService;
 
+    @Autowired
+    private ImpressoraService impressaoService;
+
 
     @GetMapping()
     @ApiOperation(httpMethod = "GET", value = "Responsável por retornar Todas as Impressoras")
@@ -49,7 +52,16 @@ public class ImpressoraResource {
         return new ResponseEntity(impressoraService.criaImpressora(impressora), HttpStatus.CREATED);
     }
 
-
+    @PostMapping(value = "calibra")
+    @ApiOperation(httpMethod = "POST", value = "Responsável por calibrar impressora")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Sucesso"),
+            @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
+            @ApiResponse(code = 500, message = "Um erro interno foi detectado")
+    })
+    public void calibraImpressora(@RequestBody Impressora impressora) {
+        impressaoService.calibraImpressao(impressora);
+    }
     @DeleteMapping(value = "/{id}")
     @ApiOperation(httpMethod = "DELETE", value = "Responsável por apagar Impressora")
     @ApiResponses(value = {
