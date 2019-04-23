@@ -142,7 +142,7 @@ public class ImpressoraService {
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
         LOGGER.info( MensagemInfoType.ATUALIZANDO_HORARIO_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId());
-        impressora.setUltima_atualizacao(LocalDateTime.now().minusHours(4));
+        impressora.setUltimaAtualizacao(LocalDateTime.now().minusHours(4));
         return impressora;
     }
 

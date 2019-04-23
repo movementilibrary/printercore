@@ -43,8 +43,8 @@ public class PrinterService {
 	@Async
 	public String convertToEPL2(Impressao impressao) {
 		log.info("Imprimindo");
-		log.info(impressao.getConteudo_impressao());
-		String texto = impressao.getConteudo_impressao();
+		log.info(impressao.getConteudoImpressao());
+		String texto = impressao.getConteudoImpressao();
 
 		int etqCont = texto.replaceAll("[^\250]", "").length();
 		String[] risk = texto.split("\250");
@@ -52,7 +52,7 @@ public class PrinterService {
 
 		for (int i = 0; i < etqCont; ++i) {
 			try {
-				strHexa.append(formataEPL2(impressao.getTipo_etiqueta(), risk[i]));
+				strHexa.append(formataEPL2(impressao.getTipoEtiqueta(), risk[i]));
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
