@@ -2,10 +2,12 @@ package br.com.dasa.print.core.redis.model;
 
 import java.io.Serializable;
 
-import br.com.dasa.print.core.type.TipoEtiquetaType;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import br.com.dasa.print.core.type.TipoEtiquetaType;
 
 
 @RedisHash("Impressao")
@@ -16,7 +18,7 @@ public class Impressao implements Serializable {
     private String impressora;
 	@JsonProperty("conteudo_impressao")
     private String conteudoImpressao;
-    @JsonProperty("tipo_etiqueta")
+	@JsonProperty("tipo_etiqueta")
     private TipoEtiquetaType tipoEtiqueta;
 
     public Impressao() {
