@@ -33,7 +33,8 @@ public class ImpressaoService {
 
 
     /**
-     * Metodo responsável por enviar mensagem para fila
+     * Metodo responsável por preparar mensagem antes de enviar para o Rabbit, partindo do gliese a mensagem será
+     * preparada e emviada para impressao
      *
      * @param impressao
      * @throws InternalServerException

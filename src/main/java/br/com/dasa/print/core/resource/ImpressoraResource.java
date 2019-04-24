@@ -2,6 +2,7 @@ package br.com.dasa.print.core.resource;
 
 import java.util.List;
 
+import br.com.dasa.print.core.redis.model.CalibraImpressora;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,8 +66,8 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public void calibraImpressora(@RequestBody Impressora impressora) {
-        impressaoService.calibraImpressao(impressora);
+    public void calibraImpressora(@RequestBody CalibraImpressora calibraImpressora) {
+        impressaoService.calibraImpressao(calibraImpressora);
     }
     @DeleteMapping(value = "/{id}")
     @ApiOperation(httpMethod = "DELETE", value = "Responsável por apagar Impressora")

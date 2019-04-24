@@ -16,7 +16,6 @@ public class Impressora implements Serializable{
 	@Id
 	private String id;
     private String macaddress;
-
     @JsonProperty("ultima_atualizacao")
     private LocalDateTime ultimaAtualizacao;
     private String unidade;

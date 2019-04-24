@@ -2,6 +2,7 @@ package br.com.dasa.print.core.service;
 
 import br.com.dasa.print.core.exception.InternalServerException;
 import br.com.dasa.print.core.exception.ResourceNotFoundException;
+import br.com.dasa.print.core.redis.model.CalibraImpressora;
 import br.com.dasa.print.core.redis.model.Impressora;
 import br.com.dasa.print.core.redis.repository.ImpressoraRepository;
 import br.com.dasa.print.core.type.MensagemErroType;
@@ -38,38 +39,45 @@ public class ImpressoraService {
     private RabbitTemplate rabbitTemplate;
 
     /**
-     * Responsável por criar mensagem Impressora
-     * @author Michel Marciano
+     * Responsável por criar impressora, o metodo sempre vai criar Id em tempo de execucao e verificar se já
+     * existe uma impressora com o mesmo id no redis, caso esteja ele somente atualiza a hora da impressora,
+     * essa hora será utilizada para o Job de Exclusão, caso nao exista ele cria uma fila no RabbitMQ por
+     * ID (unidade + macaddres) e adiciona a impressora na lista de impressora por unidade.
+     *
      * @param impressora
      * @throws InternalServerException
+     * @author Michel Marciano
      */
-    @CachePut(cacheNames = "impressao",  key="#impressora?.id")
+    @CachePut(cacheNames = "impressao", key = "#impressora?.id")
     public Impressora criaImpressora(Impressora impressora) {
         Impressora impressoraCriada = null;
+        impressora.setId(criaIdImpressora(impressora.getUnidade(), impressora.getMacaddress()));
+
         try {
+             if(!this.impressoraRepository.findById(impressora.getId()).isPresent()){
 
-            //TODO: Verificar se impressora existe antes de criar
-            filaService.novaFila(criaIdImpressora(impressora));
-
-            unidadeService.criaListaImpressoraPorUnidade(impressora);
-
-            LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getMacaddress());
+                filaService.novaFila(impressora);
+                unidadeService.criaListaImpressoraPorUnidade(impressora);
+            }
+            LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
             impressoraCriada = this.impressoraRepository.save(atualizaHoraImpressora(impressora));
 
-        } catch (Exception e) {
-            LOGGER.error(MensagemErroType.ERRO_SALVAR_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId(), e.getMessage());
-            throw new InternalServerException(e.getMessage());
 
+        } catch (Exception e) {
+            LOGGER.error(MensagemErroType.ERRO_SALVAR_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId(), e.getMessage());
+            throw new InternalServerException(e.getMessage());
         }
         return impressoraCriada;
     }
 
 
     /**
-     * Responsável por apagar fila Rabbit
-     * @author Michel Marciano
+     * Responsável por apagar fila Rabbit, caso a busca da impressora encontre a impressora a mesma será excluida
+     * do RabbitMQ e será removida da lista de unidade e excluida do Redis, esse metodo será utilizado pelo Job
+     *
      * @param id
      * @throws ResourceNotFoundException
+     * @author Michel Marciano
      */
     @CacheEvict(cacheNames = "impressao", key = "#id")
     public void excluiImpressora(String id) {
@@ -91,15 +99,16 @@ public class ImpressoraService {
     }
 
     /**
-     * Responsável por listar impressora pelo macaddress
-     * @author Michel Marciano
-     * @return impressoraPeloMacaddress
+     * Responsável por listar impressora pelo id
+     *
      * @param id
+     * @return impressoraPeloMacaddress
      * @throws ResourceNotFoundException
+     * @author Michel Marciano
      */
-    @Cacheable(cacheNames = "impressao", key="#id")
+    @Cacheable(cacheNames = "impressao", key = "#id")
     public Impressora buscaImpressoraPeloId(String id) {
-        Optional<Impressora> impressoraPeloMacaddress= null;
+        Optional<Impressora> impressoraPeloMacaddress = null;
         try {
             LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem().concat("{}"), id);
             impressoraPeloMacaddress = this.impressoraRepository.findById(id);
@@ -111,20 +120,22 @@ public class ImpressoraService {
     }
 
     /**
-     * Responsável por retornar todas as impressoras
-     * @author Michel Marciano
+     * Responsável por retornar todas as impressoras ou somente impressora por id, caso o id nao seja nulo será
+     * realizado a busca da impressora a adicionado a lista de impressoras, caso contrario retorna uma lista de
+     * imressoras ativas
+     *
      * @return listaImpressoras
      * @throws InternalServerException
-     *
+     * @author Michel Marciano
      */
     public List<Impressora> listaTodasImpressoras(String id) {
         List<Impressora> listaImpressoras = new ArrayList<>();
         try {
-            if(id == null){
+            if (id == null) {
                 LOGGER.info(MensagemInfoType.BUSCANDO_IMPRESSORAS.getMensagem());
                 this.impressoraRepository.findAll().forEach(impressora -> listaImpressoras.add(impressora));
-            }else{
-                listaImpressoras.add(buscaImpressoraPeloId(id));
+            } else {
+                listaImpressoras.add(this.impressoraRepository.findById(id).get());
             }
 
         } catch (Exception e) {
@@ -136,33 +147,35 @@ public class ImpressoraService {
 
 
     /**
-     * Metodo Responsável por executar ultima atualizacao
+     * Metodo Responsável por atualizar hora impressora, atualizacao da hora é necessária para que o Job não exclua
+     * impressora
+     *
      * @param impressora
      * @return
      */
     public static Impressora atualizaHoraImpressora(Impressora impressora) {
-        LOGGER.info( MensagemInfoType.ATUALIZANDO_HORARIO_IMPRESSORA.getMensagem().concat(" {} ") , impressora.getId());
+        LOGGER.info(MensagemInfoType.ATUALIZANDO_HORARIO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
         impressora.setUltimaAtualizacao(LocalDateTime.now().minusHours(4));
         return impressora;
     }
 
 
     /**
-     * Metodo Responsável por criar Id Impressora
-     * @param impressora
+     * Metodo Responsável por criar Id Impressora, o Id será utilizado na criacao da Fila do RabbitMq
+     *
      * @return
      */
-    public Impressora criaIdImpressora(Impressora impressora){
-        impressora.setId(impressora.getUnidade().concat("-").concat(impressora.getMacaddress()));
-        return impressora;
+    public String criaIdImpressora(String unidade, String macAddress) {
+        return unidade.concat("-").concat(macAddress);
     }
 
 
     /**
      * Responsável por Resetr Impressora
+     *
      * @throws InterruptedException
      */
-    public void calibraImpressao(Impressora impressora) {
+    public void calibraImpressao(CalibraImpressora calibraImpressora) {
 
 //        AppletPrinter printer = new AppletPrinter();
 //        printer.selecionaImpressora("Intermec");
@@ -190,9 +203,9 @@ public class ImpressoraService {
 //        } catch (PrintException var8) {
 //            var8.printStackTrace();
 //        }
-        Impressora impressoraComId = criaIdImpressora(impressora);
+
         String conteudo = strReset.concat(",").concat(strHexa);
-        rabbitTemplate.convertAndSend(impressoraComId.getId(), conteudo);
+        rabbitTemplate.convertAndSend(criaIdImpressora(calibraImpressora.getUnidade(), calibraImpressora.getMacaddress()), conteudo);
 
     }
 
