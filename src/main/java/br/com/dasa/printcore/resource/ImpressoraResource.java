@@ -55,7 +55,7 @@ public class ImpressoraResource {
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
     public ResponseEntity<Impressora> criaImpressora(@RequestBody Impressora impressora) {
-        impressora.setId(impressoraService.criaIdImpressora(impressora.getUnidade(), impressora.getNome()));
+        impressora.setId(impressoraService.criaIdImpressora(impressora.getUnidade(), impressora.getMacaddress()));
         return new ResponseEntity(impressoraService.criaImpressora(impressora), HttpStatus.CREATED);
     }
 

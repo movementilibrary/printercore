@@ -164,8 +164,8 @@ public class ImpressoraService {
      *
      * @return
      */
-    public String criaIdImpressora(String unidade, String nomeImpressora) {
-        return unidade.concat("-").concat(nomeImpressora);
+    public String criaIdImpressora(String unidade, String macaddress) {
+        return unidade.concat("-").concat(macaddress);
     }
 
 
