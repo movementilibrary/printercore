@@ -1,15 +1,15 @@
 #Imagem base
 FROM imagesdasa.azurecr.io/prd/base-image
 
-#Atualização de pacotes e instalação do java
+#Atualizaï¿½ï¿½o de pacotes e instalaï¿½ï¿½o do java
 RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update && \
 apt-get install -y openjdk-8-jdk
 
-#Criação do diretório /app
+#Criaï¿½ï¿½o do diretï¿½rio /app
 RUN mkdir /app
 
-#Configuração de usuário e grupo
+#Configuraï¿½ï¿½o de usuï¿½rio e grupo
 RUN groupadd app
 RUN useradd app -u 1001 -g app -d /app -s /bin/bash
 
@@ -20,28 +20,50 @@ ARG REVISION
 ARG elkHost
 ARG elkIndex
 ARG elkHealth
+ARG rabbitHost
+ARG rabbitPort
+ARG rabbitUser
+ARG rabbitPass
+ARG redisHost
+ARG redisPort
+ARG redisPass
+ARG oracleUrl
+ARG oracleUser
+ARG oraclePass
 
-#Configuração de variáveis de ambiente da imagem
+#Configuraï¿½ï¿½o de variï¿½veis de ambiente da imagem
 ENV PROJECT_NAME $PROJECT_NAME
 ENV VERSION $VERSION
 ENV REVISION $REVISION
-ENV APPNAME $PROJECT_NAME-$VERSION-$REVISION.jar
+ENV APPNAME $PROJECT_NAME.jar
 ENV elkHost $elkHost
 ENV elkIndex $elkIndex
 ENV elkHealth $elkHealth
+# App envs config
+ENV SPRING_RABBITMQ_ADDRESSES $rabbitHost
+ENV SPRING_RABBITMQ_PORT $rabbitPort
+ENV SPRING_RABBITMQ_USERNAME $rabbitUser
+ENV SPRING_RABBITMQ_PASSWORD $rabbitPass
+ENV SPRINT_REDIS_HOST $redisHost
+ENV SPRINT_REDIS_PORT $redisPort
+ENV SPRINT_REDIS_PASSWORD $redisPass
+ENV SPRINT_DATASOURCE_URL $oracleUrl
+ENV SPRINT_DATASOURCE_USERNAME $oracleUser
+ENV SPRINT_DATASOURCE_PASSWORD $oraclePass
+ENV SERVER_PORT 8080
 
-#Cópia de artefato localizado na máquina real para dentro da imagem
-COPY target/"$PROJECT_NAME-$VERSION-$REVISION.jar" /app/
+#Cï¿½pia de artefato localizado na mï¿½quina real para dentro da imagem
+COPY build/libs/"$APP_NAME" /app/
 
-#Configuração de permissões
+#Configuraï¿½ï¿½o de permissï¿½es
 RUN chown 1001:app /app -R
-#Configuração de diretório de trabalho. /app será a pasta inicial da imagem
+#Configuraï¿½ï¿½o de diretï¿½rio de trabalho. /app serï¿½ a pasta inicial da imagem
 WORKDIR /app
 
-#Start app. O comando ENTRYPOINT é executado na inicialização do
-#container baseado na imagem gerada pelo dockerfile em questão.
-#Neste momento o resultado do comando pwd ja é o diretório definico pelo comando WORKDIR
+#Start app. O comando ENTRYPOINT ï¿½ executado na inicializaï¿½ï¿½o do
+#container baseado na imagem gerada pelo dockerfile em questï¿½o.
+#Neste momento o resultado do comando pwd ja ï¿½ o diretï¿½rio definico pelo comando WORKDIR
 CMD ["java", "-jar", "$APPNAME"]
 
-#Expõe a porta 9090 quando o container é montado.
-EXPOSE 9090
+#Expï¿½e a porta 8080 quando o container ï¿½ montado.
+EXPOSE 8080

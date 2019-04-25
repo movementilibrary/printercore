@@ -74,38 +74,38 @@ pipeline {
 
         stage('Deploy Dev') {
             steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a sre-backend-java-dev -r RSG_K8S -e dev -i deploy -d cloud'
-                sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e dev'
+                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api -r RSG_K8S -e dev -i deploy -d cloud'
+                sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/actuator/health -s 200 -t 60 -c 5 -e dev'
                 sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e dev'
             }
         }
-        stage('Accept Test Dev'){
-            steps{
-                echo 'bash -x devops-tools/pipeline-shared-librares/regression_tests.sh -e dev'
-                echo 'devops-tools/pipeline-shared-librares/slack_publish.sh -m "Testes de Aceite Realizados com Sucesso" -c "testeapi"'
-            }
-        }
-
-        stage('Performance Test Dev'){
-            steps{
-                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e dev'
-            }
-        }
-        stage('Security Owasp Zap Dev') {
-            steps {
-                script {
-                    echo 'bash -x devops-tools/pipeline-shared-librares/security.sh -u $URL_APP/api/healthcheck -o owasp-rollout-dev'
-                }
-            }
-        }
-
-        stage('Quality Gates') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'bash -x devops-tools/pipeline-shared-librares/quality.sh -a gates'
-                }
-            }
-        }
+//        stage('Accept Test Dev'){
+//            steps{
+//                echo 'bash -x devops-tools/pipeline-shared-librares/regression_tests.sh -e dev'
+//                echo 'devops-tools/pipeline-shared-librares/slack_publish.sh -m "Testes de Aceite Realizados com Sucesso" -c "testeapi"'
+//            }
+//        }
+//
+//        stage('Performance Test Dev'){
+//            steps{
+//                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e dev'
+//            }
+//        }
+//        stage('Security Owasp Zap Dev') {
+//            steps {
+//                script {
+//                    echo 'bash -x devops-tools/pipeline-shared-librares/security.sh -u $URL_APP/api/healthcheck -o owasp-rollout-dev'
+//                }
+//            }
+//        }
+//
+//        stage('Quality Gates') {
+//            steps {
+//                withSonarQubeEnv('SonarQube') {
+//                    sh 'bash -x devops-tools/pipeline-shared-librares/quality.sh -a gates'
+//                }
+//            }
+//        }
 
         stage('Approved to hml') {
             steps {
@@ -125,26 +125,26 @@ pipeline {
             }
         }
 
-        stage('Accept Test Hml'){
-            steps{
-                echo 'bash -x devops-tools/pipeline-shared-librares/regression_tests.sh -e hml'
-                echo 'devops-tools/pipeline-shared-librares/slack_publish.sh -m "Testes de Aceite Realizados com Sucesso" -c "testeapi"'
-            }
-        }
-
-        stage('Performance Test Hml'){
-            steps{
-                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e "hml"'
-            }
-        }
-
-        stage('Security Owasp Zap Hml') {
-            steps {
-                script {
-                    echo 'bash -x devops-tools/pipeline-shared-librares/security.sh -u $URL_APP/api/healthcheck -o owasp-rollout-hml'
-                }
-            }
-        }
+//        stage('Accept Test Hml'){
+//            steps{
+//                echo 'bash -x devops-tools/pipeline-shared-librares/regression_tests.sh -e hml'
+//                echo 'devops-tools/pipeline-shared-librares/slack_publish.sh -m "Testes de Aceite Realizados com Sucesso" -c "testeapi"'
+//            }
+//        }
+//
+//        stage('Performance Test Hml'){
+//            steps{
+//                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e "hml"'
+//            }
+//        }
+//
+//        stage('Security Owasp Zap Hml') {
+//            steps {
+//                script {
+//                    echo 'bash -x devops-tools/pipeline-shared-librares/security.sh -u $URL_APP/api/healthcheck -o owasp-rollout-hml'
+//                }
+//            }
+//        }
 
         stage('Approved to Prod') {
             steps {
@@ -159,15 +159,15 @@ pipeline {
         stage('Deploy Prod') {
             steps {
                 sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a sre-backend-java-prod -r RSG_K8S -e prd -i deploy -d cloud'
-                sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e prd'
+                sh 'ba  sh -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e prd'
                 sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e prd'
             }
         }
 
-        stage('Performance Test Prod'){
-            steps{
-                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e "prd"'
-            }
-        }
+//        stage('Performance Test Prod'){
+//            steps{
+//                echo 'bash -x devops-tools/pipeline-shared-librares/performance_tests.sh -j "4.0" -n "sre-backend-java" -d $URL_APP -e "prd"'
+//            }
+//        }
     }
 }
