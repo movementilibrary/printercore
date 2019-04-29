@@ -20,18 +20,8 @@ ARG REVISION
 ARG elkHost
 ARG elkIndex
 ARG elkHealth
-ARG rabbitHost
-ARG rabbitPort
-ARG rabbitUser
-ARG rabbitPass
-ARG redisHost
-ARG redisPort
-ARG redisPass
-ARG oracleUrl
-ARG oracleUser
-ARG oraclePass
 
-#Configura��o de vari�veis de ambiente da imagem
+#Configuracao de variaveis de ambiente da imagem
 ENV PROJECT_NAME $PROJECT_NAME
 ENV VERSION $VERSION
 ENV REVISION $REVISION
@@ -39,18 +29,6 @@ ENV APPNAME $PROJECT_NAME.jar
 ENV elkHost $elkHost
 ENV elkIndex $elkIndex
 ENV elkHealth $elkHealth
-# App envs config
-ENV SPRING_RABBITMQ_ADDRESSES $rabbitHost
-ENV SPRING_RABBITMQ_PORT $rabbitPort
-ENV SPRING_RABBITMQ_USERNAME $rabbitUser
-ENV SPRING_RABBITMQ_PASSWORD $rabbitPass
-ENV SPRINT_REDIS_HOST $redisHost
-ENV SPRINT_REDIS_PORT $redisPort
-ENV SPRINT_REDIS_PASSWORD $redisPass
-ENV SPRINT_DATASOURCE_URL $oracleUrl
-ENV SPRINT_DATASOURCE_USERNAME $oracleUser
-ENV SPRINT_DATASOURCE_PASSWORD $oraclePass
-ENV SERVER_PORT 8080
 
 #C�pia de artefato localizado na m�quina real para dentro da imagem
 COPY build/libs/"$APP_NAME" /app/

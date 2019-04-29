@@ -1,0 +1,122 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: vVERSION_WITHOUT_DOT-REVISION-PROJECT_NAME-ENVIRONMENT-deploy
+  namespace: PRODUCT_NAME
+  labels:
+    applicationRole: "APPLICATION_ROLE"
+    environment: "ENVIRONMENT"
+    createdBy: "devops-tools-jenkins"
+    owner: "SQUAD_NAME"
+    costCenter: "SQUAD_COST_CENTER"
+    productName: "PRODUCT_NAME"
+    projectName: "PROJECT_NAME"
+    version: "VERSION-REVISION"
+spec:
+  replicas: REPLICAS_QTD
+  template:
+    metadata:
+      namespace: PRODUCT_NAME
+      labels:
+        applicationRole: "APPLICATION_ROLE"
+        environment: "ENVIRONMENT"
+        createdBy: "devops-tools-jenkins"
+        owner: "SQUAD_NAME"
+        costCenter: "SQUAD_COST_CENTER"
+        productName: "PRODUCT_NAME"
+        projectName: "PROJECT_NAME"
+        version: "VERSION-REVISION"
+    spec:
+      nodeSelector:
+        environment: ENVIRONMENT
+      imagePullSecrets:
+        - name: dasa-images
+      containers:
+        - name: PROJECT_NAME
+          image: DOCKER_REPOSITORY/ENVIRONMENT/PROJECT_NAME:VERSION-REVISION
+          envFrom:
+            - configMapRef:
+                name: PROJECT_NAME-ENVIRONMENT
+          ports:
+            - containerPort: CONTAINER_PORT
+          livenessProbe:
+            httpGet:
+              path: HEALTH_CHECK_URL
+              port: CONTAINER_PORT
+              httpHeaders:
+                - name: X-Custom-Header
+                  value: healthCheck
+                - name: Host #isDefined(HEALTH_CHECK_HOSTNAME)
+                  value: HEALTH_CHECK_HOSTNAME #isDefined(HEALTH_CHECK_HOSTNAME)
+            initialDelaySeconds: 120
+            periodSeconds: 240
+            timeoutSeconds: 240
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "CONTAINER_MEM"
+              cpu: "CONTAINER_CPU"
+            limits:
+              memory: "CONTAINER_MAX_MEM"
+              cpu: "CONTAINER_MAX_CPU"
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: PRODUCT_NAME
+  name: vVERSION_WITHOUT_DOT-REVISION-PROJECT_NAME-ENVIRONMENT-svc
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+    external-dns.alpha.kubernetes.io/hostname: vVERSION_WITHOUT_DOT-REVISION.PROJECT_NAME.ENVIRONMENT.digital-apps.io
+    external-dns.alpha.kubernetes.io/ttl: "5"
+  labels:
+    applicationRole: "APPLICATION_ROLE"
+    environment: "ENVIRONMENT"
+    createdBy: "devops-tools-jenkins"
+    owner: "SQUAD_NAME"
+    costCenter: "SQUAD_COST_CENTER"
+    productName: "PRODUCT_NAME"
+    projectName: "PROJECT_NAME"
+    version: "VERSION-REVISION"
+spec:
+  selector:
+    applicationRole: "APPLICATION_ROLE"
+    environment: "ENVIRONMENT"
+    createdBy: "devops-tools-jenkins"
+    owner: "SQUAD_NAME"
+    costCenter: "SQUAD_COST_CENTER"
+    productName: "PRODUCT_NAME"
+    projectName: "PROJECT_NAME"
+    version: "VERSION-REVISION"
+  ports:
+    - port: 80
+      targetPort: CONTAINER_PORT
+  type: LoadBalancer
+
+---
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: PRODUCT_NAME
+  name: vVERSION_WITHOUT_DOT-REVISION-PROJECT_NAME-ENVIRONMENT-as
+  labels:
+    applicationRole: "APPLICATION_ROLE"
+    environment: "ENVIRONMENT"
+    createdBy: "devops-tools-jenkins"
+    owner: "SQUAD_NAME"
+    costCenter: "SQUAD_COST_CENTER"
+    productName: "PRODUCT_NAME"
+    projectName: "PROJECT_NAME"
+    version: "VERSION-REVISION"
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: PROJECT_NAME
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+

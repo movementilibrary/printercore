@@ -72,7 +72,7 @@ pipeline {
 
         stage('Deploy Dev') {
             steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api -r RSG_K8S -e dev -i deploy -d cloud'
+                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api-dev -r RSG_K8S -e dev -i deploy -d cloud'
                 sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/actuator/health -s 200 -t 60 -c 5 -e dev'
                 sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e dev'
             }
@@ -118,7 +118,7 @@ pipeline {
 
         stage('Deploy Hml') {
             steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a sre-backend-java-hml -r RSG_K8S -e hml -i deploy -d cloud'
+                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api-hml -r RSG_K8S -e hml -i deploy -d cloud'
                 sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e hml'
             }
         }
@@ -144,23 +144,23 @@ pipeline {
 //            }
 //        }
 
-        stage('Approved to Prod') {
-            steps {
-                script {
-                    def externalMethod = load("devops-tools/pipeline-shared-librares/groovy/utils-timeout.groovy")
-                    externalMethod.executaTimeout('Package Approved to deploy in Prod? (Click "Proceed" to continue)')
-                    sh 'bash -x devops-tools/pipeline-shared-librares/approved.sh -e prd'
-                }
-            }
-        }
+//        stage('Approved to Prod') {
+//            steps {
+//                script {
+//                    def externalMethod = load("devops-tools/pipeline-shared-librares/groovy/utils-timeout.groovy")
+//                    externalMethod.executaTimeout('Package Approved to deploy in Prod? (Click "Proceed" to continue)')
+//                    sh 'bash -x devops-tools/pipeline-shared-librares/approved.sh -e prd'
+//                }
+//            }
+//        }
 
-        stage('Deploy Prod') {
-            steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a sre-backend-java-prod -r RSG_K8S -e prd -i deploy -d cloud'
-                sh 'ba  sh -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e prd'
-                sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e prd'
-            }
-        }
+//        stage('Deploy Prod') {
+//            steps {
+//                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a sre-backend-java-prod -r RSG_K8S -e prd -i deploy -d cloud'
+//                sh 'ba  sh -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e prd'
+//                sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e prd'
+//            }
+//        }
 
 //        stage('Performance Test Prod'){
 //            steps{
