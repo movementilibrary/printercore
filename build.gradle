@@ -34,7 +34,6 @@ dependencies {
 }
 
 group = 'br.com.dasa'
-version = '0.0.1-SNAPSHOT'
 description = 'print-core'
 sourceCompatibility = '1.8'
 
@@ -48,8 +47,4 @@ publishing {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'cp1252'
-}
-
-bootJar {
-    archiveName = 'printer-core-api.jar'
 }
