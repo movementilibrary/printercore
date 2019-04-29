@@ -19,7 +19,7 @@ public class PrinterServiceTest {
     @Test
     public void convertToEPL2() {
         Impressao impressao = new Impressao("DAP",
-                "I2o5ï¿½        FINAL DE LOTE         ï¿½Testes Processos de Atendimentï¿½888/1184ï¿½QTD REC: 2  LEITO: 11ï¿½ï¿½NUM CHAMADA: nullï¿½COLETADOR: ï¿½ï¿½I2o5ï¿½        FINAL DE LOTE         ï¿½Outra etiquetaï¿½888/1184ï¿½QTD REC: 2  LEITO: 11ï¿½ï¿½NUM CHAMADA: nullï¿½COLETADOR: ï¿½ï¿½",
+                "I2o5¾        FINAL DE LOTE         ¾Testes Processos de Atendiment¾888/1184¾QTD REC: 2  LEITO: 11¾¾NUM CHAMADA: null¾COLETADOR: ¾¨",
                 TipoEtiquetaType.PORTRAIT);
         String epl = service.convertToEPL2(impressao);
         assertTrue(epl.contains("Q440,24"));
@@ -28,7 +28,7 @@ public class PrinterServiceTest {
     @Test
     public void convertToEPL2Landscape() {
         Impressao impressao = new Impressao("DAP",
-                "I2o5ï¿½        FINAL DE LOTE         ï¿½Testes Processos de Atendimentï¿½888/1184ï¿½QTD REC: 2  LEITO: 11ï¿½ï¿½NUM CHAMADA: nullï¿½COLETADOR: ï¿½ï¿½I2o5ï¿½        FINAL DE LOTE         ï¿½Outra etiquetaï¿½888/1184ï¿½QTD REC: 2  LEITO: 11ï¿½ï¿½NUM CHAMADA: nullï¿½COLETADOR: ï¿½ï¿½",
+                "I2o5¾        FINAL DE LOTE         ¾Testes Processos de Atendiment¾888/1184¾QTD REC: 2  LEITO: 11¾¾NUM CHAMADA: null¾COLETADOR: ¾¨",
                 TipoEtiquetaType.LANDSCAPE);
         String epl = service.convertToEPL2(impressao);
         assertTrue(epl.contains("240,24"));
