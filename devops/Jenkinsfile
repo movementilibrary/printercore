@@ -31,17 +31,17 @@ pipeline {
             }
         }
 
-        stage('Prepare Tests') {
-            steps {
-                sh 'devops-tools/pipeline-shared-librares/prepare_tests.sh'
-            }
-        }
+//        stage('Prepare Tests') {
+//            steps {
+//                sh 'devops-tools/pipeline-shared-librares/prepare_tests.sh'
+//            }
+//        }
 
-        stage('Unit Test') {
-            steps {
-                sh 'devops-tools/pipeline-shared-librares/unit-tests.sh'
-            }
-        }
+//        stage('Unit Test') {
+//            steps {
+//                sh 'devops-tools/pipeline-shared-librares/unit-tests.sh'
+//            }
+//        }
 
         stage('Tagging') {
             steps {
@@ -49,13 +49,13 @@ pipeline {
             }
         }
 
-        stage('Quality Analyzing') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh 'bash -x devops-tools/pipeline-shared-librares/quality.sh -a analize'
-                }
-            }
-        }
+//        stage('Quality Analyzing') {
+//            steps {
+//                withSonarQubeEnv('SonarQube') {
+//                    sh 'bash -x devops-tools/pipeline-shared-librares/quality.sh -a analize'
+//                }
+//            }
+//        }
 
         stage('Build App') {
             steps {
@@ -63,11 +63,11 @@ pipeline {
             }
         }
 
-        stage('Upload Artifact') {
-            steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/nexus-upload.sh'
-            }
-        }
+//        stage('Upload Artifact') {
+//            steps {
+//                sh 'bash -x devops-tools/pipeline-shared-librares/nexus-upload.sh'
+//            }
+//        }
 
 
         stage('Deploy Dev') {
@@ -105,23 +105,23 @@ pipeline {
 //            }
 //        }
 
-        stage('Approved to hml') {
-            steps {
-                script {
-                    def externalMethod = load("devops-tools/pipeline-shared-librares/groovy/utils-timeout.groovy")
-                    externalMethod.executaTimeout('Package Approved to deploy in hml ? (Click "Proceed" to continue)')
-                    sh 'bash -x devops-tools/pipeline-shared-librares/approved.sh -e hml'
-                    sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e hml'
-                }
-            }
-        }
+//        stage('Approved to hml') {
+//            steps {
+//                script {
+//                    def externalMethod = load("devops-tools/pipeline-shared-librares/groovy/utils-timeout.groovy")
+//                    externalMethod.executaTimeout('Package Approved to deploy in hml ? (Click "Proceed" to continue)')
+//                    sh 'bash -x devops-tools/pipeline-shared-librares/approved.sh -e hml'
+//                    sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e hml'
+//                }
+//            }
+//        }
 
-        stage('Deploy Hml') {
-            steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api-hml -r RSG_K8S -e hml -i deploy -d cloud'
-                sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e hml'
-            }
-        }
+//        stage('Deploy Hml') {
+//            steps {
+//                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -a printer-core-api-hml -r RSG_K8S -e hml -i deploy -d cloud'
+//                sh 'bash -x devops-tools/pipeline-shared-librares/check_upstart_app.sh -u $URL_APP/api/healthcheck -s 200 -t 60 -c 5 -e hml'
+//            }
+//        }
 
 //        stage('Accept Test Hml'){
 //            steps{
