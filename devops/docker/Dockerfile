@@ -50,7 +50,6 @@ ENV SPRINT_REDIS_PASSWORD $redisPass
 ENV SPRINT_DATASOURCE_URL $oracleUrl
 ENV SPRINT_DATASOURCE_USERNAME $oracleUser
 ENV SPRINT_DATASOURCE_PASSWORD $oraclePass
-ENV SERVER_PORT 8080
 
 #Copia de artefato localizado na maquina real para dentro da imagem
 COPY build/libs/"$APP_NAME" /app/
