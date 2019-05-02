@@ -23,26 +23,26 @@ import java.util.List;
 import static com.jayway.restassured.RestAssured.*;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@EnableAutoConfiguration
+//@RunWith(SpringRunner.class)
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@EnableAutoConfiguration
 public class ImpressoraResourceTest {
 
 
-    private Impressora impressora;
-
-    @LocalServerPort
-    private int port;
-
-    @Before
-    public void setUp() throws Exception {
-
-        impressora =  new Impressora();
-        impressora.setEmpresa("Delboni");
-        impressora.setMacaddress("0-0-0-0-0-");
-        impressora.setUnidade("BRA");
-        impressora.setNome("Recepcao");
-    }
+//    private Impressora impressora;
+//
+//    @LocalServerPort
+//    private int port;
+//
+//    @Before
+//    public void setUp() throws Exception {
+//
+//        impressora =  new Impressora();
+//        impressora.setEmpresa("Delboni");
+//        impressora.setMacaddress("0-0-0-0-0-");
+//        impressora.setUnidade("BRA");
+//        impressora.setNome("Recepcao");
+//    }
 
 
 //    @Test
@@ -71,7 +71,4 @@ public class ImpressoraResourceTest {
 //        assertEquals(impressora1,impressora );
 //    }
 //
-
-
-
 }
