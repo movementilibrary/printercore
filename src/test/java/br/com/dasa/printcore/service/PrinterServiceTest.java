@@ -34,4 +34,6 @@ public class PrinterServiceTest {
         assertTrue(epl.contains("240,24"));
     }
 
+
+
 }

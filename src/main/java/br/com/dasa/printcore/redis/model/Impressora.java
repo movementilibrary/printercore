@@ -4,12 +4,14 @@ package br.com.dasa.printcore.redis.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @RedisHash("Impressora")
 public class Impressora implements Serializable{
@@ -17,6 +19,7 @@ public class Impressora implements Serializable{
    
 	@Id
 	private String id;
+	@NotBlank
     private String macaddress;
     @JsonProperty("ultima_atualizacao")
     private LocalDateTime ultimaAtualizacao;

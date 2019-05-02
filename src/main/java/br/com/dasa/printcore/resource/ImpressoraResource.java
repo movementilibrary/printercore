@@ -7,20 +7,15 @@ import br.com.dasa.printcore.redis.model.Impressora;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.dasa.printcore.service.ImpressoraService;
 import br.com.dasa.printcore.service.UnidadeService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/impressoras")
@@ -54,8 +49,8 @@ public class ImpressoraResource {
             @ApiResponse(code = 404, message = "O recurso requisitado não foi encontrado"),
             @ApiResponse(code = 500, message = "Um erro interno foi detectado")
     })
-    public ResponseEntity<Impressora> criaImpressora(@RequestBody Impressora impressora) {
-        impressora.setId(impressoraService.criaIdImpressora(impressora.getUnidade(), impressora.getMacaddress()));
+    public ResponseEntity<Impressora> criaImpressora(@Valid @RequestBody Impressora impressora) {
+        impressora.setId(impressaoService.criaIdImpressora(impressora.getUnidade(),impressora.getMacaddress()));
         return new ResponseEntity(impressoraService.criaImpressora(impressora), HttpStatus.CREATED);
     }
 
@@ -79,6 +74,5 @@ public class ImpressoraResource {
     public void deletaImpressora(@PathVariable String id) {
         impressoraService.excluiImpressora(id);
     }
-
 
 }

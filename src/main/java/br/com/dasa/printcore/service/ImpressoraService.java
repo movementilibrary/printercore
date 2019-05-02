@@ -48,7 +48,7 @@ public class ImpressoraService {
      * @throws InternalServerException
      * @author Michel Marciano
      */
-    @CachePut(cacheNames = "impressao", key = "#impressora?.id")
+
     public Impressora criaImpressora(Impressora impressora) {
         Impressora impressoraCriada = null;
 
@@ -160,16 +160,6 @@ public class ImpressoraService {
 
 
     /**
-     * Metodo Responsável por criar Id Impressora, o Id será utilizado na criacao da Fila do RabbitMq
-     *
-     * @return
-     */
-    public String criaIdImpressora(String unidade, String macaddress) {
-        return unidade.concat("-").concat(macaddress);
-    }
-
-
-    /**
      * Responsável por Resetr Impressora
      *
      * @throws InterruptedException
@@ -205,7 +195,16 @@ public class ImpressoraService {
 
         String conteudo = strReset.concat(",").concat(strHexa);
         rabbitTemplate.convertAndSend(criaIdImpressora(calibraImpressora.getUnidade(), calibraImpressora.getMacaddress()), conteudo);
+    }
 
+
+    /**
+     * Metodo Responsável por criar Id Impressora, o Id será utilizado na criacao da Fila do RabbitMq
+     *
+     * @return
+     */
+    public String criaIdImpressora(String unidade, String macaddress) {
+        return unidade.concat("-").concat(macaddress);
     }
 
 

@@ -25,3 +25,6 @@ management:
       enabled: true
     httptrace:
       enabled: true
+
+
+
