@@ -63,11 +63,11 @@ pipeline {
             }
         }
 
-//        stage('Upload Artifact') {
-//            steps {
-//                sh 'bash -x devops-tools/pipeline-shared-librares/nexus-upload.sh'
-//            }
-//        }
+       stage('Upload Artifact') {
+           steps {
+               sh 'bash -x devops-tools/pipeline-shared-librares/nexus-upload.sh'
+           }
+       }
 
 
         stage('Deploy Dev') {
