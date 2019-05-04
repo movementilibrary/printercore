@@ -3,11 +3,7 @@ server:
 
 spring:
   application:
-    name: printerserver
-  #jpa:
-    #show-sql: true
-    #hibernate:
-      #ddl-auto: none
+    name: printer-core-api
   datasource:
     url: jdbc:oracle:thin:@brlspldgdb01.dasa.net:10010:glidev01
     username: gliese
@@ -18,13 +14,30 @@ spring:
     type: redis
 
 management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: '*'
   endpoint:
-    beans:
-      enabled: true
     health:
-      enabled: true
-    httptrace:
-      enabled: true
+      show-details: always
 
+---
 
-
+spring:
+  profiles: deploy
+  datasource:
+    url: ${oracleUrl}
+    username: ${oracleUser}
+    password: ${oraclePass}
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+  redis:
+    host: ${redisHost}
+    port: ${redisPort}
+    password: ${redisPass}
+  rabbitmq:
+    host: ${rabbitHost}
+    port: ${rabbitPort}
+    username: ${rabbitUser}
+    password: ${rabbitPass}

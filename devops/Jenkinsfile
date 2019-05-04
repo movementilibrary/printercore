@@ -59,6 +59,7 @@ pipeline {
 
         stage('Build App') {
             steps {
+                sh './gradlew clean'
                 sh 'devops-tools/pipeline-shared-librares/build-package.sh'
             }
         }
@@ -77,6 +78,13 @@ pipeline {
                 sh 'bash -x devops-tools/pipeline-shared-librares/sync_subdomains.sh -e dev'
             }
         }
+
+        stage('Deploy Monitoring') {
+            steps {
+                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -e monitor -i deploy -d cloud'
+            }
+        }
+
 //        stage('Accept Test Dev'){
 //            steps{
 //                echo 'bash -x devops-tools/pipeline-shared-librares/regression_tests.sh -e dev'
