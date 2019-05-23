@@ -5,7 +5,7 @@ spring:
   application:
     name: printer-core-api
   datasource:
-    url: jdbc:oracle:thin:@brlspldgdb01.dasa.net:10010:glidev01
+    url: jdbc:oracle:thin:@10.120.46.31:10010:glidev01
     username: gliese
     password: gliese
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -39,5 +39,3 @@ spring:
   rabbitmq:
     host: ${rabbitHost}
     port: ${rabbitPort}
-    username: ${rabbitUser}
-    password: ${rabbitPass}
