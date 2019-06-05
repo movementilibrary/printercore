@@ -79,11 +79,11 @@ pipeline {
             }
         }
 
-        stage('Deploy Monitoring') {
-            steps {
-                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -e monitor -i deploy -d cloud'
-            }
-        }
+//        stage('Deploy Monitoring') {
+//            steps {
+//                sh 'bash -x devops-tools/pipeline-shared-librares/deploy.sh -e monitor -i deploy -d cloud'
+//            }
+//        }
 
 //        stage('Accept Test Dev'){
 //            steps{
