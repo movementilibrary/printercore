@@ -20,6 +20,10 @@ pipeline {
         INFLUX_JMETER_PASSWORD = credentials('INFLUX_JMETER_PASSWORD')
         INFLUX_JMETER_USER = credentials('INFLUX_JMETER_USER')
         MONITORING_RESOURCE_GROUP = credentials('MONITORING_RESOURCE_GROUP')
+        KUBECONFIG_DEV = credentials('kubeconfig_dev')
+        KUBECONFIG_HML = credentials('kubeconfig_hml')
+        KUBECONFIG_PRD01 = credentials('kubeconfig_prd01')
+        KUBECONFIG_PRD02 = credentials('kubeconfig_prd02')
     }
 
     stages {
