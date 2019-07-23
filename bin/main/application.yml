@@ -39,5 +39,3 @@ spring:
   rabbitmq:
     host: ${rabbitHost}
     port: ${rabbitPort}
-    username: ${rabbitUser}
-    password: ${rabbitPass}

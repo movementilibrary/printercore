@@ -55,7 +55,7 @@ public class ImpressoraService {
         try {
              if(!this.impressoraRepository.findById(impressora.getId()).isPresent()){
 
-                filaService.novaFila(impressora);
+                //filaService.novaFila(impressora);
                 unidadeService.criaListaImpressoraPorUnidade(impressora);
             }
             LOGGER.info(MensagemInfoType.SALVANDO_IMPRESSORA.getMensagem().concat(" {} "), impressora.getId());
@@ -84,7 +84,7 @@ public class ImpressoraService {
 
             Impressora impressora = buscaImpressoraPeloId(id);
 
-            filaService.apagaFila(impressora.getId());
+            //filaService.apagaFila(impressora.getId());
 
             unidadeService.excluiImpressora(id);
 

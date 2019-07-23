@@ -17,10 +17,10 @@ public class FilaService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FilaService.class);
 
-    @Autowired
+    //@Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @Autowired
+    //@Autowired
     private RabbitAdmin rabbitAdmin;
 
     /**
